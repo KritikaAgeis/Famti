@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+
+       <menuitem
+        id="customer_menu"
+        name="Customers"
+        parent="contacts.res_partner_menu_contacts"
+        action="famti.action_customers"
+        sequence="2"/>
+
+        <menuitem
+        id="vendors_menu"
+        name="Vendors"
+        parent="contacts.res_partner_menu_contacts"
+        action="famti.action_vendors"
+        sequence="3"/>
+
+    </data>
+</odoo>

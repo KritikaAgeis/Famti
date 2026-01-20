@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+         <record id="stock_lot_form_view_inherit" model="ir.ui.view">
+            <field name="name">stock.lot.view.form.inherit</field>
+            <field name="model">stock.lot</field>
+            <field name="inherit_id" ref="stock.view_production_lot_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet" position="before">
+                    <header>
+                        <field name="qc_status" widget="statusbar" statusbar_visible="pending,passed,failed"/>
+                    <button
+                        name="action_coa_passed"
+                        type="object"
+                        string="Passed"
+                        class="oe_highlight btn-success" invisible="qc_status in ['passed','failed']"/>
+                    <button
+                        name="action_coa_failed"
+                        type="object"
+                        string="Failed"
+                        class="oe_highlight btn-danger" invisible="qc_status == 'failed'"/>
+                    <button
+                        name="action_reset_to_draft"
+                        type="object"
+                        string="Reset To Draft"
+                        class="oe_highlight btn-info" invisible="qc_status != 'failed'"/>
+                    </header>
+                </xpath>
+
+                  <xpath expr="//sheet/notebook" position="before">
+                    <group string="QC Details" col="2">
+                        <group>
+                            <field name="product_category"/>
+                            <field name="thickness"/>
+                            <field name="weight"/>
+                            <field name="core_id"/>
+                        </group>
+                        <group>
+                            <field name="qc_status"/>
+                            <field name="upload_doc"/>
+                            <field name="qc_remark"/>
+                        </group>
+                    </group>
+                    </xpath>
+            </field>
+        </record>
+
+
+
+
+          <record id="stock_lot_list_view_inherit" model="ir.ui.view">
+            <field name="name">stock.lot.view.list.inherit</field>
+            <field name="model">stock.lot</field>
+            <field name="inherit_id" ref="stock.view_production_lot_tree"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//list/field[@name='company_id']" position="after">
+                        <field name="qc_status" widget="badge"  decoration-info="qc_status == 'pending'"
+                               decoration-success="qc_status == 'passed'" decoration-danger="qc_status == 'failed'"/>
+                    </xpath>
+            </field>
+          </record>
+
+    </data>
+</odoo>

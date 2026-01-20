@@ -1,0 +1,49 @@
+<odoo>
+    <record id="action_open_stock_lot_wizard" model="ir.actions.server">
+        <field name="name">Move Locations</field>
+        <field name="model_id" ref="stock.model_stock_lot"/>
+        <field name="binding_model_id" ref="stock.model_stock_lot"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+                action = {
+                    'type': 'ir.actions.act_window',
+                    'name': 'Stock Lot Wizard',
+                    'res_model': 'stock.lot.wizard',
+                    'view_mode': 'form',
+                    'target': 'new',
+                    'context': {
+                        'default_lot_ids': records.ids or [record.id],
+                    }
+                }
+        </field>
+    </record>
+
+
+     <record id="action_pass_the_coa_rolls" model="ir.actions.server">
+        <field name="name">COA PASSED</field>
+        <field name="model_id" ref="stock.model_stock_lot"/>
+        <field name="binding_model_id" ref="stock.model_stock_lot"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">records.action_pass_coa_rolls()</field>
+    </record>
+
+     <record id="action_fail_the_coa_rolls" model="ir.actions.server">
+        <field name="name">COA Failed</field>
+        <field name="model_id" ref="stock.model_stock_lot"/>
+        <field name="binding_model_id" ref="stock.model_stock_lot"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = {
+                    'type': 'ir.actions.act_window',
+                    'name': 'COA FAILED',
+                    'res_model': 'coa.failed.wizard',
+                    'view_mode': 'form',
+                    'target': 'new',
+                    'context': {
+                        'default_lot_ids': records.ids or [record.id],
+                    }
+                }</field>
+    </record>
+</odoo>
