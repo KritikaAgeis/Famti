@@ -42,6 +42,7 @@ class SaleOrder(models.Model):
         self.ensure_one()
         return self.env['account.move'].search([
             ('partner_id', '=', self.partner_id.id),
+            ('company_id', '=', self.company_id.id),
             ('move_type', '=', 'out_invoice'),
             ('state', '=', 'posted'),
             ('payment_state', '!=', 'paid'),
@@ -60,7 +61,6 @@ class SaleOrder(models.Model):
                 f"The current outstanding amount is {outstanding},"
                 f"and the value of this sales order is {self.amount_total}."
             )
-
 
         today = date.today()
         print("===========",today)
