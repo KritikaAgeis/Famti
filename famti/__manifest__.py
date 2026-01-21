@@ -12,8 +12,9 @@
                     'account',
 ],
     'data': [
-        'security/ir.model.access.csv',
         'security/rules.xml',
+        'security/ir.model.access.csv',
+        
         'data/ir_server_actions.xml',
         'wizard/stock_lot_wiz.xml',
         'views/purchase.xml',
@@ -21,6 +22,7 @@
         'views/stock_picking.xml',
         'views/stock_lot.xml',
         'views/menu.xml',
+        'views/sale.xml',
 
     ],
     'demo': [
