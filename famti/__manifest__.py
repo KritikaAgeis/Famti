@@ -23,6 +23,7 @@
         'views/stock_lot.xml',
         'views/menu.xml',
         'views/sale.xml',
+        'views/sale_res_partner.xml',
 
     ],
     'demo': [

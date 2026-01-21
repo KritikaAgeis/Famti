@@ -43,6 +43,12 @@
                     invisible="state != 'to_approve'"
                 />
             </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <group col="2" string="Customer Credit Info">
+                    <field name="partner_credit_limit" readonly="1"/>
+                    <field name="partner_outstanding" readonly="1"/>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>
