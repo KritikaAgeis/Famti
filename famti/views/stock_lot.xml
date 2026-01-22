@@ -29,13 +29,15 @@
                   <xpath expr="//sheet/notebook" position="before">
                     <group string="QC Details" col="2">
                         <group>
-                            <field name="product_category"/>
+                            <field name="category"/>
                             <field name="thickness"/>
                             <field name="weight"/>
                             <field name="core_id"/>
                         </group>
                         <group>
-                            <field name="qc_status"/>
+                            <field name="film"/>
+                            <field name="film_type"/>
+                            <field name="qc_status" invisible="1"/>
                             <field name="upload_doc"/>
                             <field name="qc_remark"/>
                         </group>
@@ -58,6 +60,46 @@
                     </xpath>
             </field>
           </record>
+
+
+        <record id="view_stock_move_operations_inherit_excel_btn" model="ir.ui.view">
+                <field name="name">stock.move.operations.form.inherit.excel.btn</field>
+                <field name="model">stock.move</field>
+                <field name="inherit_id" ref="stock.view_stock_move_operations"/>
+                <field name="arch" type="xml">
+                    <!-- Insert button right after product_uom_qty -->
+                    <xpath expr="//div[@class='o_row']" position="after">
+                        <span>
+                            <button
+                                type="action"
+                                class="btn btn-outline-primary btn-sm ms-2"
+                                name="%(action_open_excel_wiz)d"
+                                string="Upload Excel"/>
+                        </span>
+                    </xpath>
+
+                </field>
+            </record>
+
+
+          <record id="view_stock_move_line_form_inherit_film" model="ir.ui.view">
+        <field name="name">stock.move.line.form.inherit.film</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='lot_id']" position="after">
+                <field name="film"/>
+                <field name="film_type"/>
+                <field name="category"/>
+                <field name="thickness"/>
+                <field name="weight"/>
+                <field name="core_id"/>
+            </xpath>
+
+        </field>
+    </record>
+
 
     </data>
 </odoo>

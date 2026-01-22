@@ -20,7 +20,9 @@ class StockLot(models.Model):
                                        ('manuf_defect','Manufacturing Defects'),
                                         ('others','Others')],
                                        string="Failure Reasons",tracking=True)
-    product_category = fields.Char(string="Product Category",tracking=True,help="This helps to categorise specific product.")
+    category = fields.Char(string="Film Category",tracking=True,help="This helps to categorise specific product.")
+    film = fields.Char(string="Film",tracking=True,help="Product Film.")
+    film_type = fields.Char(string="Film Type",tracking=True,help="Film Type")
 
 
 
@@ -34,10 +36,8 @@ class StockLot(models.Model):
         self.qc_status = 'pending'
 
     def action_pass_coa_rolls(self):
-        rolls = self.filtered(lambda r: r.qc_status == 'pending')
+        rolls = self.filtered(lambda r: r.qc_status == 'pending' and r.company_id==self.env.user.company_id)
         if not rolls:
             return True
         res=rolls.write({'qc_status': 'passed'})
         return res
-
-

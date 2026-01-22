@@ -1,0 +1,38 @@
+<odoo>
+    <record id="view_famti_lot_import_wizard" model="ir.ui.view">
+        <field name="name">famti.lot.import.wizard.form</field>
+        <field name="model">famti.lot.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Lots from Excel">
+                <group>
+                    <group>
+                    <field name="file"/>
+                </group>
+                    <group>
+                    <field name="filename"/>
+                </group>
+                </group>
+                <footer>
+                    <button string="Import"
+                            type="object"
+                            name="action_import"
+                            class="btn-primary"/>
+                    <button string="Cancel"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_open_excel_wiz" model="ir.actions.act_window">
+    <field name="name">Upload Excel</field>
+    <field name="res_model">famti.lot.import.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="famti.view_famti_lot_import_wizard"/>
+    <field name="target">new</field>
+</record>
+
+
+
+</odoo>
