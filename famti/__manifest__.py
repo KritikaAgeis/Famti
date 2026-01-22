@@ -24,7 +24,7 @@
         'views/menu.xml',
         'views/sale.xml',
         'views/sale_res_partner.xml',
-
+        'views/res_company_view.xml',
     ],
     'demo': [
         # 'demo/account_demo.xml',

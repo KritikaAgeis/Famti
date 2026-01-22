@@ -47,6 +47,7 @@
                 <group col="2" string="Customer Credit Info">
                     <field name="partner_credit_limit" readonly="1"/>
                     <field name="partner_outstanding" readonly="1"/>
+                    <field name="partner_lc_document"/>
                 </group>
             </xpath>
         </field>

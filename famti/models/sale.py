@@ -30,12 +30,18 @@ class SaleOrder(models.Model):
         store=False
     )
 
+    partner_lc_document = fields.Binary(
+        related='partner_id.lc_document',
+        readonly=True
+    )
+
     @api.depends('partner_id')
     def _compute_partner_credit_info(self):
         for order in self:
             partner = order.partner_id
             order.partner_credit_limit = partner.credit_limit or 0.0
             order.partner_outstanding = partner.credit or 0.0
+            order.partner_lc_document = partner.lc_document or False
 
 
     def _get_unpaid_invoices(self):

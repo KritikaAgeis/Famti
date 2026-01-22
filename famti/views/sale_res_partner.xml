@@ -10,7 +10,7 @@
                         <field name="credit_grace_days"/>
                     </group>
                     <group>
-                        <!-- <field name="lc_required"/> -->
+                        <field name="lc_document" widget="binary"/>
                     </group>                                       
                 </group>
             </xpath>
