@@ -1,0 +1,55 @@
+<odoo>
+    <record id="view_sale_order_hide_draft_confirm_famti" model="ir.ui.view">
+        <field name="name">sale.order.form.hide.draft.confirm.famti</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header/button[@name='action_confirm' and not(@id)]"
+                   position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//form/header/button[@name='action_draft' and not(@id)]"
+                   position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="view_sale_order_form_famti_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.famti</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_preview_sale_order']" position="before">
+                <button name="action_cfo_approval"
+                    type="object"
+                    string="Submit for CFO Approval"
+                    class="btn-primary"
+                    groups="famti.group_sales_dep_users"
+                    invisible="state != 'draft'"
+                />
+                <button name="action_approve"
+                    type="object"
+                    string="Approve"
+                    class="btn-primary"
+                    groups="famti.group_cheif_financial_officer"
+                    invisible="state != 'to_approve'"
+                />
+                <button name="action_reject"
+                    type="object"
+                    string="Reject"
+                    class="btn-secondary"
+                    groups="famti.group_cheif_financial_officer"
+                    invisible="state != 'to_approve'"
+                />
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <group col="2" string="Customer Credit Info">
+                    <field name="partner_credit_limit" readonly="1"/>
+                    <field name="partner_outstanding" readonly="1"/>
+                    <field name="partner_lc_document"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

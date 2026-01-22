@@ -6,7 +6,7 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
 
-                 <xpath expr="//button[@name='button_confirm']" position="before">
+                <xpath expr="//button[@name='button_confirm']" position="before">
                   <button string="CFO Approval"
                           name="action_send_for_cfo_approval"
                           type="object"
