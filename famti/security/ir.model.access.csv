@@ -3,5 +3,5 @@ access_stock_lot_wizard_admin,access.stock.lot.wizard.admin,model_stock_lot_wiza
 access_stock_lot_wizard_purchase,access.stock.lot.wizard.purchase,model_stock_lot_wizard,group_purchase_dep_users,1,1,1,1
 access_coa_failed_wizard_admin,coa.failed.wizard admin,model_coa_failed_wizard,base.group_system,1,1,1,1
 access_coa_failed_wizard_user,coa.failed.wizard user,model_coa_failed_wizard,group_purchase_dep_users,1,1,1,1
-
-
+access_famti_lot_import_wizard,access_famti_lot_import_wizard,model_famti_lot_import_wizard,base.group_user,1,1,1,1
+access_famti_lot_import_wizards,access_famti_lot_import_wizards,model_famti_lot_import_wizard,base.group_system,1,1,1,1
