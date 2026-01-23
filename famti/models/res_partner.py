@@ -10,3 +10,7 @@ class ResPartner(models.Model):
         comodel_name='res.company',
         string='Company', required=True, readonly=True,
         default=lambda self: self.env.company)
+
+    credit_grace_days = fields.Integer(string="Credit Grace Period (Days)", default=0)
+    lc_required = fields.Boolean(string="LC Required")
+    lc_document = fields.Binary(string="LC Document")
