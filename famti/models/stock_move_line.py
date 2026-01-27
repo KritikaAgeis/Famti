@@ -9,6 +9,8 @@ class StockMoveLine(models.Model):
     thickness = fields.Float(string="Thickness (micron)", tracking=True)
     weight = fields.Float(string="Weight (kg)", tracking=True)
     core_id = fields.Char(string="Core Id", tracking=True)
+    lot_number = fields.Char(string="Lot Number", tracking=True, help="Lot Number")
+    pallet_no = fields.Char(string="Pallet Number", tracking=True, help="Pallet Number")
 
     def _action_done(self):
         res = super()._action_done()
@@ -20,4 +22,6 @@ class StockMoveLine(models.Model):
                 line.lot_id.thickness = line.thickness
                 line.lot_id.weight = line.weight
                 line.lot_id.core_id = line.core_id
+                line.lot_id.lot_number = line.lot_number
+                line.lot_id.pallet_no = line.pallet_no
         return res
