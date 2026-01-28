@@ -18,6 +18,8 @@
         'security/ir.model.access.csv',
         
         'data/ir_server_actions.xml',
+        'data/mail_template.xml',
+        'data/ir_cron.xml',
         'wizard/lot_import_wizard.xml',
         'wizard/stock_lot_wiz.xml',
         'views/purchase.xml',

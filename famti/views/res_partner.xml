@@ -1,15 +1,44 @@
 <odoo>
     <data>
-         <record id="res_partner_form_view_inherit" model="ir.ui.view">
+        <record id="res_partner_form_view_inherit" model="ir.ui.view">
             <field name="name">res.partner.form.inherit</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
 
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <field name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,verified_vendor,certificate_expired"/>
+
+                        <button name="action_iso_certificate_updated"
+                            string="Verify Certificate"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+
+                        <button name="action_iso_certificate_renew"
+                            string="Certificate renewed"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'certificate_expired'"/>
+                    </header>
+                </xpath>
+
                 <xpath expr="//field[@name='title']" position="after">
                   <field name="is_supplier" invisible="1"/>
                   <field name="company_id" />
                 </xpath>
+
+                <xpath expr="//group/group" position="inside">
+                    <field name="iso_vendor_certificate"
+                        filename="iso_certificate_name"
+                        invisible="is_supplier == 0"/>
+                    <field name="vendor_document_expiry" widget="remaining_days" string="Certificate Expiry"
+                        invisible="is_supplier == 0 or not iso_vendor_certificate"/>
+                </xpath>               
+
 
             </field>
         </record>

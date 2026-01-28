@@ -1,5 +1,22 @@
 <odoo>
     <data>
+        <record id="purchase_hide_confirm_buttons" model="ir.ui.view">
+            <field name="name">purchase.order.form.hide.confirm</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/header/button[@name='button_confirm' and @id='bid_confirm']"
+                    position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+
+                <xpath expr="//form/header/button[@name='button_confirm' and @id='draft_confirm']"
+                    position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+
+            </field>
+        </record>
          <record id="purchase_form_view_inherit" model="ir.ui.view">
             <field name="name">purchase.order.form.inherit</field>
             <field name="model">purchase.order</field>
@@ -14,12 +31,6 @@
                           groups="famti.group_purchase_dep_users,purchase.group_purchase_manager"
                           class="btn-primary"/>
 
-                     <button string="Reject"
-                          name="action_reject_coa"
-                          type="object"
-                          groups="purchase.group_purchase_manager"
-                             invisible="state in ['to approve','purchase']"
-                          class="btn-primary"/>
                 </xpath>
 
                  <xpath expr="//field[@name='partner_id']" position="attributes">
@@ -31,6 +42,22 @@
                 </xpath>
                 <xpath expr="//field[@name='picking_type_id']" position="attributes">
                     <attribute name="options">{'no_open': True}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="readonly">state != 'draft'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_ref']" position="attributes">
+                    <attribute name="readonly">state != 'draft'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="attributes">
+                    <attribute name="readonly">state != 'draft'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_planned']" position="attributes">
+                    <attribute name="readonly">state != 'draft'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="readonly">state != 'draft'</attribute>
                 </xpath>
 
             </field>
