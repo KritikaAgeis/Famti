@@ -42,7 +42,6 @@ class Purchase(models.Model):
 
 
     def button_confirm(self):
-        print("Self-----------",self.env.user.has_group('purchase.group_purchase_manager'))
         if not self.env.user.has_group('purchase.group_purchase_manager'):
             raise  UserError("You are not allowed to process this purchase. Please send to 'CFO' for approval")
         return super().button_confirm()

@@ -23,7 +23,6 @@ class StockLotWizard(models.TransientModel):
 
     def action_confirm(self):
         qc_passed = list(set(self.lot_ids.mapped('qc_status')))
-        print("=============",qc_passed)
         if len(qc_passed)>1:
             raise UserError("Please select only those rolls whose Certificate of Analysis has been verified.")
         if qc_passed[0]=='pending':
@@ -46,7 +45,6 @@ class StockLotWizard(models.TransientModel):
             'origin': self.note,
         })
 
-        # ONE MOVE with total quantity
         move = self.env['stock.move'].create({
             'name': f'Move {product.display_name}',
             'product_id': product.id,
