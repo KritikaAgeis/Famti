@@ -9,6 +9,8 @@ class StockMoveLine(models.Model):
     thickness = fields.Float(string="Thickness (micron)", tracking=True)
     weight = fields.Float(string="Weight (kg)", tracking=True)
     core_id = fields.Char(string="Core Id", tracking=True)
+    lot_id = fields.Many2one('stock.lot',string='Serial Numbers')
+    lot_name = fields.Char(string="Serial Number Name")
 
     def _action_done(self):
         res = super()._action_done()

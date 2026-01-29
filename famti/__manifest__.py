@@ -27,6 +27,7 @@
         'views/stock_picking.xml',
         'views/stock_lot.xml',
         'views/menu.xml',
+        'views/action.xml',
         'views/sale.xml',
         'views/sale_res_partner.xml',
         'views/res_company_view.xml',
