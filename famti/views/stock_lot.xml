@@ -90,13 +90,22 @@
         <field name="inherit_id" ref="stock.view_move_line_form"/>
         <field name="arch" type="xml">
 
-            <xpath expr="//field[@name='lot_id']" position="after">
+            <xpath expr="//field[@name='product_id']" position="after">
                 <field name="film"/>
                 <field name="film_type"/>
                 <field name="category"/>
-                <field name="thickness"/>
                 <field name="weight"/>
+                <field name="weight_uom"/>
+            </xpath>
+
+            <xpath expr="//field[@name='lot_id']" position="after">
+                <field name="thickness"/>
+                <field name="thickness_uom"/>
+                <field name="width"/>
+                <field name="width_uom"/>
                 <field name="core_id"/>
+                <field name="length"/>
+                <field name="length_uom"/>
             </xpath>
 
         </field>

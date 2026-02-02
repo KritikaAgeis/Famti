@@ -16,12 +16,13 @@
     'data': [
         'security/rules.xml',
         'security/ir.model.access.csv',
-        
         'data/ir_server_actions.xml',
         'wizard/lot_import_wizard.xml',
         'wizard/stock_lot_wiz.xml',
         'views/purchase.xml',
         'views/res_partner.xml',
+        'views/product.xml',
+        'views/purchase_order_line.xml',
         'views/stock_picking.xml',
         'views/stock_lot.xml',
         'views/menu.xml',

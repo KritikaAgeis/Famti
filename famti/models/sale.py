@@ -60,7 +60,6 @@ class SaleOrder(models.Model):
 
         unpaid_invoices = self._get_unpaid_invoices()
         outstanding = sum(unpaid_invoices.mapped('amount_residual'))
-        print("-------outstanding--------",outstanding)
         if partner.credit_limit and outstanding + self.amount_total > partner.credit_limit:
             return (
                 f"The customer's credit limit of {partner.credit_limit} has been exceeded."
@@ -69,12 +68,9 @@ class SaleOrder(models.Model):
             )
 
         today = date.today()
-        print("===========",today)
         for inv in unpaid_invoices:
-            print("-------------------",inv.invoice_date_due)
             if inv.invoice_date_due and inv.invoice_date_due < today:
                 overdue_days = (today - inv.invoice_date_due).days
-                print("====overdue_days===",overdue_days)
                 if overdue_days > partner.credit_grace_days:
                     return (
                         f"The customer has overdue invoices beyond the allowed grace period."

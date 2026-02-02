@@ -89,5 +89,4 @@ class FamtiLotImportWizard(models.TransientModel):
                 'location_id': move.location_id.id,
                 # 'location_dest_id': move.location_dest_id.id,
             })
-            print(f'-----moveline---{moveline}')
         return {'type': 'ir.actions.act_window_close'}

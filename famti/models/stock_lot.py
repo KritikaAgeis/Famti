@@ -38,7 +38,7 @@ class StockLot(models.Model):
         self.qc_status = 'pending'
 
     def action_pass_coa_rolls(self):
-        rolls = self.filtered(lambda r: r.qc_status == 'pending' and r.company_id==self.env.user.company_id)
+        rolls = self.filtered(lambda r: r.qc_status == 'pending')
         if not rolls:
             return True
         res=rolls.write({'qc_status': 'passed'})
