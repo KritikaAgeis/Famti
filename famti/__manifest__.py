@@ -22,6 +22,7 @@
         'data/ir_cron.xml',
         'wizard/lot_import_wizard.xml',
         'wizard/stock_lot_wiz.xml',
+        'wizard/mrp_batch_wizard.xml',
         'views/purchase.xml',
         'views/res_partner.xml',
         'views/stock_picking.xml',
@@ -31,6 +32,7 @@
         'views/sale.xml',
         'views/sale_res_partner.xml',
         'views/res_company_view.xml',
+        'views/manufacturing.xml',
     ],
     'demo': [
         # 'demo/account_demo.xml',

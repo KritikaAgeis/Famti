@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_mrp_batch_produce_form_inherit" model="ir.ui.view">
+        <field name="name">mrp.batch.produce.form.inherit</field>
+        <field name="model">mrp.batch.produce</field>
+        <field name="inherit_id" ref="mrp.view_mrp_batch_produce_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='lot_name']" position="after">
+                <field name="sn_quantity"/>
+                <field name="sn_recived_quantity"/>
+            </xpath>
+
+            <xpath expr="//field[@name='production_text']" position="after">
+                <group>
+                    <field name="line_ids" nolabel="1">
+                        <list editable="bottom">
+                            <field name="serial_number"/>
+                            <field name="location_id"/>
+                            <field name="quantity"/>
+                            <field name="uom_id"/>
+                        </list>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
