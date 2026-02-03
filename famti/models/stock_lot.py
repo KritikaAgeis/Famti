@@ -24,6 +24,8 @@ class StockLot(models.Model):
     category = fields.Char(string="Film Category",tracking=True,help="This helps to categorise specific product.")
     film = fields.Char(string="Film",tracking=True,help="Product Film.")
     film_type = fields.Char(string="Film Type",tracking=True,help="Film Type")
+    lot_number = fields.Char(string="Lot Number",tracking=True,help="Lot Number")
+    pallet_no = fields.Char(string="Pallet Number",tracking=True,help="Pallet Number")
 
 
 
@@ -37,7 +39,7 @@ class StockLot(models.Model):
         self.qc_status = 'pending'
 
     def action_pass_coa_rolls(self):
-        rolls = self.filtered(lambda r: r.qc_status == 'pending' and r.company_id==self.env.user.company_id)
+        rolls = self.filtered(lambda r: r.qc_status == 'pending')
         if not rolls:
             return True
         res=rolls.write({'qc_status': 'passed'})

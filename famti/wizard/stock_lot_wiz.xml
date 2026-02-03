@@ -19,7 +19,7 @@
                 <footer>
                     <button string="Confirm"
                             type="object"
-                            name="action_confirm"
+                            name="action_move_location"
                             class="btn-primary"/>
                     <button string="Cancel"
                             special="cancel"

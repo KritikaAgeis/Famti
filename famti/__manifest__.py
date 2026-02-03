@@ -16,7 +16,6 @@
     'data': [
         'security/rules.xml',
         'security/ir.model.access.csv',
-        
         'data/ir_server_actions.xml',
         'data/mail_template.xml',
         'data/ir_cron.xml',
@@ -25,12 +24,13 @@
         'wizard/mrp_batch_wizard.xml',
         'views/purchase.xml',
         'views/res_partner.xml',
+        'views/product.xml',
+        'views/purchase_order_line.xml',
         'views/stock_picking.xml',
         'views/stock_lot.xml',
         'views/menu.xml',
         'views/action.xml',
         'views/sale.xml',
-        'views/sale_res_partner.xml',
         'views/res_company_view.xml',
         'views/manufacturing.xml',
     ],

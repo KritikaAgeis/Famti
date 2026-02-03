@@ -6,11 +6,26 @@ class StockMoveLine(models.Model):
     film = fields.Char(string="Film")
     category = fields.Char(string="Film Category", tracking=True, help="This helps to categorise specific product.")
     film_type = fields.Char(string="Film Type", tracking=True, help="Film Type")
-    thickness = fields.Float(string="Thickness (micron)", tracking=True)
+    lot_number = fields.Char(string="Lot Number", tracking=True, help="Lot Number")
+    pallet_no = fields.Char(string="Pallet Number", tracking=True, help="Pallet Number")
+
     weight = fields.Float(string="Weight (kg)", tracking=True)
-    core_id = fields.Char(string="Core Id", tracking=True)
     lot_id = fields.Many2one('stock.lot',string='Serial Numbers')
     lot_name = fields.Char(string="Serial Number Name")
+
+    weight_uom = fields.Selection(selection=[
+        ('kg', 'Kg'),
+        ('lbs', 'Lbs'),
+        ('gm', 'Gm'),
+    ], required=True, default='kg', string=" ")
+    thickness = fields.Float(string="Thickness (micron)", tracking=True)
+    thickness_uom = fields.Selection(selection=[('guage', 'Guage'), ('micron', 'Micron')], default='micron', string=" ",
+                                     tracking=True)
+    width = fields.Float(string="Width", help="This helps to categorise specific product.")
+    width_uom = fields.Selection(selection=[('mm', 'MM'), ('inch', 'Inch')], default='mm', string=" ", tracking=True)
+    core_id = fields.Selection(selection=[('3', '3 Inch'), ('6', '6 Inch')], string="Core", tracking=True)
+    length = fields.Float(string="Length", tracking=True, help="Product Length")
+    length_uom = fields.Selection(selection=[('m', 'M'), ('feet', 'Feet')], default='feet', string=" ", tracking=True)
 
     def _action_done(self):
         res = super()._action_done()
@@ -22,4 +37,6 @@ class StockMoveLine(models.Model):
                 line.lot_id.thickness = line.thickness
                 line.lot_id.weight = line.weight
                 line.lot_id.core_id = line.core_id
+                line.lot_id.lot_number = line.lot_number
+                line.lot_id.pallet_no = line.pallet_no
         return res

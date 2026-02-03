@@ -19,14 +19,14 @@ class StockLotWizard(models.TransientModel):
 
     note = fields.Text(string='Notes')
 
+    def action_move_location(self):
 
-
-    def action_confirm(self):
         qc_passed = list(set(self.lot_ids.mapped('qc_status')))
-        if len(qc_passed)>1:
+
+        if len(qc_passed) > 1:
             raise UserError("Please select only those rolls whose Certificate of Analysis has been verified.")
-        if qc_passed[0]=='pending':
-            raise UserError("Those rolls who has not been verified, can not move to any other location.")
+        if qc_passed[0] == 'pending':
+            raise UserError("Those rolls who has not been verified cannot be moved.")
 
         products = self.lot_ids.mapped('product_id')
         if len(products) > 1:
@@ -37,24 +37,61 @@ class StockLotWizard(models.TransientModel):
         picking_type = self.env['stock.picking.type'].search(
             [('code', '=', 'internal')], limit=1
         )
+
         picking = self.env['stock.picking'].create({
             'picking_type_id': picking_type.id,
-            'partner_id': self.partner_id.id,
             'location_id': self.location_id.id,
             'location_dest_id': self.dest_location_id.id,
             'origin': self.note,
+            'partner_id': self.partner_id.id,
+
         })
+
+
+        total_qty = 0.0
+        for lot in self.lot_ids:
+            quant = self.env['stock.quant'].search([
+                ('lot_id', '=', lot.id),
+                ('location_id', '=', self.location_id.id),
+                ('quantity', '>', 0),
+            ], limit=1)
+
+            if not quant:
+                raise UserError(f"No stock for lot {lot.name} in this location.")
+
+            total_qty += quant.quantity
 
         move = self.env['stock.move'].create({
             'name': f'Move {product.display_name}',
             'product_id': product.id,
             'product_uom': product.uom_id.id,
-            'product_uom_qty': len(self.lot_ids),
+            'product_uom_qty': total_qty,
+            'quantity': total_qty,
             'picking_id': picking.id,
             'location_id': self.location_id.id,
             'location_dest_id': self.dest_location_id.id,
         })
+
         picking.action_confirm()
+        move.move_line_ids.unlink()
+        for lot in self.lot_ids:
+            quant = self.env['stock.quant'].search([
+                ('lot_id', '=', lot.id),
+                ('location_id', '=', self.location_id.id),
+                ('quantity', '>', 0),
+            ], limit=1)
+
+            self.env['stock.move.line'].create({
+                'move_id': move.id,
+                'picking_id': picking.id,
+                'product_id': product.id,
+                'lot_id': lot.id,
+                'quantity': quant.quantity,
+                'product_uom_id': product.uom_id.id,
+                'location_id': self.location_id.id,
+                'location_dest_id': self.dest_location_id.id,
+            })
+
         picking.button_validate()
 
         return {'type': 'ir.actions.act_window_close'}

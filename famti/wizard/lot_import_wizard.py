@@ -52,6 +52,8 @@ class FamtiLotImportWizard(models.TransientModel):
             core_id = row.get('core_id')
             category = row.get('category')
             qty = float(row.get('qty') or 0)
+            lot_number = row.get('lot_number')
+            pallet_no = row.get('pallet_no')
 
             if not lot_name or qty <= 0:
                 continue
@@ -88,6 +90,8 @@ class FamtiLotImportWizard(models.TransientModel):
                 'weight': weight,
                 'core_id': core_id,
                 'category': category,
+                'lot_number': lot_number,
+                'pallet_no': pallet_no,
                 'picking_id': move.picking_id.id,
                 'product_id': move.product_id.id,
                 'quantity': qty,

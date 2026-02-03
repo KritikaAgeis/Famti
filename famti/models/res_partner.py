@@ -28,6 +28,10 @@ class ResPartner(models.Model):
 
     gst_verified = fields.Boolean(string="GST Verified")
 
+    credit_grace_days = fields.Integer(string="Credit Grace Period (Days)", default=0)
+    lc_required = fields.Boolean(string="LC Required")
+    lc_document = fields.Binary(string="LC Document")
+
 
     def action_iso_certificate_updated(self):
         for rec in self:
@@ -76,3 +80,5 @@ class ResPartner(models.Model):
                 'body_html': body.replace('\n', '<br/>'),
                 'email_to': vendor.email,
             }).send()
+
+    
