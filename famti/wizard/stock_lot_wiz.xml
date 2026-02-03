@@ -30,7 +30,6 @@
     </record>
 
 
-<!--    COA FAILED-->
      <record id="view_coa_failed_wizard_form" model="ir.ui.view">
         <field name="name">coa.failed.wizard.form</field>
         <field name="model">coa.failed.wizard</field>

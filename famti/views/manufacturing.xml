@@ -1,0 +1,23 @@
+<odoo>
+    <record id="mrp_production_form_inherit_serial" model="ir.ui.view">
+        <field name="name">mrp.production.form.serial.rename</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form/header" position="inside">
+                <button
+                    name="action_open_split_lots_wizard"
+                    type="object"
+                    string="Split Lots"
+                    class="btn-primary"
+                />
+            </xpath>
+
+
+            <xpath expr="//field[@name='lot_producing_id']" position="attributes">
+                <attribute name="string">Serial Number</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -3,6 +3,7 @@ from odoo import models, fields
 class StockLot(models.Model):
     _inherit = 'stock.lot'
 
+    name = fields.Char(string='Serial Numbers', required=True, index=True)
     thickness = fields.Float(string="Thickness (micron)",tracking=True)
     weight = fields.Float(string="Weight (kg)",tracking=True)
     core_id = fields.Char(string="Core Id",tracking=True)

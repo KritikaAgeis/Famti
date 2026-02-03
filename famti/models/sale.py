@@ -87,6 +87,8 @@ class SaleOrder(models.Model):
             if issue:
                 raise UserError(issue)
             else:
+                if not order.order_line:
+                    raise UserError("Sales Order must have at least one order line.")
                 self.write({'state': 'to_approve'})
 
     def action_approve(self):

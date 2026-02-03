@@ -22,6 +22,7 @@ class StockLotWizard(models.TransientModel):
     def action_move_location(self):
 
         qc_passed = list(set(self.lot_ids.mapped('qc_status')))
+
         if len(qc_passed) > 1:
             raise UserError("Please select only those rolls whose Certificate of Analysis has been verified.")
         if qc_passed[0] == 'pending':
@@ -46,7 +47,7 @@ class StockLotWizard(models.TransientModel):
 
         })
 
-        # total qty from quants
+
         total_qty = 0.0
         for lot in self.lot_ids:
             quant = self.env['stock.quant'].search([
@@ -72,9 +73,7 @@ class StockLotWizard(models.TransientModel):
         })
 
         picking.action_confirm()
-        # Remove auto-created reserved lines
         move.move_line_ids.unlink()
-        # CREATE MOVE LINES PER LOT
         for lot in self.lot_ids:
             quant = self.env['stock.quant'].search([
                 ('lot_id', '=', lot.id),
