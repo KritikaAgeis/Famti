@@ -9,6 +9,12 @@
                 <field name="sn_quantity"/>
                 <field name="sn_recived_quantity"/>
             </xpath>
+            <xpath expr="//footer" position="inside">
+                <button name="action_produce_lots"
+                        string="Produce Lots"
+                        type="object"
+                        class="btn-primary"/>
+            </xpath>
 
             <xpath expr="//field[@name='production_text']" position="after">
                 <group>

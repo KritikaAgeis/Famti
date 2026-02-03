@@ -26,6 +26,26 @@ class MrpBatchProduce(models.TransientModel):
         for wizard in self:
             wizard.sn_recived_quantity = wizard.production_id.product_qty
 
+    def action_produce_lots(self):
+        self.ensure_one()
+
+        production = self.production_id
+        serial_line_vals = []
+
+        for line in self.line_ids:
+            serial_line_vals.append({
+                'production_id': production.id,
+                'serial_number': line.serial_number,
+                'quantity': line.quantity,
+                'uom_id': line.uom_id.id,
+                'location_id': line.location_id.id,
+            })
+
+        if serial_line_vals:
+            self.env['mrp.production.serial.line'].create(serial_line_vals)
+
+        return {'type': 'ir.actions.act_window_close'}
+
 
     def action_generate_production_text(self):
         self.ensure_one()
