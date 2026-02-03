@@ -14,8 +14,8 @@
 
 ],
     'data': [
-        'security/rules.xml',
         'security/ir.model.access.csv',
+        'security/rules.xml',
         'data/ir_server_actions.xml',
         'data/mail_template.xml',
         'data/ir_cron.xml',
