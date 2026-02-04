@@ -8,3 +8,4 @@ access_coa_failed_wizard_user,coa.failed.wizard user,model_coa_failed_wizard,gro
 access_famti_lot_import_wizard,access_famti_lot_import_wizard,model_famti_lot_import_wizard,base.group_user,1,1,1,1
 access_famti_lot_import_wizards,access_famti_lot_import_wizards,model_famti_lot_import_wizard,base.group_system,1,1,1,1
 access_mrp_batch_produce_line',access_mrp_batch_produce_line,model_mrp_batch_produce_line,base.group_system,1,1,1,1
+access_mrp_production_serial_line',access_mrp_production_serial_line,model_mrp_production_serial_line,base.group_system,1,1,1,1
