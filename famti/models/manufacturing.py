@@ -6,6 +6,11 @@ class MrpProduction(models.Model):
     serial_line_ids = fields.One2many('mrp.production.serial.line', 'production_id',
         string='Serial Details'
     )
+    scrap_line_ids = fields.One2many('mrp.production.scrap.line','production_scrap_id', string='Scrap Details')
+
+    mo_serial_no = fields.Boolean( related='product_id.product_tmpl_id.mo_serial_no',
+        store=False
+    )
     
 
     def action_open_split_lots_wizard(self):
@@ -19,6 +24,38 @@ class MrpProduction(models.Model):
             'context': {
                 'default_production_id': self.id,
             }
+        }
+    
+    def action_open_scrap_wizard(self):
+        self.ensure_one()
+
+        Wizard = self.env['mrp.production.scrap.wizard']
+        WizardLine = self.env['mrp.production.scrap.wizard.line']
+
+        wizard = Wizard.create({
+            'production_id': self.id,
+            'product_id': self.product_id.id,
+            'company_id': self.company_id.id,
+            'date': fields.Datetime.now(),
+        })
+
+        for move in self.serial_line_ids:
+            WizardLine.create({
+                'wizard_id': wizard.id,
+                'serial_line_id': move.id,
+                'serial_number': move.serial_number,
+                'available_qty': move.quantity,
+                'uom_id': move.uom_id.id,
+                'location_id': move.location_id.id,
+            })
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Scrap Before Production',
+            'res_model': 'mrp.production.scrap.wizard',
+            'view_mode': 'form',
+            'res_id': wizard.id,
+            'target': 'new',
         }
 
 
@@ -41,6 +78,8 @@ class MrpProduction(models.Model):
         for mo in self:
             if mo.product_id.tracking == 'lot' and mo.serial_line_ids:
                 mo._create_lots_and_move_lines()
+            if mo.scrap_line_ids:
+                mo._create_stock_scrap_from_lines()
         return super().button_mark_done()
 
     def _create_lots_and_move_lines(self):
@@ -83,6 +122,37 @@ class MrpProduction(models.Model):
                 'location_dest_id': move.location_dest_id.id,
             })
 
+    def _create_stock_scrap_from_lines(self):
+        StockScrap = self.env['stock.scrap']
+        StockLot = self.env['stock.lot']
+
+        for line in self.scrap_line_ids:
+            if line.quantity <= 0:
+                continue
+
+            lot = StockLot.search([
+                ('name', '=', line.serial_number),
+                ('product_id', '=', self.product_id.id),
+                ('company_id', '=', self.company_id.id),
+            ], limit=1)
+
+            if not lot:
+                raise ValidationError(
+                    f"Lot/Serial {line.serial_number} not found for scrap."
+                )
+
+            scrap = StockScrap.create({
+                'product_id': self.product_id.id,
+                'scrap_qty': line.quantity,
+                'product_uom_id': line.uom_id.id,
+                'lot_id': lot.id,
+                'location_id': line.location_id.id or self.location_src_id.id,
+                'company_id': self.company_id.id,
+                'origin': self.name,
+                'production_id': self.id,
+            })
+
+            scrap.action_validate()
 
 
 
@@ -97,4 +167,16 @@ class MrpProductionSerialLine(models.Model):
     serial_number = fields.Char(string='Serial Number')
     location_id = fields.Many2one('stock.location', string='Location', domain="[('usage', '=', 'internal')]")
     quantity = fields.Float(string='Quantity')
+    uom_id = fields.Many2one('uom.uom', string='Unit of Measure')
+
+class MrpProductionScrapLine(models.Model):
+    _name = 'mrp.production.scrap.line'
+    _description = 'MRP Production Scrap Line'
+
+    production_scrap_id = fields.Many2one( 'mrp.production', string='Manufacturing Order',
+        ondelete='cascade', required=True
+    )
+    serial_number = fields.Char(string='Serial Number')
+    location_id = fields.Many2one('stock.location', string='Location', domain="[('usage', '=', 'internal')]")
+    quantity = fields.Float(string='Scrap Quantity')
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure')

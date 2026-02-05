@@ -24,6 +24,7 @@
         'wizard/lot_import_wizard.xml',
         'wizard/stock_lot_wiz.xml',
         'wizard/mrp_batch_wizard.xml',
+        'wizard/mrp_scrap_wizard.xml',
         'views/purchase.xml',
         'views/res_partner.xml',
         'views/product.xml',
