@@ -11,12 +11,31 @@
                     type="object"
                     string="Split Lots"
                     class="btn-primary"
+                    invisible="state not in ['confirmed','progress','to_close']"
                 />
             </xpath>
-
-
+            
+            <xpath expr="//button[@name='action_start']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
             <xpath expr="//field[@name='lot_producing_id']" position="attributes">
                 <attribute name="string">Serial Number</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='bom_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//label[@name='bom_label']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@name='bom_div']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='finished_products']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
 
             <xpath expr="//notebook" position="inside">

@@ -9,11 +9,32 @@
                 <field name="sn_quantity"/>
                 <field name="sn_recived_quantity"/>
             </xpath>
-            <xpath expr="//footer" position="inside">
+            <xpath expr="//footer/button[@name='action_done']" position="after">
                 <button name="action_produce_lots"
-                        string="Produce Lots"
+                        string="Generate Lots"
                         type="object"
                         class="btn-primary"/>
+            </xpath>
+
+            <xpath expr="//field[@name='production_text_help']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='production_text']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[field[@name='component_separator']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[field[@name='lots_separator']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+            <xpath expr="//button[@name='action_prepare']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_done']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
 
             <xpath expr="//field[@name='production_text']" position="after">

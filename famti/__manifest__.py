@@ -14,11 +14,13 @@
 
 ],
     'data': [
-        'security/ir.model.access.csv',
         'security/rules.xml',
+        'security/ir.model.access.csv',
         'data/ir_server_actions.xml',
         'data/mail_template.xml',
         'data/ir_cron.xml',
+        'data/product_data.xml',
+        # 'data/inventory_data.xml',
         'wizard/lot_import_wizard.xml',
         'wizard/stock_lot_wiz.xml',
         'wizard/mrp_batch_wizard.xml',
