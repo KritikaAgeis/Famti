@@ -7,6 +7,7 @@ class MrpProduction(models.Model):
     serial_line_ids = fields.One2many('mrp.production.serial.line', 'production_id',
         string='Serial Details'
     )
+<<<<<<< HEAD
     scrap_line_ids = fields.One2many('mrp.production.scrap.line','production_scrap_id', string='Scrap Details')
 
     mo_serial_no = fields.Boolean( related='product_id.product_tmpl_id.mo_serial_no',
@@ -16,6 +17,32 @@ class MrpProduction(models.Model):
     scrap_location_id = fields.Many2one('stock.location',string='Scrap Location',
         domain=[('scrap_location', '=', True)],
     )
+=======
+
+    def _prepare_stock_lot_values(self):
+        self.ensure_one()
+
+        name = self.env['stock.lot']._get_next_serial(
+            self.company_id,
+            self.product_id
+        )
+
+        return {
+            'product_id': self.product_id.id,
+            'company_id': self.company_id.id,
+            'name': name,
+        }
+
+
+    def action_generate_serial(self):
+        wc = self.workorder_ids[:1].workcenter_id
+        ctx = dict(self.env.context)
+
+        if wc and wc.code:
+            ctx['machine_code'] = wc.code
+        return super(MrpProduction,self.with_context(ctx)).action_generate_serial()
+    
+>>>>>>> origin/main
 
     def action_open_split_lots_wizard(self):
         self.ensure_one()
@@ -189,6 +216,7 @@ class MrpProductionSerialLine(models.Model):
     quantity = fields.Float(string='Quantity')
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure')
 
+<<<<<<< HEAD
 class MrpProductionScrapLine(models.Model):
     _name = 'mrp.production.scrap.line'
     _description = 'MRP Production Scrap Line'
@@ -205,3 +233,14 @@ class MrpProductionScrapLine(models.Model):
     scrap_reason_tag_ids = fields.Many2many( comodel_name='stock.scrap.reason.tag',
         string='Scrap Reason',
     )
+=======
+
+
+
+class MrpWorkcenter(models.Model):
+    _inherit = 'mrp.workcenter'
+    _description = 'Work Center'
+
+
+    code = fields.Char('Code', copy=False,required=True)
+>>>>>>> origin/main
