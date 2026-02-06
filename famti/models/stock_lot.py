@@ -1,4 +1,7 @@
-from odoo import models, fields
+from platform import machine
+
+from odoo import models, fields,api
+from datetime import date
 
 class StockLot(models.Model):
     _inherit = 'stock.lot'
@@ -44,3 +47,42 @@ class StockLot(models.Model):
             return True
         res=rolls.write({'qc_status': 'passed'})
         return res
+
+    @api.model
+    def _get_next_serial(self, company, product):
+        MONTH_MAP = {
+            1: 'A', 2: 'B', 3: 'C', 4: 'D',
+            5: 'E', 6: 'F', 7: 'G', 8: 'H',
+            9: 'I', 10: 'J', 11: 'K', 12: 'L',
+        }
+
+        today = date.today()
+
+        year = today.strftime('%y')
+        month_code = MONTH_MAP[today.month]
+        machine_code = self.env.context.get('machine_code')
+        if not machine_code and self.env.context.get('active_model') == 'mrp.production':
+            mo = self.env['mrp.production'].browse(self.env.context.get('active_id'))
+            if mo and mo.exists():
+                wc = mo.workorder_ids[:1].workcenter_id
+                if wc:
+                    machine_code = wc.code
+        else:
+            machine_code = self.env.context.get('machine_code', 'X')
+
+        prefix = f"{machine_code}{year}{month_code}"
+
+        last_lot = self.search(
+            [
+                ('company_id', 'in', [company.id, False]),
+                ('name', 'like', prefix + '%'),
+            ],
+            order="name desc",
+            limit=1
+        )
+
+        seq = 1
+        if last_lot and last_lot.name[-4:].isdigit():
+            seq = int(last_lot.name[-4:]) + 1
+
+        return f"{prefix}{str(seq).zfill(4)}"

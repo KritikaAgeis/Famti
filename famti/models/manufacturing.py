@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
@@ -6,6 +7,29 @@ class MrpProduction(models.Model):
     serial_line_ids = fields.One2many('mrp.production.serial.line', 'production_id',
         string='Serial Details'
     )
+
+    def _prepare_stock_lot_values(self):
+        self.ensure_one()
+
+        name = self.env['stock.lot']._get_next_serial(
+            self.company_id,
+            self.product_id
+        )
+
+        return {
+            'product_id': self.product_id.id,
+            'company_id': self.company_id.id,
+            'name': name,
+        }
+
+
+    def action_generate_serial(self):
+        wc = self.workorder_ids[:1].workcenter_id
+        ctx = dict(self.env.context)
+
+        if wc and wc.code:
+            ctx['machine_code'] = wc.code
+        return super(MrpProduction,self.with_context(ctx)).action_generate_serial()
     
 
     def action_open_split_lots_wizard(self):
@@ -98,3 +122,13 @@ class MrpProductionSerialLine(models.Model):
     location_id = fields.Many2one('stock.location', string='Location', domain="[('usage', '=', 'internal')]")
     quantity = fields.Float(string='Quantity')
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure')
+
+
+
+
+class MrpWorkcenter(models.Model):
+    _inherit = 'mrp.workcenter'
+    _description = 'Work Center'
+
+
+    code = fields.Char('Code', copy=False,required=True)
