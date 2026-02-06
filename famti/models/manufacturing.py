@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
@@ -11,7 +12,10 @@ class MrpProduction(models.Model):
     mo_serial_no = fields.Boolean( related='product_id.product_tmpl_id.mo_serial_no',
         store=False
     )
-    
+
+    scrap_location_id = fields.Many2one('stock.location',string='Scrap Location',
+        domain=[('scrap_location', '=', True)],
+    )
 
     def action_open_split_lots_wizard(self):
         self.ensure_one()
@@ -26,6 +30,7 @@ class MrpProduction(models.Model):
             }
         }
     
+
     def action_open_scrap_wizard(self):
         self.ensure_one()
 
@@ -37,17 +42,29 @@ class MrpProduction(models.Model):
             'product_id': self.product_id.id,
             'company_id': self.company_id.id,
             'date': fields.Datetime.now(),
+            'location_id':self.location_dest_id.id,
+            'scrap_location_id':self.scrap_location_id.id,
         })
 
-        for move in self.serial_line_ids:
+        if self.lot_producing_id:
+            lot = self.lot_producing_id
             WizardLine.create({
                 'wizard_id': wizard.id,
-                'serial_line_id': move.id,
-                'serial_number': move.serial_number,
-                'available_qty': move.quantity,
-                'uom_id': move.uom_id.id,
-                'location_id': move.location_id.id,
+                'serial_number_id': lot.id,
+                'serial_number': lot.name,
+                'available_qty': self.qty_producing,
+                'uom_id': self.product_uom_id.id,
             })
+        else:
+            for move in self.serial_line_ids:
+                WizardLine.create({
+                    'wizard_id': wizard.id,
+                    'serial_line_id': move.id,
+                    'serial_number': move.serial_number,
+                    'available_qty': move.quantity,
+                    'uom_id': move.uom_id.id,
+                    'location_id': move.location_id.id,
+                })
 
         return {
             'type': 'ir.actions.act_window',
@@ -135,7 +152,8 @@ class MrpProduction(models.Model):
                 ('product_id', '=', self.product_id.id),
                 ('company_id', '=', self.company_id.id),
             ], limit=1)
-
+            if not lot and line.serial_number_id:
+                lot = line.serial_number_id
             if not lot:
                 raise ValidationError(
                     f"Lot/Serial {line.serial_number} not found for scrap."
@@ -146,10 +164,12 @@ class MrpProduction(models.Model):
                 'scrap_qty': line.quantity,
                 'product_uom_id': line.uom_id.id,
                 'lot_id': lot.id,
-                'location_id': line.location_id.id or self.location_src_id.id,
+                'location_id': line.source_location_id.id or self.location_src_id.id,
+                'scrap_location_id': line.location_id.id or self.location_src_id.id,
                 'company_id': self.company_id.id,
                 'origin': self.name,
                 'production_id': self.id,
+                'scrap_reason_tag_ids': [(6, 0, line.scrap_reason_tag_ids.ids)],
             })
 
             scrap.action_validate()
@@ -176,7 +196,12 @@ class MrpProductionScrapLine(models.Model):
     production_scrap_id = fields.Many2one( 'mrp.production', string='Manufacturing Order',
         ondelete='cascade', required=True
     )
+    serial_number_id = fields.Many2one('stock.lot',store=True)
     serial_number = fields.Char(string='Serial Number')
-    location_id = fields.Many2one('stock.location', string='Location', domain="[('usage', '=', 'internal')]")
+    location_id = fields.Many2one('stock.location', string='Scrap Location', domain="[('usage', '=', 'internal')]")
+    source_location_id = fields.Many2one('stock.location', string='Source Location')
     quantity = fields.Float(string='Scrap Quantity')
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure')
+    scrap_reason_tag_ids = fields.Many2many( comodel_name='stock.scrap.reason.tag',
+        string='Scrap Reason',
+    )

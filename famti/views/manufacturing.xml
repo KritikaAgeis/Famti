@@ -69,6 +69,7 @@
                     <field name="scrap_line_ids">
                         <list editable="bottom">
                             <field name="serial_number"/>
+                            <field name="source_location_id"/>
                             <field name="location_id"/>
                             <field name="quantity"/>
                             <field name="uom_id"/>
@@ -76,6 +77,12 @@
                     </field>
                 </page>
 
+            </xpath>
+            <xpath expr="//page[@name='miscellaneous']//field[@name='location_src_id'][1]" position="after">
+                <field name="scrap_location_id"
+                    domain="[('scrap_location', '=', True)]"
+                    options="{'no_create': True}"
+                    readonly="state != 'draft'"/>
             </xpath>
         </field>
     </record>

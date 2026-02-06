@@ -7,7 +7,7 @@ class MrpBatchProduceLine(models.TransientModel):
     _name = 'mrp.batch.produce.line'
     _description = 'Batch Production Line'
 
-    wizard_id = fields.Many2one('mrp.batch.produce', string='Wizard', required=True)
+    wizard_id = fields.Many2one('mrp.batch.produce', string='Wizard',ondelete='cascade', required=True)
     serial_number = fields.Char(string='Serial Number')
     location_id = fields.Many2one('stock.location', string='Location')
     quantity = fields.Float(string='Quantity')

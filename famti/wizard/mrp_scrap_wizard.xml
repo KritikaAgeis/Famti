@@ -12,6 +12,7 @@
 
                     </group>
                     <group>
+                        <field name="location_id"/>
                         <field name="scrap_location_id"/>
                         <field name="date"/>
                         <field name="company_id"/>
