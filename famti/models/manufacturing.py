@@ -7,7 +7,6 @@ class MrpProduction(models.Model):
     serial_line_ids = fields.One2many('mrp.production.serial.line', 'production_id',
         string='Serial Details'
     )
-<<<<<<< HEAD
     scrap_line_ids = fields.One2many('mrp.production.scrap.line','production_scrap_id', string='Scrap Details')
 
     mo_serial_no = fields.Boolean( related='product_id.product_tmpl_id.mo_serial_no',
@@ -17,7 +16,6 @@ class MrpProduction(models.Model):
     scrap_location_id = fields.Many2one('stock.location',string='Scrap Location',
         domain=[('scrap_location', '=', True)],
     )
-=======
 
     def _prepare_stock_lot_values(self):
         self.ensure_one()
@@ -42,7 +40,6 @@ class MrpProduction(models.Model):
             ctx['machine_code'] = wc.code
         return super(MrpProduction,self.with_context(ctx)).action_generate_serial()
     
->>>>>>> origin/main
 
     def action_open_split_lots_wizard(self):
         self.ensure_one()
@@ -216,7 +213,6 @@ class MrpProductionSerialLine(models.Model):
     quantity = fields.Float(string='Quantity')
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure')
 
-<<<<<<< HEAD
 class MrpProductionScrapLine(models.Model):
     _name = 'mrp.production.scrap.line'
     _description = 'MRP Production Scrap Line'
@@ -233,9 +229,6 @@ class MrpProductionScrapLine(models.Model):
     scrap_reason_tag_ids = fields.Many2many( comodel_name='stock.scrap.reason.tag',
         string='Scrap Reason',
     )
-=======
-
-
 
 class MrpWorkcenter(models.Model):
     _inherit = 'mrp.workcenter'
@@ -243,4 +236,3 @@ class MrpWorkcenter(models.Model):
 
 
     code = fields.Char('Code', copy=False,required=True)
->>>>>>> origin/main

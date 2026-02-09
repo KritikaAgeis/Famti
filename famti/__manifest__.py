@@ -36,6 +36,7 @@
         'views/sale.xml',
         'views/res_company_view.xml',
         'views/manufacturing.xml',
+        'views/costing_sheet.xml',
     ],
     'demo': [
         # 'demo/account_demo.xml',
