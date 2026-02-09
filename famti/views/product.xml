@@ -10,7 +10,9 @@
                 <xpath expr="//field[@name='default_code']" position="attributes">
                 <attribute name="string">SKU</attribute>
                 </xpath>
-
+                <xpath expr="//field[@name='lot_valuated']" position="after">
+                    <field name="mo_serial_no"/>
+                </xpath>
 
 
 <!--              <xpath expr="//group[@name='internal_notes']" position="before">-->

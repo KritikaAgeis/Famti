@@ -11,12 +11,47 @@
                     type="object"
                     string="Split Lots"
                     class="btn-primary"
+                    invisible="state not in ['confirmed','progress','to_close']"
+                />
+
+                <button
+                    name="action_open_scrap_wizard"
+                    type="object"
+                    string="Scrap"
+                    class="btn-primary"
+                    invisible="state not in ['confirmed','progress','to_close']"
                 />
             </xpath>
-
-
+            
+            <xpath expr="//button[@name='action_start']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
             <xpath expr="//field[@name='lot_producing_id']" position="attributes">
                 <attribute name="string">Serial Number</attribute>
+                <attribute name="invisible">mo_serial_no != 1</attribute>
+            </xpath>
+
+            <xpath expr="//label[@for='lot_producing_id']" position="attributes">
+                <attribute name="invisible">mo_serial_no != 1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_generate_serial']" position="attributes">
+                <attribute name="invisible">mo_serial_no != 1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='bom_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//label[@name='bom_label']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@name='bom_div']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='finished_products']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
 
             <xpath expr="//notebook" position="inside">
@@ -30,6 +65,24 @@
                         </list>
                     </field>
                 </page>
+                <page string="Scrap Details">
+                    <field name="scrap_line_ids">
+                        <list editable="bottom">
+                            <field name="serial_number"/>
+                            <field name="source_location_id"/>
+                            <field name="location_id"/>
+                            <field name="quantity"/>
+                            <field name="uom_id"/>
+                        </list>
+                    </field>
+                </page>
+
+            </xpath>
+            <xpath expr="//page[@name='miscellaneous']//field[@name='location_src_id'][1]" position="after">
+                <field name="scrap_location_id"
+                    domain="[('scrap_location', '=', True)]"
+                    options="{'no_create': True}"
+                    readonly="state != 'draft'"/>
             </xpath>
         </field>
     </record>

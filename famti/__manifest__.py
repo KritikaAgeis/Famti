@@ -14,14 +14,17 @@
 
 ],
     'data': [
-        'security/ir.model.access.csv',
         'security/rules.xml',
+        'security/ir.model.access.csv',
         'data/ir_server_actions.xml',
         'data/mail_template.xml',
         'data/ir_cron.xml',
+        'data/product_data.xml',
+        # 'data/inventory_data.xml',
         'wizard/lot_import_wizard.xml',
         'wizard/stock_lot_wiz.xml',
         'wizard/mrp_batch_wizard.xml',
+        'wizard/mrp_scrap_wizard.xml',
         'views/purchase.xml',
         'views/res_partner.xml',
         'views/product.xml',
@@ -33,6 +36,7 @@
         'views/sale.xml',
         'views/res_company_view.xml',
         'views/manufacturing.xml',
+        'views/costing_sheet.xml',
     ],
     'demo': [
         # 'demo/account_demo.xml',

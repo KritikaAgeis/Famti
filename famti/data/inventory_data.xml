@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="1">
+
+    <record id="warehouse_famti_fw" model="stock.warehouse">
+        <field name="name">Famti Warehouse</field>
+        <field name="code">FW</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="location_fw_qc_hold" model="stock.location">
+        <field name="name">QC Hold</field>
+        <field name="posx">0</field>
+        <field name="location_id" model="stock.location"
+                eval="obj().env.ref('famti.warehouse_famti_fw').lot_stock_id.id"/>
+    </record>
+
+    <record id="location_fw_semi_finished" model="stock.location">
+        <field name="name">Semi-Finished</field>
+        <field name="posx">0</field>
+        <field name="location_id" model="stock.location"
+                eval="obj().env.ref('famti.warehouse_famti_fw').lot_stock_id.id"/>
+    </record>
+
+    <record id="location_fw_scrap" model="stock.location">
+        <field name="name">Scrap</field>
+        <field name="posx">0</field>
+        <field name="location_id" model="stock.location"
+                eval="obj().env.ref('famti.warehouse_famti_fw').lot_stock_id.id"/>
+    </record>
+
+    <record id="location_fw_finished" model="stock.location">
+        <field name="name">Finished</field>
+        <field name="posx">0</field>
+        <field name="location_id" model="stock.location"
+                eval="obj().env.ref('famti.warehouse_famti_fw').lot_stock_id.id"/>
+    </record>
+
+</odoo>
