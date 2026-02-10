@@ -17,6 +17,10 @@ class MrpProduction(models.Model):
         domain=[('scrap_location', '=', True)],
     )
 
+    consumable_line_ids = fields.One2many('mrp.consumables','production_id',
+        string='Consumables'
+    )
+
     def _prepare_stock_lot_values(self):
         self.ensure_one()
 
@@ -88,6 +92,18 @@ class MrpProduction(models.Model):
                     'available_qty': move.quantity,
                     'uom_id': move.uom_id.id,
                     'location_id': move.location_id.id,
+                    'thickness': move.thickness,
+                    'thickness_uom': move.thickness_uom,
+                    'width': move.width,
+                    'width_uom': move.width_uom,
+                    'core_id': move.core_id,
+                    'length': move.length,
+                    'length_uom': move.length_uom,
+                    'recived': move.recived,
+                    'billed': move.billed,
+                    'film_category': move.film_category,
+                    'film': move.film,
+                    'film_type': move.film_type,
                 })
 
         return {
@@ -161,6 +177,16 @@ class MrpProduction(models.Model):
                 'product_uom_id': line.uom_id.id,
                 'location_id': move.location_id.id,
                 'location_dest_id': move.location_dest_id.id,
+                'category': line.film_category,
+                'film': line.film,
+                'film_type': line.film_type,
+                'thickness': line.thickness,
+                'core_id': line.core_id,
+                'weight': line.quantity,
+                'width': line.width,
+                'width_uom': line.width_uom,
+                'length': line.length,
+                'length_uom': line.length_uom,
             })
 
     def _create_stock_scrap_from_lines(self):
@@ -213,6 +239,24 @@ class MrpProductionSerialLine(models.Model):
     quantity = fields.Float(string='Quantity')
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure')
 
+    thickness = fields.Float(string='Thickness')
+    thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron')],default='micron',string=" ")
+    width = fields.Float(string='Width')
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch')],default='mm',string=" ")
+    core_id = fields.Selection(selection=[('3','3 Inch'),('6','6 Inch')],string="Core")
+    length = fields.Float(string='Length')
+    length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
+    recived = fields.Float(string='Recived')
+    billed = fields.Float(string='Billed')
+    film_category = fields.Char(string="Film Category",  help="This helps to categorise specific product.")
+    film = fields.Char(string="Film", help="Product Film.")
+    film_type = fields.Char(string="Film Type", help="Film Type")
+
+    total_input = fields.Float(string=" Input Amount")
+    total_output = fields.Float(string=" Output Amount")
+    total_scrap = fields.Float(string=" Scrap Amount")
+
+
 class MrpProductionScrapLine(models.Model):
     _name = 'mrp.production.scrap.line'
     _description = 'MRP Production Scrap Line'
@@ -230,9 +274,41 @@ class MrpProductionScrapLine(models.Model):
         string='Scrap Reason',
     )
 
+    thickness = fields.Float(string='Thickness')
+    thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron')],default='micron',string=" ")
+    width = fields.Float(string='Width')
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch')],default='mm',string=" ")
+    core_id = fields.Selection(selection=[('3','3 Inch'),('6','6 Inch')],string="Core")
+    length = fields.Float(string='Length')
+    length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
+    recived = fields.Float(string='Recived')
+    billed = fields.Float(string='Billed')
+    film_category = fields.Char(string="Film Category",  help="This helps to categorise specific product.")
+    film = fields.Char(string="Film", help="Product Film.")
+    film_type = fields.Char(string="Film Type", help="Film Type")
+
+
 class MrpWorkcenter(models.Model):
     _inherit = 'mrp.workcenter'
     _description = 'Work Center'
 
 
     code = fields.Char('Code', copy=False,required=True)
+
+class MrpConsumables(models.Model):
+    _name = 'mrp.consumables'
+    _description = 'Consumables Products'
+
+    production_id = fields.Many2one('mrp.production',string='Manufacturing Order',
+        ondelete='cascade'
+    )
+    product_id = fields.Many2one('product.product',string='Consumable Product',required=True,
+        domain=[('detailed_type', '=', 'consu')]
+    )
+    quantity = fields.Float(string='Quantity')
+    uom_id = fields.Many2one('uom.uom',string='UoM', related='product_id.uom_id',store=True,readonly=True)
+
+    location_id = fields.Many2one('stock.location',string='Source Location',required=True,
+        domain="[('usage', '=', 'internal')]"
+    )
+

@@ -39,6 +39,16 @@
                         <group>
                             <field name="film"/>
                             <field name="film_type"/>
+                            <label for="width_val" />
+                            <div class="o_row">
+                                <field name="width_val"/>
+                                <field name="width_uom"/>
+                            </div>
+                            <label for="length_val" />
+                            <div class="o_row">
+                                <field name="length_val"/>
+                                <field name="length_uom"/>
+                            </div>
                             <field name="qc_status" invisible="1"/>
                             <field name="upload_doc"/>
                             <field name="qc_remark"/>

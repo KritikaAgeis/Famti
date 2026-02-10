@@ -22,7 +22,7 @@
                     invisible="state not in ['confirmed','progress','to_close']"
                 />
             </xpath>
-            
+
             <xpath expr="//button[@name='action_start']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
@@ -39,16 +39,7 @@
                 <attribute name="invisible">mo_serial_no != 1</attribute>
             </xpath>
 
-            <xpath expr="//field[@name='bom_id']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
 
-            <xpath expr="//label[@name='bom_label']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//div[@name='bom_div']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
 
             <xpath expr="//page[@name='finished_products']" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -59,7 +50,20 @@
                     <field name="serial_line_ids">
                         <list editable="bottom">
                             <field name="serial_number"/>
+                            <field name="total_input"/>
+                            <field name="total_output"/>
+                            <field name="total_scrap"/>
                             <field name="location_id"/>
+                            <field name="thickness" optional="hide"/>
+                            <field name="thickness_uom" optional="hide"/>
+                            <field name="width" optional="hide"/>
+                            <field name="width_uom" optional="hide"/>
+                            <field name="core_id" optional="hide"/>
+                            <field name="length" optional="hide"/>
+                            <field name="length_uom" optional="hide"/>
+                            <field name="film_category" optional="hide"/>
+                            <field name="film" optional="hide"/>
+                            <field name="film_type" optional="hide"/>
                             <field name="quantity"/>
                             <field name="uom_id"/>
                         </list>
@@ -71,12 +75,34 @@
                             <field name="serial_number"/>
                             <field name="source_location_id"/>
                             <field name="location_id"/>
+                            <field name="thickness" optional="hide"/>
+                            <field name="thickness_uom" optional="hide"/>
+                            <field name="width" optional="hide"/>
+                            <field name="width_uom" optional="hide"/>
+                            <field name="core_id" optional="hide"/>
+                            <field name="length" optional="hide"/>
+                            <field name="length_uom" optional="hide"/>
+                            <field name="film_category" optional="hide"/>
+                            <field name="film" optional="hide"/>
+                            <field name="film_type" optional="hide"/>
                             <field name="quantity"/>
                             <field name="uom_id"/>
                         </list>
                     </field>
                 </page>
 
+            </xpath>
+            <xpath expr="//page[@name='components']" position="after">
+                <page string="Consumables">
+                    <field name="consumable_line_ids">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="location_id"/>
+                            <field name="quantity"/>
+                            <field name="uom_id"/>                            
+                        </list>
+                    </field>
+                </page>
             </xpath>
             <xpath expr="//page[@name='miscellaneous']//field[@name='location_src_id'][1]" position="after">
                 <field name="scrap_location_id"

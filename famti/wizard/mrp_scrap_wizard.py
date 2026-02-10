@@ -44,6 +44,18 @@ class MrpProductionScrapWizard(models.TransientModel):
                 'quantity': line.scrap_qty,
                 'uom_id': line.uom_id.id,
                 'scrap_reason_tag_ids': [(6, 0, self.scrap_reason_tag_ids.ids)],
+                'thickness': line.thickness,
+                'thickness_uom': line.thickness_uom,
+                'width': line.width,
+                'width_uom': line.width_uom,
+                'core_id': line.core_id,
+                'length': line.length,
+                'length_uom': line.length_uom,
+                'recived': line.recived,
+                'billed': line.billed,
+                'film_category': line.film_category,
+                'film': line.film,
+                'film_type': line.film_type,
             })
 
 
@@ -73,3 +85,16 @@ class MrpProductionScrapWizardLine(models.TransientModel):
     scrap_qty = fields.Float(string="Scrap Qty")
     uom_id = fields.Many2one('uom.uom', readonly=True,store=True)
     location_id = fields.Many2one('stock.location', readonly=True,store=True)
+
+    thickness = fields.Float(string='Thickness')
+    thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron')],default='micron',string=" ")
+    width = fields.Float(string='Width')
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch')],default='mm',string=" ")
+    core_id = fields.Selection(selection=[('3','3 Inch'),('6','6 Inch')],string="Core")
+    length = fields.Float(string='Length')
+    length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
+    recived = fields.Float(string='Recived')
+    billed = fields.Float(string='Billed')
+    film_category = fields.Char(string="Film Category",  help="This helps to categorise specific product.")
+    film = fields.Char(string="Film", help="Product Film.")
+    film_type = fields.Char(string="Film Type", help="Film Type")

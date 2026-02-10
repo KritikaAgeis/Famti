@@ -43,6 +43,16 @@
                         <list editable="bottom">
                             <field name="serial_number"/>
                             <field name="location_id"/>
+                            <field name="thickness" optional="hide"/>
+                            <field name="thickness_uom" optional="hide"/>
+                            <field name="width" optional="hide"/>
+                            <field name="width_uom" optional="hide"/>
+                            <field name="core_id" optional="hide"/>
+                            <field name="length" optional="hide"/>
+                            <field name="length_uom" optional="hide"/>
+                            <field name="film_category" optional="hide"/>
+                            <field name="film" optional="hide"/>
+                            <field name="film_type" optional="hide"/>
                             <field name="quantity"/>
                             <field name="uom_id"/>
                         </list>
