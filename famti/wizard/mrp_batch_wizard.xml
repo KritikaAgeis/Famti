@@ -50,9 +50,6 @@
                             <field name="core_id" optional="hide"/>
                             <field name="length" optional="hide"/>
                             <field name="length_uom" optional="hide"/>
-                            <field name="film_category" optional="hide"/>
-                            <field name="film" optional="hide"/>
-                            <field name="film_type" optional="hide"/>
                             <field name="quantity"/>
                             <field name="uom_id"/>
                         </list>

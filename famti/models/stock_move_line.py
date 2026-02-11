@@ -35,8 +35,10 @@ class StockMoveLine(models.Model):
                 line.lot_id.category = line.category
                 line.lot_id.film_type = line.film_type
                 line.lot_id.thickness = line.thickness
+                line.lot_id.thickness_uom = line.thickness_uom
                 line.lot_id.weight = line.weight
-                line.lot_id.core_id = line.core_id
+                line.lot_id.width_uom = line.width_uom
+                line.lot_id.core_selection_id = line.core_id
                 line.lot_id.lot_number = line.lot_number
                 line.lot_id.pallet_no = line.pallet_no
                 line.lot_id.width_val = line.width
@@ -79,15 +81,15 @@ class StockMove(models.Model):
             move.source_mo_id = mo
 
 
-    @api.onchange('product_id')
-    def _onchange_product_id_set_lot_domain(self):
-        if self.product_id:
-            print("========",self.product_id.lot_ids)
-            return {
-                'domain': {
-                    'lot_id': [
-                        ('product_id', '=', self.product_id.id),
-                        ('quantity', '>', 0)
-                    ]
-                }
-            }
+    # @api.onchange('product_id')
+    # def _onchange_product_id_set_lot_domain(self):
+    #     if self.product_id:
+    #         print("========",self.product_id.lot_ids)
+    #         return {
+    #             'domain': {
+    #                 'lot_id': [
+    #                     ('product_id', '=', self.product_id.id),
+    #                     ('quantity', '>', 0)
+    #                 ]
+    #             }
+    #         }

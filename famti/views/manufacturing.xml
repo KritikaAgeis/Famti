@@ -38,8 +38,10 @@
             <xpath expr="//button[@name='action_generate_serial']" position="attributes">
                 <attribute name="invisible">mo_serial_no != 1</attribute>
             </xpath>
-
-
+            
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="product_code"/>
+            </xpath>
 
             <xpath expr="//page[@name='finished_products']" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -50,9 +52,6 @@
                     <field name="serial_line_ids">
                         <list editable="bottom">
                             <field name="serial_number"/>
-                            <field name="total_input"/>
-                            <field name="total_output"/>
-                            <field name="total_scrap"/>
                             <field name="location_id"/>
                             <field name="thickness" optional="hide"/>
                             <field name="thickness_uom" optional="hide"/>
@@ -61,11 +60,11 @@
                             <field name="core_id" optional="hide"/>
                             <field name="length" optional="hide"/>
                             <field name="length_uom" optional="hide"/>
-                            <field name="film_category" optional="hide"/>
-                            <field name="film" optional="hide"/>
-                            <field name="film_type" optional="hide"/>
-                            <field name="quantity"/>
+                            <field name="total_input"/>
+                            <!-- <field name="total_output"/> -->
+                            <field name="quantity" string="Output"/>
                             <field name="uom_id"/>
+                            <field name="total_scrap"/>
                         </list>
                     </field>
                 </page>
@@ -82,9 +81,6 @@
                             <field name="core_id" optional="hide"/>
                             <field name="length" optional="hide"/>
                             <field name="length_uom" optional="hide"/>
-                            <field name="film_category" optional="hide"/>
-                            <field name="film" optional="hide"/>
-                            <field name="film_type" optional="hide"/>
                             <field name="quantity"/>
                             <field name="uom_id"/>
                         </list>

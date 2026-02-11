@@ -7,9 +7,10 @@ class StockLot(models.Model):
     _inherit = 'stock.lot'
 
     name = fields.Char(string='Serial Numbers', required=True, index=True)
-    thickness = fields.Float(string="Thickness (micron)",tracking=True)
-    weight = fields.Float(string="Weight (kg)",tracking=True)
+    thickness = fields.Float(string="Thickness",tracking=True)
+    weight = fields.Float(string="Weight",tracking=True)
     core_id = fields.Char(string="Core Id",tracking=True)
+    core_selection_id = fields.Selection(selection=[('3','3 Inch'),('6','6 Inch')],string="Core")
 
     qc_status = fields.Selection([
         ('pending', 'Pending'),
@@ -33,8 +34,13 @@ class StockLot(models.Model):
     width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch')],default='mm',string=" ")
     length_val = fields.Float(string="Length", help="Product Length")
     length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
-
-
+    thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron')],default='micron',string=" ")
+    weight_uom = fields.Selection(selection=[
+                                        ('kg', 'Kg'),
+                                        ('lbs', 'Lbs'),
+                                        ('gm', 'Gm'),
+                                        ],required=True,default='kg',string=" ")
+    
 
 
     def action_coa_passed(self):
