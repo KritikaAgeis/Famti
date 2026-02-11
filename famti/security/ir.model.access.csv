@@ -13,4 +13,6 @@ access_mrp_production_scrap_wizard',access_mrp_production_scrap_wizard,model_mrp
 access_mrp_production_scrap_wizard_line',access_mrp_production_scrap_wizard_line,model_mrp_production_scrap_wizard_line,base.group_system,1,1,1,1
 access_mrp_production_scrap_line',access_mrp_production_scrap_line,model_mrp_production_scrap_line,base.group_system,1,1,1,1
 access_costing_sheet,access_costing_sheet,model_costing_sheet,base.group_system,1,1,1,1
+access_mrp_consumables,access_mrp_consumables,model_mrp_consumables,base.group_system,1,1,1,1
+
 

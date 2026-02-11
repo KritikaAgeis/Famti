@@ -17,7 +17,7 @@
         <field name="name">costing.sheet.form</field>
         <field name="model">costing.sheet</field>
         <field name="arch" type="xml">
-            <form string="Costing Sheet">
+            <form string="Cost Sheet">
                 <sheet>
                     <group>
                         <group>
@@ -38,7 +38,7 @@
     </record>
 
     <record id="action_costing_sheet" model="ir.actions.act_window">
-        <field name="name">Costing Sheet</field>
+        <field name="name">Cost Sheet</field>
         <field name="res_model">costing.sheet</field>
         <field name="view_mode">list,form</field>
     </record>
@@ -54,9 +54,9 @@
 
     <menuitem
         id="menu_bom_costing_sheet"
-        name="Costing Sheet"
+        name="Cost Sheet"
         parent="sale.sale_order_menu"
         action="action_open_bom_form"
-        sequence="50"/>
+        sequence="11"/>
 
 </odoo>

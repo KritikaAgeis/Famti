@@ -13,6 +13,18 @@ class MrpBatchProduceLine(models.TransientModel):
     quantity = fields.Float(string='Quantity')
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure')
 
+    thickness = fields.Float(string='Thickness')
+    thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron')],default='micron',string=" ")
+    width = fields.Float(string='Width')
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch')],default='mm',string=" ")
+    core_id = fields.Selection(selection=[('3','3 Inch'),('6','6 Inch')],string="Core")
+    length = fields.Float(string='Length')
+    length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
+    recived = fields.Float(string='Recived')
+    billed = fields.Float(string='Billed')
+    film_category = fields.Char(string="Film Category",  help="This helps to categorise specific product.")
+    film = fields.Char(string="Film", help="Product Film.")
+    film_type = fields.Char(string="Film Type", help="Film Type")
 
 class MrpBatchProduce(models.TransientModel):
     _inherit = 'mrp.batch.produce'
@@ -39,6 +51,20 @@ class MrpBatchProduce(models.TransientModel):
                 'quantity': line.quantity,
                 'uom_id': line.uom_id.id,
                 'location_id': line.location_id.id,
+                'thickness': line.thickness,
+                'thickness_uom': line.thickness_uom,
+                'width': line.width,
+                'width_uom': line.width_uom,
+                'core_id': line.core_id,
+                'length': line.length,
+                'length_uom': line.length_uom,
+                'recived': line.recived,
+                'billed': line.billed,
+                'film_category': line.film_category,
+                'film': line.film,
+                'film_type': line.film_type,
+                'total_input': production.qty_producing,
+                'total_output': line.quantity,
             })
 
         if serial_line_vals:

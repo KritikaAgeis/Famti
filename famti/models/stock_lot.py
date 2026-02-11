@@ -29,6 +29,11 @@ class StockLot(models.Model):
     film_type = fields.Char(string="Film Type",tracking=True,help="Film Type")
     lot_number = fields.Char(string="Lot Number",tracking=True,help="Lot Number")
     pallet_no = fields.Char(string="Pallet Number",tracking=True,help="Pallet Number")
+    width_val = fields.Float(string="Width",help="This helps to categorise specific product.")
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch')],default='mm',string=" ")
+    length_val = fields.Float(string="Length", help="Product Length")
+    length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
+
 
 
 

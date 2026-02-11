@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
@@ -39,4 +39,55 @@ class StockMoveLine(models.Model):
                 line.lot_id.core_id = line.core_id
                 line.lot_id.lot_number = line.lot_number
                 line.lot_id.pallet_no = line.pallet_no
+                line.lot_id.width_val = line.width
+                line.lot_id.width_uom = line.width_uom
+                line.lot_id.length_val = line.length
+                line.lot_id.length_uom = line.length_uom
         return res
+    
+
+class StockMove(models.Model):
+    _inherit = 'stock.move'
+
+    lot_id = fields.Many2one(
+        'stock.lot',
+        string="Lot",
+        domain="[('product_id', '=', product_id)]"
+    )
+
+    source_mo_id = fields.Many2one(
+        'mrp.production',
+        string="Source MO",
+        compute="_compute_source_mo",
+        store=True
+    )
+
+    @api.depends('lot_id')
+    def _compute_source_mo(self):
+        for move in self:
+            print("------move",move.id)
+            print("------lot_id",move.lot_id)
+            mo = False
+            if move.lot_id:
+                move_line = self.env['stock.move.line'].search([
+                    ('lot_id', '=', move.lot_id.id),
+                    ('move_id.production_id', '!=', False)
+                ], limit=1, order="id desc")
+
+                mo = move_line.move_id.production_id if move_line else False
+
+            move.source_mo_id = mo
+
+
+    @api.onchange('product_id')
+    def _onchange_product_id_set_lot_domain(self):
+        if self.product_id:
+            print("========",self.product_id.lot_ids)
+            return {
+                'domain': {
+                    'lot_id': [
+                        ('product_id', '=', self.product_id.id),
+                        ('quantity', '>', 0)
+                    ]
+                }
+            }
