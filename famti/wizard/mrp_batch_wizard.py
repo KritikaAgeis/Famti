@@ -1,7 +1,7 @@
 from odoo import models, fields, api,_
 from odoo.exceptions import UserError
 from odoo.tools import OrderedSet
-
+from odoo.exceptions import ValidationError
 
 class MrpBatchProduceLine(models.TransientModel):
     _name = 'mrp.batch.produce.line'
@@ -29,20 +29,48 @@ class MrpBatchProduceLine(models.TransientModel):
 class MrpBatchProduce(models.TransientModel):
     _inherit = 'mrp.batch.produce'
 
-    sn_quantity = fields.Float(string='Quantity per Lot')
+    sn_quantity = fields.Float(string='Quantity per Lot', store=True,)
     sn_recived_quantity = fields.Float(string='Quantity Received',compute="_compute_total_qty", store=True,)
     line_ids = fields.One2many('mrp.batch.produce.line', 'wizard_id', string='Line Items')
+
+    @api.depends('production_id')
+    def _compute_lot_qty(self):
+        for wizard in self:
+            wizard.lot_qty = 1
 
     @api.depends('production_id')
     def _compute_total_qty(self):
         for wizard in self:
             wizard.sn_recived_quantity = wizard.production_id.product_qty
+            wizard.sn_quantity = wizard.production_id.product_qty
 
     def action_produce_lots(self):
         self.ensure_one()
 
         production = self.production_id
         serial_line_vals = []
+
+        if not self.line_ids:
+            raise ValidationError("Please add at least one line.")
+        
+        required_fields = {
+            'serial_number': "Serial Number",
+            'location_id': "Location",
+            'quantity': "Quantity",
+            'thickness': "Thickness",
+            'thickness_uom': "Thickness UOM",
+            'width': "Width",
+            'width_uom': "Width UOM",
+            'core_id': "Core",
+            'length': "Length",
+            'length_uom': "Length UOM",
+        }
+
+        for index, line in enumerate(self.line_ids, start=1):
+
+            for field_name, field_label in required_fields.items():
+                if not line[field_name]:
+                    raise ValidationError(f"Line {index}: {field_label} is required.")
 
         for line in self.line_ids:
             serial_line_vals.append({
@@ -60,9 +88,6 @@ class MrpBatchProduce(models.TransientModel):
                 'length_uom': line.length_uom,
                 'recived': line.recived,
                 'billed': line.billed,
-                'film_category': line.film_category,
-                'film': line.film,
-                'film_type': line.film_type,
                 'total_input': production.qty_producing,
                 'total_output': line.quantity,
             })

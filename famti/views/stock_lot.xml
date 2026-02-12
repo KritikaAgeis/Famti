@@ -26,20 +26,25 @@
                     </header>
                 </xpath>
 
-                  <xpath expr="//sheet/notebook" position="before">
+                <xpath expr="//sheet/notebook" position="before">
                     <group string="QC Details" col="2">
                         <group>
-                            <field name="category"/>
-                            <field name="thickness"/>
-                            <field name="weight"/>
-                            <field name="core_id"/>
-                            <field name="lot_number"/>
+                            <label for="thickness" />
+                            <div class="o_row">
+                                <field name="thickness"/>
+                                <field name="thickness_uom"/>
+                            </div>
+                            <label for="weight" />
+                            <div class="o_row">
+                                <field name="weight"/>
+                                <field name="weight_uom"/>
+                            </div>
+                            <field name="core_selection_id"/>
+                            <field name="lot_number" invisible="1"/>
                             <field name="pallet_no"/>
                         </group>
                         <group>
-                            <field name="film"/>
-                            <field name="film_type"/>
-                            <label for="width_val" />
+                            <label for="width_val"/>
                             <div class="o_row">
                                 <field name="width_val"/>
                                 <field name="width_uom"/>
@@ -54,7 +59,7 @@
                             <field name="qc_remark"/>
                         </group>
                     </group>
-                    </xpath>
+                </xpath>
             </field>
         </record>
 

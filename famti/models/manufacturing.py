@@ -1,5 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from odoo.tools import float_compare
+from datetime import date
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
@@ -20,6 +22,9 @@ class MrpProduction(models.Model):
     consumable_line_ids = fields.One2many('mrp.consumables','production_id',
         string='Consumables'
     )
+
+    product_code =fields.Char(string="Product Code")
+
 
     def _prepare_stock_lot_values(self):
         self.ensure_one()
@@ -57,6 +62,13 @@ class MrpProduction(models.Model):
                 'default_production_id': self.id,
             }
         }
+    
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        res = super()._onchange_product_id()
+        self.bom_id = False
+
+        return res
     
 
     def action_open_scrap_wizard(self):
@@ -137,6 +149,9 @@ class MrpProduction(models.Model):
                 mo._create_lots_and_move_lines()
             if mo.scrap_line_ids:
                 mo._create_stock_scrap_from_lines()
+            # if not mo.product_code:
+            #     mo.product_code = mo.action_product_code()
+
         return super().button_mark_done()
 
     def _create_lots_and_move_lines(self):
@@ -177,12 +192,11 @@ class MrpProduction(models.Model):
                 'product_uom_id': line.uom_id.id,
                 'location_id': move.location_id.id,
                 'location_dest_id': move.location_dest_id.id,
-                'category': line.film_category,
-                'film': line.film,
-                'film_type': line.film_type,
                 'thickness': line.thickness,
+                'thickness_uom': line.thickness_uom,
                 'core_id': line.core_id,
                 'weight': line.quantity,
+                'width_uom': line.width_uom,
                 'width': line.width,
                 'width_uom': line.width_uom,
                 'length': line.length,
@@ -224,6 +238,43 @@ class MrpProduction(models.Model):
 
             scrap.action_validate()
 
+    def action_product_code(self):
+        month_code = {
+            1: 'A', 2: 'B', 3: 'C', 4: 'D',
+            5: 'E', 6: 'F', 7: 'G', 8: 'H',
+            9: 'I', 10: 'J', 11: 'K', 12: 'L',
+        }
+        today = date.today()
+        year = today.year
+        month = month_code[today.month]
+        wc = self.workorder_ids[:1].workcenter_id or \
+            self.bom_id.operation_ids[:1].workcenter_id
+
+        machine_code = wc.code if wc and wc.code else 'X'
+        print("=====machine_code===",machine_code)
+
+        prefix = f"{machine_code}{year}{month}"
+        print("====prefix==",prefix)
+        last_mo = self.search(
+            [('product_code', 'like', prefix + '%')],
+            order='product_code desc',
+            limit=1
+        )
+
+        seq = 1
+        if last_mo and last_mo.product_code:
+            last_seq = last_mo.product_code[-4:]
+            if last_seq.isdigit():
+                seq = int(last_seq) + 1
+
+        new_code = f"{prefix}{str(seq).zfill(4)}"
+        print("----new_code-----",new_code)
+        self.product_code = new_code
+
+        return f"{prefix}{str(seq).zfill(4)}"
+
+       
+
 
 
 
@@ -242,7 +293,9 @@ class MrpProductionSerialLine(models.Model):
     thickness = fields.Float(string='Thickness')
     thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron')],default='micron',string=" ")
     width = fields.Float(string='Width')
-    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch')],default='mm',string=" ")
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch'),('kg', 'Kg'),
+                                        ('lbs', 'Lbs'),
+                                        ('gm', 'Gm'),],default='mm',string=" ")
     core_id = fields.Selection(selection=[('3','3 Inch'),('6','6 Inch')],string="Core")
     length = fields.Float(string='Length')
     length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
@@ -252,9 +305,9 @@ class MrpProductionSerialLine(models.Model):
     film = fields.Char(string="Film", help="Product Film.")
     film_type = fields.Char(string="Film Type", help="Film Type")
 
-    total_input = fields.Float(string=" Input Amount")
-    total_output = fields.Float(string=" Output Amount")
-    total_scrap = fields.Float(string=" Scrap Amount")
+    total_input = fields.Float(string=" Input")
+    total_output = fields.Float(string=" Output")
+    total_scrap = fields.Float(string=" Scrap")
 
 
 class MrpProductionScrapLine(models.Model):
@@ -266,9 +319,9 @@ class MrpProductionScrapLine(models.Model):
     )
     serial_number_id = fields.Many2one('stock.lot',store=True)
     serial_number = fields.Char(string='Serial Number')
-    location_id = fields.Many2one('stock.location', string='Scrap Location', domain="[('usage', '=', 'internal')]")
+    location_id = fields.Many2one('stock.location', string='Destination Location', domain="[('usage', '=', 'internal')]")
     source_location_id = fields.Many2one('stock.location', string='Source Location')
-    quantity = fields.Float(string='Scrap Quantity')
+    quantity = fields.Float(string='Scrap Qty')
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure')
     scrap_reason_tag_ids = fields.Many2many( comodel_name='stock.scrap.reason.tag',
         string='Scrap Reason',
@@ -277,7 +330,9 @@ class MrpProductionScrapLine(models.Model):
     thickness = fields.Float(string='Thickness')
     thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron')],default='micron',string=" ")
     width = fields.Float(string='Width')
-    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch')],default='mm',string=" ")
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch'),('kg', 'Kg'),
+                                        ('lbs', 'Lbs'),
+                                        ('gm', 'Gm'),],default='mm',string=" ")
     core_id = fields.Selection(selection=[('3','3 Inch'),('6','6 Inch')],string="Core")
     length = fields.Float(string='Length')
     length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
@@ -302,9 +357,7 @@ class MrpConsumables(models.Model):
     production_id = fields.Many2one('mrp.production',string='Manufacturing Order',
         ondelete='cascade'
     )
-    product_id = fields.Many2one('product.product',string='Consumable Product',required=True,
-        domain=[('type', '=', 'consu')]
-    )
+    product_id = fields.Many2one('product.product',string='Consumable Product',required=True,)
     quantity = fields.Float(string='Quantity')
     uom_id = fields.Many2one('uom.uom',string='UoM', related='product_id.uom_id',store=True,readonly=True)
 
@@ -312,3 +365,15 @@ class MrpConsumables(models.Model):
         domain="[('usage', '=', 'internal')]"
     )
 
+class MrpWorkorder(models.Model):
+    _inherit = 'mrp.workorder'
+
+    def button_finish(self):
+        res = super().button_finish()
+
+        for wo in self:
+            mo = wo.production_id
+            if mo and not mo.product_code:
+                mo.action_product_code()   
+
+        return res
