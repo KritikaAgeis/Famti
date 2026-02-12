@@ -21,6 +21,7 @@
         'data/ir_cron.xml',
         'data/product_data.xml',
         # 'data/inventory_data.xml',
+        'wizard/converted_uoms.xml',
         'wizard/lot_import_wizard.xml',
         'wizard/stock_lot_wiz.xml',
         'wizard/mrp_batch_wizard.xml',

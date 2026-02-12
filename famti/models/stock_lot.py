@@ -1,4 +1,3 @@
-from platform import machine
 
 from odoo import models, fields,api
 from datetime import date

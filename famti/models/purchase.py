@@ -58,17 +58,31 @@ class PurchaseOrderLine(models.Model):
                                         ('gm', 'Gm'),
                                         ],required=True,default='kg',string=" ")
     thickness_val = fields.Float(string="Thickness",help="This helps to categorise specific product.")
-    thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron')],default='micron',string=" ")
+    thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron'),('mm','MM'),('mil','Mil')],default='micron',string=" ")
 
 
     width_val = fields.Float(string="Width",help="This helps to categorise specific product.")
-    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch')],default='mm',string=" ")
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch'),('mil','Mil')],default='mm',string=" ")
     core_id = fields.Selection(selection=[('3','3 Inch'),('6','6 Inch')],string="Core")
     category = fields.Char(string="Film Category",  help="This helps to categorise specific product.")
     film = fields.Char(string="Film", help="Product Film.")
     film_type = fields.Char(string="Film Type", help="Film Type")
     length_val = fields.Float(string="Length", help="Product Length")
     length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
+    # uom_conv_id = fields.Many2one('uom.convert.wizard',string="UOM Conversion Wizard")
+
+    def action_open_uom_conversion(self):
+        print(f'-line 46--------{self}--{self.ids}')
+        return {
+            'name': 'Purchase Order Lines',
+            'type': 'ir.actions.act_window',
+            'res_model': 'uom.convert.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'active_id': self,
+            }
+        }
 
 
 
