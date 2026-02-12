@@ -303,7 +303,7 @@ class MrpConsumables(models.Model):
         ondelete='cascade'
     )
     product_id = fields.Many2one('product.product',string='Consumable Product',required=True,
-        domain=[('detailed_type', '=', 'consu')]
+        domain=[('type', '=', 'consu')]
     )
     quantity = fields.Float(string='Quantity')
     uom_id = fields.Many2one('uom.uom',string='UoM', related='product_id.uom_id',store=True,readonly=True)

@@ -14,5 +14,10 @@ access_mrp_production_scrap_wizard_line',access_mrp_production_scrap_wizard_line
 access_mrp_production_scrap_line',access_mrp_production_scrap_line,model_mrp_production_scrap_line,base.group_system,1,1,1,1
 access_costing_sheet,access_costing_sheet,model_costing_sheet,base.group_system,1,1,1,1
 access_mrp_consumables,access_mrp_consumables,model_mrp_consumables,base.group_system,1,1,1,1
+access_converted_uoms,access_converted_uoms,model_uom_convert_wizard,base.group_user,1,1,1,1
+access_converted_uoms_admin,access_converted_uoms_admin,model_uom_convert_wizard,base.group_system,1,1,1,1
+access_converted_uoms_po_users,access_converted_uoms_po_users,model_uom_convert_wizard,group_purchase_dep_users,1,1,1,1
+
+
 
 

@@ -1,0 +1,100 @@
+<odoo>
+    <record id="view_famti_converted_uoms_wizard" model="ir.ui.view">
+        <field name="name">uom.conversion.wizard.form</field>
+        <field name="model">uom.convert.wizard</field>
+        <field name="arch" type="xml">
+            <form string="UOM's Conversion">
+
+    <group>
+        <field name="uom_id"/>
+
+    </group>
+
+    <field name="po_lines">
+        <list editable="top">
+            <field name="product_id"/>
+            <field name="weight_val"/>
+            <field name="weight_uom"/>
+            <field name="thickness_val"/>
+            <field name="thickness_uom"/>
+            <field name="width_val"/>
+            <field name="width_uom"/>
+            <field name="length_val"/>
+            <field name="length_uom"/>
+        </list>
+    </field>
+
+</form>
+
+<!--            <form string="UOM's Conversion">-->
+<!--                <group>-->
+
+<!--                    <field name="name"/>-->
+<!--                    <field name="po_lines"/>-->
+<!--                     <tree editable="false">-->
+<!--                        <field name="product_id"/>-->
+<!--                        <field name="weight_val"/>-->
+<!--                        <field name="weight_uom"/>-->
+<!--                        <field name="thickness_val"/>-->
+<!--                        <field name="thickness_uom"/>-->
+<!--                        <field name="width_val"/>-->
+<!--                        <field name="width_uom"/>-->
+<!--                        <field name="length_val"/>-->
+<!--                        <field name="length_uom"/>-->
+<!--                    </tree>-->
+
+<!--                    <group>-->
+<!--                        <group>-->
+<!--                            <label for="weight_val"/>-->
+<!--                            <div class="o_row">-->
+<!--                                <field name="weight_val" nolabel="1"/>-->
+<!--                                <field name="weight_uom" nolabel="1"/>-->
+<!--                            </div>-->
+<!--                             <label for="thickness_val"/>-->
+<!--                            <div class="o_row">-->
+<!--                                <field name="thickness_val" nolabel="1"/>-->
+<!--                                <field name="thickness_uom" nolabel="1"/>-->
+<!--                            </div>-->
+<!--                        </group>-->
+<!--                    </group>-->
+<!--                    <group>-->
+<!--                        <group>-->
+<!--                            <label for="width_val"/>-->
+<!--                            <div class="o_row">-->
+<!--                                <field name="width_val" nolabel="1"/>-->
+<!--                                <field name="width_uom" nolabel="1"/>-->
+<!--                            </div>-->
+<!--                            <label for="length_val"/>-->
+<!--                            <div class="o_row">-->
+<!--                                <field name="length_val" nolabel="1"/>-->
+<!--                                <field name="length_uom" nolabel="1"/>-->
+<!--                            </div>-->
+<!--                        </group>-->
+<!--                    </group>-->
+
+<!--                </group>-->
+
+<!--                <footer>-->
+<!--&lt;!&ndash;                    <button string="Import"&ndash;&gt;-->
+<!--&lt;!&ndash;                            type="object"&ndash;&gt;-->
+<!--&lt;!&ndash;                            name="action_import"&ndash;&gt;-->
+<!--&lt;!&ndash;                            class="btn-primary"/>&ndash;&gt;-->
+<!--                    <button string="Cancel"-->
+<!--                            special="cancel"/>-->
+<!--                </footer>-->
+<!--            </form>-->
+        </field>
+    </record>
+
+
+    <record id="action_open_uom_conversion" model="ir.actions.act_window">
+    <field name="name">UOM Conversion</field>
+    <field name="res_model">uom.convert.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="famti.view_famti_converted_uoms_wizard"/>
+    <field name="target">new</field>
+</record>
+
+
+
+</odoo>
