@@ -39,6 +39,13 @@ class StockLot(models.Model):
                                         ('lbs', 'Lbs'),
                                         ('gm', 'Gm'),
                                         ],required=True,default='kg',string=" ")
+
+    product_code =fields.Char(string="Product Code",compute="_compute_product_code",store=True)
+    
+    @api.depends('product_id')
+    def _compute_product_code(self):
+        for rec in self:
+            rec.product_code = rec.product_id.default_code if rec.product_id else False
     
 
 

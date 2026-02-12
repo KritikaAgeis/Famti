@@ -25,6 +25,15 @@ class MrpProduction(models.Model):
 
     product_code =fields.Char(string="Product Code")
 
+    @api.onchange('product_id')
+    def _onchange_product_id_set_code(self):
+        for rec in self:
+            if rec.product_id:
+                rec.product_code = rec.product_id.default_code
+            else:
+                rec.product_code = False
+    
+
 
     def _prepare_stock_lot_values(self):
         self.ensure_one()
@@ -47,7 +56,24 @@ class MrpProduction(models.Model):
 
         if wc and wc.code:
             ctx['machine_code'] = wc.code
-        return super(MrpProduction,self.with_context(ctx)).action_generate_serial()
+
+        res = super(MrpProduction, self.with_context(ctx)).action_generate_serial()
+
+        for production in self:
+            if production.lot_producing_id:
+
+                production.serial_line_ids.unlink()
+
+                self.env['mrp.production.serial.line'].create({
+                    'production_id': production.id,
+                    'serial_number': production.lot_producing_id.name,
+                    'location_id': production.location_dest_id.id,
+                    'quantity': production.qty_producing,
+                    'uom_id': production.product_uom_id.id,
+                    'total_input': production.product_qty,
+                })
+
+        return res
     
 
     def action_open_split_lots_wizard(self):
@@ -269,7 +295,7 @@ class MrpProduction(models.Model):
 
         new_code = f"{prefix}{str(seq).zfill(4)}"
         print("----new_code-----",new_code)
-        self.product_code = new_code
+        # self.product_code = new_code
 
         return f"{prefix}{str(seq).zfill(4)}"
 
