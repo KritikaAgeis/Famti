@@ -25,6 +25,7 @@ class MrpBatchProduceLine(models.TransientModel):
     film_category = fields.Char(string="Film Category",  help="This helps to categorise specific product.")
     film = fields.Char(string="Film", help="Product Film.")
     film_type = fields.Char(string="Film Type", help="Film Type")
+    scrap = fields.Float(string='Scrap')
 
 class MrpBatchProduce(models.TransientModel):
     _inherit = 'mrp.batch.produce'
@@ -90,6 +91,7 @@ class MrpBatchProduce(models.TransientModel):
                 'billed': line.billed,
                 'total_input': production.qty_producing,
                 'total_output': line.quantity,
+                'total_scrap': line.scrap,
             })
 
         if serial_line_vals:

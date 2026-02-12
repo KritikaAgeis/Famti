@@ -43,15 +43,16 @@
                         <list editable="bottom">
                             <field name="serial_number"/>
                             <field name="location_id"/>
-                            <field name="thickness" optional="hide"/>
-                            <field name="thickness_uom" optional="hide"/>
-                            <field name="width" optional="hide"/>
-                            <field name="width_uom" optional="hide"/>
-                            <field name="core_id" optional="hide"/>
-                            <field name="length" optional="hide"/>
-                            <field name="length_uom" optional="hide"/>
+                            <field name="thickness"/>
+                            <field name="thickness_uom"/>
+                            <field name="width"/>
+                            <field name="width_uom"/>
+                            <field name="core_id"/>
+                            <field name="length"/>
+                            <field name="length_uom"/>
                             <field name="quantity"/>
                             <field name="uom_id"/>
+                            <field name="scrap"/>
                         </list>
                     </field>
                 </group>
