@@ -62,7 +62,7 @@ class PurchaseOrderLine(models.Model):
 
 
     width_val = fields.Float(string="Width",help="This helps to categorise specific product.")
-    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch'),('mil','Mil')],default='mm',string=" ")
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch'),('mm','MM'),('mil','Mil')],default='mm',string=" ")
     core_id = fields.Selection(selection=[('3','3 Inch'),('6','6 Inch')],string="Core")
     category = fields.Char(string="Film Category",  help="This helps to categorise specific product.")
     film = fields.Char(string="Film", help="Product Film.")
