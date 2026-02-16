@@ -26,6 +26,8 @@ class StockMoveLine(models.Model):
     core_id = fields.Selection(selection=[('3', '3 Inch'), ('6', '6 Inch')], string="Core", tracking=True)
     length = fields.Float(string="Length", tracking=True, help="Product Length")
     length_uom = fields.Selection(selection=[('m', 'M'), ('feet', 'Feet')], default='feet', string=" ", tracking=True)
+    grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
+
 
     def _action_done(self):
         res = super()._action_done()
@@ -45,6 +47,7 @@ class StockMoveLine(models.Model):
                 line.lot_id.width_uom = line.width_uom
                 line.lot_id.length_val = line.length
                 line.lot_id.length_uom = line.length_uom
+                line.lot_id.grade_type = line.grade_type
         return res
     
 

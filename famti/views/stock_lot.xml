@@ -33,6 +33,7 @@
                 <xpath expr="//sheet/notebook" position="before">
                     <group string="QC Details" col="2">
                         <group>
+                            <field name="grade_type"/>
                             <label for="thickness" />
                             <div class="o_row">
                                 <field name="thickness"/>
@@ -70,17 +71,18 @@
 
 
 
-          <record id="stock_lot_list_view_inherit" model="ir.ui.view">
-            <field name="name">stock.lot.view.list.inherit</field>
-            <field name="model">stock.lot</field>
-            <field name="inherit_id" ref="stock.view_production_lot_tree"/>
-            <field name="arch" type="xml">
-                    <xpath expr="//list/field[@name='company_id']" position="after">
-                        <field name="qc_status" widget="badge"  decoration-info="qc_status == 'pending'"
-                               decoration-success="qc_status == 'passed'" decoration-danger="qc_status == 'failed'"/>
-                    </xpath>
-            </field>
-          </record>
+        <record id="stock_lot_list_view_inherit" model="ir.ui.view">
+        <field name="name">stock.lot.view.list.inherit</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_tree"/>
+        <field name="arch" type="xml">
+                <xpath expr="//list/field[@name='company_id']" position="after">
+                    <field name="grade_type"/>
+                    <field name="qc_status" widget="badge"  decoration-info="qc_status == 'pending'"
+                            decoration-success="qc_status == 'passed'" decoration-danger="qc_status == 'failed'"/>
+                </xpath>
+        </field>
+        </record>
 
 
         <record id="view_stock_move_operations_inherit_excel_btn" model="ir.ui.view">

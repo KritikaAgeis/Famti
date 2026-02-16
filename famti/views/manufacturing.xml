@@ -13,14 +13,6 @@
                     class="btn-primary"
                     invisible="state not in ['confirmed','progress','to_close']"
                 />
-
-                <button
-                    name="action_open_scrap_wizard"
-                    type="object"
-                    string="Scrap"
-                    class="btn-primary"
-                    invisible="state not in ['confirmed','progress','to_close']"
-                />
             </xpath>
 
             <xpath expr="//button[@name='action_start']" position="attributes">
@@ -65,6 +57,7 @@
                             <field name="quantity" string="Output"/>
                             <field name="uom_id"/>
                             <field name="total_scrap"/>
+                            <field name="grade_type"/>
                         </list>
                     </field>
                 </page>
@@ -83,6 +76,7 @@
                             <field name="length_uom" optional="hide"/>
                             <field name="quantity"/>
                             <field name="uom_id"/>
+                            <field name="scrap_reason_tag_ids" widget="many2many_tags" optional="hide"/>  
                         </list>
                     </field>
                 </page>

@@ -6,7 +6,6 @@
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
 
-                <!-- Change label of Internal Reference -->
                 <xpath expr="//field[@name='default_code']" position="attributes">
                 <attribute name="string">SKU</attribute>
                 </xpath>
@@ -14,25 +13,65 @@
                     <field name="mo_serial_no"/>
                 </xpath>
 
+                <xpath expr="//page[@name='general_information']/group" position="inside">
 
-<!--              <xpath expr="//group[@name='internal_notes']" position="before">-->
-<!--                    <group name="product_details" string="Product Details" col="2">-->
-<!--                        <group>-->
-<!--                            <field name="film_type"/>-->
-<!--                        </group>-->
-<!--                        <group>-->
-<!--                            <field name="barcode"/>-->
-<!--                            <field name="film"/>-->
-<!--                        </group>-->
+                    <separator string="Product Reference" colspan="4"/>
 
-<!--                    </group>-->
-<!--            </xpath>-->
+                    <group>
+                        <field name="supplier_name"/>
+                        <field name="material_type"/>
+                        <field name="type_reference"/>
+                    </group>
 
+                    <group>
+                        <field name="treatment_in"/>
+                        <field name="treatment_out"/>
+                    </group>
+                    <label for="film_description"/>
+                    <div>
+                        <field name="film_description"/>
+                    </div>
+
+                </xpath>
             </field>
         </record>
 
 
+        <record id="view_product_form_inherit_mo_serial" model="ir.ui.view">
+            <field name="name">product.product.form.mo.serial</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lot_valuated']" position="after">
+                    <field name="mo_serial_no"/>
+                </xpath>
+                <xpath expr="//field[@name='default_code']" position="attributes">
+                    <attribute name="string">SKU</attribute>
+                </xpath>
 
+                <xpath expr="//page[@name='general_information']/group" position="inside">
+
+                    <separator string="Product Reference" colspan="4"/>
+
+                    <group>
+                        <field name="supplier_name"/>
+                        <field name="material_type"/>
+                        <field name="type_reference"/>
+                    </group>
+
+                    <group>
+                        <field name="treatment_in"/>
+                        <field name="treatment_out"/>
+                    </group>
+                    <label for="film_description"/>
+                    <div>
+                        <field name="film_description"/>
+                    </div>
+
+                </xpath>
+                
+            </field>
+        </record>
 
 
     </data>

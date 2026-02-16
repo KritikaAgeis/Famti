@@ -26,6 +26,19 @@ class MrpBatchProduceLine(models.TransientModel):
     film = fields.Char(string="Film", help="Product Film.")
     film_type = fields.Char(string="Film Type", help="Film Type")
     scrap = fields.Float(string='Scrap')
+    grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
+    scrap_reason_tag_ids = fields.Many2many( comodel_name='stock.scrap.reason.tag',
+        string='Scrap Reason')
+
+    @api.onchange('scrap')
+    def _onchange_scrap(self):
+        for rec in self:
+            if rec.scrap and rec.scrap > 0:
+                production = rec.wizard_id.production_id
+                if production and production.product_id:
+                    product_name = production.product_id.name
+                    rec.serial_number = f"W{product_name}"
+
 
 class MrpBatchProduce(models.TransientModel):
     _inherit = 'mrp.batch.produce'
@@ -33,6 +46,8 @@ class MrpBatchProduce(models.TransientModel):
     sn_quantity = fields.Float(string='Quantity per Lot', store=True,)
     sn_recived_quantity = fields.Float(string='Quantity Received',compute="_compute_total_qty", store=True,)
     line_ids = fields.One2many('mrp.batch.produce.line', 'wizard_id', string='Line Items')
+    scrap_reason_tag_ids = fields.Many2many( comodel_name='stock.scrap.reason.tag',
+        string='Scrap Reason')
 
     @api.depends('production_id')
     def _compute_lot_qty(self):
@@ -50,6 +65,7 @@ class MrpBatchProduce(models.TransientModel):
 
         production = self.production_id
         serial_line_vals = []
+        scrap_line_vals = []
 
         if not self.line_ids:
             raise ValidationError("Please add at least one line.")
@@ -68,12 +84,26 @@ class MrpBatchProduce(models.TransientModel):
         }
 
         for index, line in enumerate(self.line_ids, start=1):
+            serial = line.serial_number or f"Line {index}"
 
             for field_name, field_label in required_fields.items():
                 if not line[field_name]:
                     raise ValidationError(f"Line {index}: {field_label} is required.")
+                    
+        
 
         for line in self.line_ids:
+            
+            if line.scrap and line.scrap > 0:
+                if not line.grade_type:
+                    raise ValidationError(
+                        f"Serial {serial}: Grade is required when Scrap is entered."
+                    )
+                if not line.scrap_reason_tag_ids:
+                    raise ValidationError(
+                        f"Serial {serial}: Scrap Reason is required when Scrap is entered."
+                    )
+
             serial_line_vals.append({
                 'production_id': production.id,
                 'serial_number': line.serial_number,
@@ -92,10 +122,32 @@ class MrpBatchProduce(models.TransientModel):
                 'total_input': production.qty_producing,
                 'total_output': line.quantity,
                 'total_scrap': line.scrap,
+                'grade_type': line.grade_type,
             })
+
+            if line.scrap and line.scrap > 0:
+                scrap_line_vals.append({
+                    'production_scrap_id': production.id,
+                    'source_location_id': production.location_dest_id.id,
+                    'scrap_reason_tag_ids': [(6, 0, line.scrap_reason_tag_ids.ids)],
+                    'location_id': production.scrap_location_id.id, 
+                    'serial_number': line.serial_number,
+                    'quantity': line.scrap,
+                    'uom_id': line.uom_id.id,
+                    'thickness': line.thickness,
+                    'thickness_uom': line.thickness_uom,
+                    'width': line.width,
+                    'width_uom': line.width_uom,
+                    'core_id': line.core_id,
+                    'length': line.length,
+                    'length_uom': line.length_uom,
+                })
 
         if serial_line_vals:
             self.env['mrp.production.serial.line'].create(serial_line_vals)
+
+        if scrap_line_vals:
+            self.env['mrp.production.scrap.line'].create(scrap_line_vals)
 
         return {'type': 'ir.actions.act_window_close'}
 
