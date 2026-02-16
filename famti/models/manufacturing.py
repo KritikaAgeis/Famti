@@ -11,7 +11,10 @@ class MrpProduction(models.Model):
     )
     scrap_line_ids = fields.One2many('mrp.production.scrap.line','production_scrap_id', string='Scrap Details')
 
-    mo_serial_no = fields.Boolean( related='product_id.product_tmpl_id.mo_serial_no',
+    # mo_serial_no = fields.Boolean( related='product_id.product_tmpl_id.mo_serial_no',
+    #     store=False
+    # )
+    mo_serial_no = fields.Boolean( related='product_id.mo_serial_no',
         store=False
     )
 
@@ -32,7 +35,24 @@ class MrpProduction(models.Model):
                 rec.product_code = rec.product_id.default_code
             else:
                 rec.product_code = False
-    
+
+    @api.onchange('product_qty')
+    def _onchange_create_raw_move(self):
+        for rec in self:
+            if rec.product_qty > 0:
+                rec.move_raw_ids = [(5, 0, 0)]
+                rec.move_raw_ids = [(0, 0, {
+                    'product_uom_qty': rec.product_qty,
+                })]
+
+    def action_confirm(self):
+        for rec in self:
+            for move in rec.move_raw_ids:
+                if move.product_uom_qty <= 0:
+                    raise ValidationError(
+                        f"Raw Material '{move.product_id.display_name}' must have a quantity greater than 0."
+                    )
+        return super().action_confirm()
 
 
     def _prepare_stock_lot_values(self):
@@ -227,6 +247,7 @@ class MrpProduction(models.Model):
                 'width_uom': line.width_uom,
                 'length': line.length,
                 'length_uom': line.length_uom,
+                'grade_type': line.grade_type,
             })
 
     def _create_stock_scrap_from_lines(self):
@@ -334,6 +355,8 @@ class MrpProductionSerialLine(models.Model):
     total_input = fields.Float(string=" Input")
     total_output = fields.Float(string=" Output")
     total_scrap = fields.Float(string=" Scrap")
+
+    grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
 
 
 class MrpProductionScrapLine(models.Model):

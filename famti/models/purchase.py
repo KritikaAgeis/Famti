@@ -14,7 +14,29 @@ class Purchase(models.Model):
         ('done', 'Locked'),
         ('cancel', 'Cancelled')
     ], string='Status', readonly=True, index=True, copy=False, default='draft')
+    
+    vendor_street = fields.Char()
+    vendor_street2 = fields.Char()
+    vendor_city = fields.Char()
+    vendor_state_id = fields.Many2one('res.country.state')
+    vendor_zip = fields.Char()
+    vendor_country_id = fields.Many2one('res.country')
+    vendor_vat = fields.Char()
+    vendor_email = fields.Char(string="Email")
+    vendor_phone = fields.Char(string="Contact")
 
+    @api.onchange('partner_id')
+    def _onchange_partner_id_address(self):
+        if self.partner_id:
+            self.vendor_street = self.partner_id.street
+            self.vendor_street2 = self.partner_id.street2
+            self.vendor_city = self.partner_id.city
+            self.vendor_state_id = self.partner_id.state_id
+            self.vendor_zip = self.partner_id.zip
+            self.vendor_country_id = self.partner_id.country_id
+            self.vendor_vat = self.partner_id.vat
+            self.vendor_email = self.partner_id.email
+            self.vendor_phone = self.partner_id.phone
     
     def action_rfq_send(self):
         for order in self:

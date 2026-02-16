@@ -1,6 +1,7 @@
 
 from odoo import models, fields,api
 from datetime import date
+from odoo.exceptions import ValidationError
 
 class StockLot(models.Model):
     _inherit = 'stock.lot'
@@ -41,6 +42,8 @@ class StockLot(models.Model):
                                         ],required=True,default='kg',string=" ")
 
     product_code =fields.Char(string="Product Code",compute="_compute_product_code",store=True)
+
+    grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
     
     @api.depends('product_id')
     def _compute_product_code(self):
@@ -53,7 +56,11 @@ class StockLot(models.Model):
         self.qc_status = 'passed'
 
     def action_coa_failed(self):
-        self.qc_status = 'failed'
+        for rec in self:
+            if not rec.grade_type:
+                raise ValidationError("Grade is required when QC status is Failed.")
+
+            rec.qc_status = 'failed'
 
     def action_reset_to_draft(self):
         self.qc_status = 'pending'

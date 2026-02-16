@@ -9,6 +9,7 @@
                 <field name="sn_quantity"/>
                 <field name="sn_recived_quantity"/>
             </xpath>
+            
             <xpath expr="//footer/button[@name='action_done']" position="after">
                 <button name="action_produce_lots"
                         string="Generate Lots"
@@ -53,6 +54,8 @@
                             <field name="quantity"/>
                             <field name="uom_id"/>
                             <field name="scrap"/>
+                            <field name="grade_type"/>
+                            <field name="scrap_reason_tag_ids" widget="many2many_tags"/>
                         </list>
                     </field>
                 </group>
