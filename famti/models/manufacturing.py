@@ -28,6 +28,21 @@ class MrpProduction(models.Model):
 
     product_code =fields.Char(string="Product Code")
 
+    raw_material_move_ids = fields.One2many(
+        'stock.move',
+        'raw_material_production_id',
+        domain=[('product_id.is_consumables', '=', False)],
+        string="Raw Materials"
+    )
+
+    consumable_move_ids = fields.One2many(
+        'stock.move',
+        'raw_material_production_id',
+        domain=[('product_id.is_consumables', '=', True)],
+        string="Consumables"
+    )
+    
+
     @api.onchange('product_id')
     def _onchange_product_id_set_code(self):
         for rec in self:
@@ -36,14 +51,14 @@ class MrpProduction(models.Model):
             else:
                 rec.product_code = False
 
-    @api.onchange('product_qty')
-    def _onchange_create_raw_move(self):
-        for rec in self:
-            if rec.product_qty > 0:
-                rec.move_raw_ids = [(5, 0, 0)]
-                rec.move_raw_ids = [(0, 0, {
-                    'product_uom_qty': rec.product_qty,
-                })]
+    # @api.onchange('product_qty')
+    # def _onchange_create_raw_move(self):
+    #     for rec in self:
+    #         if rec.product_qty > 0:
+    #             rec.move_raw_ids = [(5, 0, 0)]
+    #             rec.move_raw_ids = [(0, 0, {
+    #                 'product_uom_qty': rec.product_qty,
+    #             })]
 
     def action_confirm(self):
         for rec in self:
@@ -244,8 +259,6 @@ class MrpProduction(models.Model):
                 mo._create_lots_and_move_lines()
             if mo.scrap_line_ids:
                 mo._create_stock_scrap_from_lines()
-            # if not mo.product_code:
-            #     mo.product_code = mo.action_product_code()
 
         return super().button_mark_done()
 
@@ -407,7 +420,44 @@ class MrpProductionSerialLine(models.Model):
 
     grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
     
-    
+    def write(self, vals):
+        res = super().write(vals)
+        for rec in self:
+            if rec.production_id.mo_serial_no:
+                if rec.total_scrap and rec.total_scrap > 0 and rec.production_id:
+
+                    existing = self.env['mrp.production.scrap.line'].search([
+                        ('production_scrap_id', '=', rec.production_id.id),
+                        ('serial_number', '=', rec.serial_number),
+                    ], limit=1)
+
+                    if not existing:
+                        self.env['mrp.production.scrap.line'].create({
+                            'production_scrap_id': rec.production_id.id,
+                            'serial_number': rec.serial_number,
+                            'quantity': rec.total_scrap,
+                            'uom_id': rec.uom_id.id if rec.uom_id else False,
+                            'source_location_id': rec.production_id.location_dest_id.id if rec.production_id.location_dest_id else False,
+                            'location_id': rec.production_id.scrap_location_id.id if rec.production_id.scrap_location_id else False,
+                            'thickness': rec.thickness,
+                            'thickness_uom': rec.thickness_uom,
+                            'width': rec.width,
+                            'width_uom': rec.width_uom,
+                            'core_id': rec.core_id,
+                            'length': rec.length,
+                            'length_uom': rec.length_uom,
+                        })
+
+        return res
+
+    @api.onchange('total_scrap')
+    def _onchange_total_scrap(self):
+        for rec in self:
+            if rec.total_scrap > 0 and rec.production_id and rec.production_id.product_id:
+                if rec.production_id.mo_serial_no:
+                    rec.serial_number = f"W{rec.production_id.product_id.name}"
+
+
 class MrpProductionScrapLine(models.Model):
     _name = 'mrp.production.scrap.line'
     _description = 'MRP Production Scrap Line'

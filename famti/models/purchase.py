@@ -92,6 +92,8 @@ class PurchaseOrderLine(models.Model):
     length_val = fields.Float(string="Length", help="Product Length")
     length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
     # uom_conv_id = fields.Many2one('uom.convert.wizard',string="UOM Conversion Wizard")
+    pieces = fields.Float(string="Pieces")
+
 
     def action_open_uom_conversion(self):
         print(f'-line 46--------{self}--{self.ids}')
