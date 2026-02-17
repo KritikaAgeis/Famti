@@ -43,6 +43,8 @@
                     <field name="line_ids" nolabel="1">
                         <list editable="bottom">
                             <field name="serial_number"/>
+                            <field name="mo_product_code"/>
+                            <field name="po_product_code"/>
                             <field name="location_id"/>
                             <field name="thickness"/>
                             <field name="thickness_uom"/>

@@ -49,8 +49,6 @@ class StockMoveLine(models.Model):
                 line.lot_id.length_val = line.length
                 line.lot_id.length_uom = line.length_uom
                 line.lot_id.grade_type = line.grade_type
-                line.lot_id.product_code = previous_code
-                line.lot_id.mo_product_code = line.mo_product_code
         return res
     
 
