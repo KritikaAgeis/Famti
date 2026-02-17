@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare
 from datetime import date
@@ -74,6 +74,17 @@ class MrpProduction(models.Model):
         wc = self.workorder_ids[:1].workcenter_id
         ctx = dict(self.env.context)
 
+        not_done_workorders = self.workorder_ids.filtered(
+            lambda wo: wo.state != 'done'
+        )
+
+        if not_done_workorders:
+            names = ", ".join(not_done_workorders.mapped('name'))
+            raise ValidationError(
+                _("You cannot split lots.\n"
+                "The following Work Orders are not Done: %s") % names
+            )
+
         if wc and wc.code:
             ctx['machine_code'] = wc.code
 
@@ -98,6 +109,17 @@ class MrpProduction(models.Model):
 
     def action_open_split_lots_wizard(self):
         self.ensure_one()
+        not_done_workorders = self.workorder_ids.filtered(
+            lambda wo: wo.state != 'done'
+        )
+
+        if not_done_workorders:
+            names = ", ".join(not_done_workorders.mapped('name'))
+            raise ValidationError(
+                _("You cannot split lots.\n"
+                "The following Work Orders are not Done: %s") % names
+            )
+
         return {
             'type': 'ir.actions.act_window',
             'name': 'Split Lots',
@@ -191,6 +213,33 @@ class MrpProduction(models.Model):
 
     def button_mark_done(self):
         for mo in self:
+
+            not_done_workorders = self.workorder_ids.filtered(
+                lambda wo: wo.state != 'done'
+            )
+
+            if not_done_workorders:
+                names = ", ".join(not_done_workorders.mapped('name'))
+                raise ValidationError(
+                    _("You cannot split lots.\n"
+                    "The following Work Orders are not Done: %s") % names
+                )
+            
+            for rec in mo.serial_line_ids:
+
+                fields_to_check = {
+                    'Thickness': rec.thickness,
+                    'Width': rec.width,
+                    'Length': rec.length,
+                }
+
+                for label, value in fields_to_check.items():
+                    if value <= 0:
+                        raise ValidationError(
+                            _("Serial %s: Please Enter the value for  %s .")
+                            % (rec.serial_number or '', label)
+                        )
+
             if mo.product_id.tracking == 'lot' and mo.serial_line_ids:
                 mo._create_lots_and_move_lines()
             if mo.scrap_line_ids:
@@ -357,8 +406,8 @@ class MrpProductionSerialLine(models.Model):
     total_scrap = fields.Float(string=" Scrap")
 
     grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
-
-
+    
+    
 class MrpProductionScrapLine(models.Model):
     _name = 'mrp.production.scrap.line'
     _description = 'MRP Production Scrap Line'
