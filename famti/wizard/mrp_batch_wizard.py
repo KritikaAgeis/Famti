@@ -29,15 +29,26 @@ class MrpBatchProduceLine(models.TransientModel):
     grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
     scrap_reason_tag_ids = fields.Many2many( comodel_name='stock.scrap.reason.tag',
         string='Scrap Reason')
+    mo_product_code = fields.Char(string='Mo Product Code')
+    po_product_code = fields.Char(string='Product Code')
+
 
     @api.onchange('scrap')
     def _onchange_scrap(self):
+        import re
         for rec in self:
-            if rec.scrap and rec.scrap > 0:
-                production = rec.wizard_id.production_id
-                if production and production.product_id:
-                    product_name = production.product_id.name
-                    rec.serial_number = f"W{product_name}"
+            if not rec.scrap or not rec.serial_number:
+                continue
+            production = rec.wizard_id.production_id
+            if not production:
+                continue
+            component_move = production.move_raw_ids[:1]
+            if not component_move:
+                continue
+            product_name = component_move.product_id.name.replace(" ", "")
+            numeric = re.search(r'(\d+)$', rec.serial_number)
+            numeric_part = numeric.group(1) if numeric else rec.serial_number
+            rec.serial_number = f"W{product_name}{numeric_part}"
 
 
 class MrpBatchProduce(models.TransientModel):
@@ -107,6 +118,8 @@ class MrpBatchProduce(models.TransientModel):
             serial_line_vals.append({
                 'production_id': production.id,
                 'serial_number': line.serial_number,
+                'mo_product_code':line.mo_product_code,
+                'po_product_code': line.po_product_code,
                 'quantity': line.quantity,
                 'uom_id': line.uom_id.id,
                 'location_id': line.location_id.id,
@@ -165,7 +178,9 @@ class MrpBatchProduce(models.TransientModel):
         for serial in serial_numbers:
             line_vals.append((0, 0, {
                 'serial_number': serial,
-                'quantity': qty_per_lot,           
+                'mo_product_code':self.production_id.product_id.default_code,
+                'po_product_code': self.production_id.move_raw_ids[-1].product_id.default_code,
+                'quantity': qty_per_lot,
                 'uom_id': self.production_id.product_uom_id.id,
                 'location_id': self.production_id.location_dest_id.id,
             }))

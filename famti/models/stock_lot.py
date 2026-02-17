@@ -41,16 +41,20 @@ class StockLot(models.Model):
                                         ('gm', 'Gm'),
                                         ],required=True,default='kg',string=" ")
 
-    product_code =fields.Char(string="Product Code",compute="_compute_product_code",store=True)
-
+    # product_code =fields.Char(string="Product Code",compute="_compute_product_code",store=True)
+    product_code =fields.Char(string="Product Code")
+    mo_product_code =fields.Char(string="MO Product Code")
     grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
     
-    @api.depends('product_id')
-    def _compute_product_code(self):
-        for rec in self:
-            rec.product_code = rec.product_id.default_code if rec.product_id else False
-    
+    # @api.depends('product_id')
+    # def _compute_product_code(self):
+    #     for rec in self:
+    #         rec.product_code = rec.product_id.default_code if rec.product_id else False
 
+    # @api.onchange('product_id')
+    # def onchange_product_id(self):
+    #     for rec in self:
+    #         rec.product_code = rec.product_id.default_code if rec.product_id else False
 
     def action_coa_passed(self):
         self.qc_status = 'passed'
