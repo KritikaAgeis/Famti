@@ -32,12 +32,20 @@ class MrpBatchProduceLine(models.TransientModel):
 
     @api.onchange('scrap')
     def _onchange_scrap(self):
+        import re
         for rec in self:
-            if rec.scrap and rec.scrap > 0:
-                production = rec.wizard_id.production_id
-                if production and production.product_id:
-                    product_name = production.product_id.name
-                    rec.serial_number = f"W{product_name}"
+            if not rec.scrap or not rec.serial_number:
+                continue
+            production = rec.wizard_id.production_id
+            if not production:
+                continue
+            component_move = production.move_raw_ids[:1]
+            if not component_move:
+                continue
+            product_name = component_move.product_id.name.replace(" ", "")
+            numeric = re.search(r'(\d+)$', rec.serial_number)
+            numeric_part = numeric.group(1) if numeric else rec.serial_number
+            rec.serial_number = f"W{product_name}{numeric_part}"
 
 
 class MrpBatchProduce(models.TransientModel):
