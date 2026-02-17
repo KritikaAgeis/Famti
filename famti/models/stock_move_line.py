@@ -27,12 +27,13 @@ class StockMoveLine(models.Model):
     length = fields.Float(string="Length", tracking=True, help="Product Length")
     length_uom = fields.Selection(selection=[('m', 'M'), ('feet', 'Feet')], default='feet', string=" ", tracking=True)
     grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
-
+    mo_product_code =fields.Char(string="MO Product Code")
 
     def _action_done(self):
         res = super()._action_done()
         for line in self:
             if line.lot_id:
+                previous_code= line.product_id.default_code
                 line.lot_id.film = line.film
                 line.lot_id.category = line.category
                 line.lot_id.film_type = line.film_type
@@ -48,6 +49,8 @@ class StockMoveLine(models.Model):
                 line.lot_id.length_val = line.length
                 line.lot_id.length_uom = line.length_uom
                 line.lot_id.grade_type = line.grade_type
+                line.lot_id.product_code = previous_code
+                line.lot_id.mo_product_code = line.mo_product_code
         return res
     
 

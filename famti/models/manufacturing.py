@@ -278,7 +278,6 @@ class MrpProduction(models.Model):
                     'product_id': self.product_id.id,
                     'company_id': self.company_id.id,
                 })
-
             StockMoveLine.create({
                 'move_id': move.id,
                 'product_id': self.product_id.id,
@@ -297,6 +296,7 @@ class MrpProduction(models.Model):
                 'length': line.length,
                 'length_uom': line.length_uom,
                 'grade_type': line.grade_type,
+                'mo_product_code': line.production_id.product_id.default_code,
             })
 
     def _create_stock_scrap_from_lines(self):
@@ -331,8 +331,8 @@ class MrpProduction(models.Model):
                 'production_id': self.id,
                 'scrap_reason_tag_ids': [(6, 0, line.scrap_reason_tag_ids.ids)],
             })
-
             scrap.action_validate()
+
 
     def action_product_code(self):
         month_code = {
@@ -473,5 +473,4 @@ class MrpWorkorder(models.Model):
             mo = wo.production_id
             if mo and not mo.product_code:
                 mo.action_product_code()   
-
         return res
