@@ -259,6 +259,8 @@ class MrpProduction(models.Model):
                 mo._create_lots_and_move_lines()
             if mo.scrap_line_ids:
                 mo._create_stock_scrap_from_lines()
+            # if not mo.product_code:
+            #     mo.product_code = mo.action_product_code()
 
         return super().button_mark_done()
 
@@ -293,6 +295,7 @@ class MrpProduction(models.Model):
                     'mo_product_code': line.mo_product_code,
                     'product_code': line.po_product_code,
                 })
+
             StockMoveLine.create({
                 'move_id': move.id,
                 'product_id': self.product_id.id,
@@ -346,6 +349,7 @@ class MrpProduction(models.Model):
                 'production_id': self.id,
                 'scrap_reason_tag_ids': [(6, 0, line.scrap_reason_tag_ids.ids)],
             })
+
             scrap.action_validate()
 
 
@@ -421,6 +425,9 @@ class MrpProductionSerialLine(models.Model):
     total_scrap = fields.Float(string=" Scrap")
 
     grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
+    mo_product_code = fields.Char(string="Mo Product Code")
+    po_product_code = fields.Char(string="Product Code")
+
 
 
 class MrpProductionScrapLine(models.Model):
