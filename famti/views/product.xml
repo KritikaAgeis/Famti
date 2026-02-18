@@ -11,6 +11,7 @@
                 </xpath>
                 <xpath expr="//field[@name='lot_valuated']" position="after">
                     <field name="mo_serial_no"/>
+                    <field name = "is_consumables"/>
                 </xpath>
 
                 <xpath expr="//page[@name='general_information']/group" position="inside">
@@ -44,6 +45,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='lot_valuated']" position="after">
                     <field name="mo_serial_no"/>
+                    <field name = "is_consumables"/>
                 </xpath>
                 <xpath expr="//field[@name='default_code']" position="attributes">
                     <attribute name="string">SKU</attribute>

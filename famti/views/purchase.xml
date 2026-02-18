@@ -80,6 +80,7 @@
                     <field name="thickness_uom" no_label="1"/>
                     <field name="width_val"/>
                     <field name="width_uom" no_label="1"/>
+                    <field name="pieces"/>
                     <field name="core_id"/>
                     <field name="length_val"/>
                     <field name="length_uom" no_label="1"/>

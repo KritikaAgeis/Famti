@@ -5,7 +5,8 @@ from odoo.exceptions import UserError
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    mo_serial_no = fields.Boolean(string="MO Serial No")
+    mo_serial_no = fields.Boolean(string="Is Metalize")
+    is_consumables = fields.Boolean(string="Is Consumables")
     supplier_name = fields.Many2one('res.partner',string="Supplier Name")
     material_type = fields.Char(string="Material Type")
     type_reference = fields.Char(string="Type")
@@ -19,7 +20,8 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    mo_serial_no = fields.Boolean(string="MO Serial No")
+    mo_serial_no = fields.Boolean(string="Is Metalize")
+    is_consumables = fields.Boolean(string="Is Consumables")
 
     supplier_name = fields.Many2one('res.partner',string="Supplier Name")
     film_description = fields.Text(string="Film Description")

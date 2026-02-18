@@ -28,6 +28,21 @@ class MrpProduction(models.Model):
 
     product_code =fields.Char(string="Product Code")
 
+    raw_material_move_ids = fields.One2many(
+        'stock.move',
+        'raw_material_production_id',
+        domain=[('product_id.is_consumables', '=', False)],
+        string="Raw Materials"
+    )
+
+    consumable_move_ids = fields.One2many(
+        'stock.move',
+        'raw_material_production_id',
+        domain=[('product_id.is_consumables', '=', True)],
+        string="Consumables"
+    )
+    
+
     @api.onchange('product_id')
     def _onchange_product_id_set_code(self):
         for rec in self:
@@ -36,14 +51,14 @@ class MrpProduction(models.Model):
             else:
                 rec.product_code = False
 
-    @api.onchange('product_qty')
-    def _onchange_create_raw_move(self):
-        for rec in self:
-            if rec.product_qty > 0:
-                rec.move_raw_ids = [(5, 0, 0)]
-                rec.move_raw_ids = [(0, 0, {
-                    'product_uom_qty': rec.product_qty,
-                })]
+    # @api.onchange('product_qty')
+    # def _onchange_create_raw_move(self):
+    #     for rec in self:
+    #         if rec.product_qty > 0:
+    #             rec.move_raw_ids = [(5, 0, 0)]
+    #             rec.move_raw_ids = [(0, 0, {
+    #                 'product_uom_qty': rec.product_qty,
+    #             })]
 
     def action_confirm(self):
         for rec in self:
@@ -280,6 +295,7 @@ class MrpProduction(models.Model):
                     'mo_product_code': line.mo_product_code,
                     'product_code': line.po_product_code,
                 })
+
             StockMoveLine.create({
                 'move_id': move.id,
                 'product_id': self.product_id.id,
@@ -333,6 +349,7 @@ class MrpProduction(models.Model):
                 'production_id': self.id,
                 'scrap_reason_tag_ids': [(6, 0, line.scrap_reason_tag_ids.ids)],
             })
+
             scrap.action_validate()
 
 
