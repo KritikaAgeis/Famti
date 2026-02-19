@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+        <record id="view_purchase_order_form_tolling" model="ir.ui.view">
+            <field name="name">purchase.order.form.tolling</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Change Vendor Label -->
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="string">Customer</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="view_purchase_order_tree_tolling" model="ir.ui.view">
+            <field name="name">purchase.order.tree.tolling</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="string">Customer</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="action_tolling_orders" model="ir.actions.act_window">
+            <field name="name">Tolling Orders</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">kanban,list,form</field>
+
+            <!-- IMPORTANT -->
+            <field name="views" eval="[
+                (ref('view_purchase_order_tree_tolling'), 'list'),
+                (ref('view_purchase_order_form_tolling'), 'form')
+            ]"/>
+
+            <field name="domain">[('is_tolling','=',True)]</field>
+
+            <field name="context">
+                {'default_is_tolling': True}
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>
