@@ -51,11 +51,6 @@ class StockLot(models.Model):
     #     for rec in self:
     #         rec.product_code = rec.product_id.default_code if rec.product_id else False
 
-    # @api.onchange('product_id')
-    # def onchange_product_id(self):
-    #     for rec in self:
-    #         rec.product_code = rec.product_id.default_code if rec.product_id else False
-
     def action_coa_passed(self):
         self.qc_status = 'passed'
 

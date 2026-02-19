@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
@@ -50,7 +51,20 @@ class StockMoveLine(models.Model):
                 line.lot_id.length_uom = line.length_uom
                 line.lot_id.grade_type = line.grade_type
         return res
-    
+
+    @api.onchange('lot_name')
+    def _onchange_lot_name_check_duplicate(self):
+        if self.lot_name:
+            existing_lot = self.env['stock.lot'].search([
+                ('name', '=', self.lot_name),
+            ], limit=1)
+
+            if existing_lot:
+                raise ValidationError(
+                    _("Serial Number '%s' already exists for the product '%s'. "
+                    "Please check the product serial number.")
+                    % (self.lot_name, self.product_id.display_name)
+                )
 
 class StockMove(models.Model):
     _inherit = 'stock.move'
