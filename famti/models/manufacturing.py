@@ -42,6 +42,7 @@ class MrpProduction(models.Model):
         string="Consumables"
     )
     
+    
 
     @api.onchange('product_id')
     def _onchange_product_id_set_code(self):
@@ -249,11 +250,12 @@ class MrpProduction(models.Model):
                 }
 
                 for label, value in fields_to_check.items():
-                    if value <= 0:
-                        raise ValidationError(
-                            _("Serial %s: Please Enter the value for  %s .")
-                            % (rec.serial_number or '', label)
-                        )
+                    if not rec.total_scrap or rec.total_scrap == 0:
+                        if value <= 0:
+                            raise ValidationError(
+                                _("Serial %s: Please Enter the value for  %s .")
+                                % (rec.serial_number or '', label)
+                            )
 
             if mo.product_id.tracking == 'lot' and mo.serial_line_ids:
                 mo._create_lots_and_move_lines()
@@ -303,7 +305,7 @@ class MrpProduction(models.Model):
                 'quantity': line.quantity,
                 'product_uom_id': line.uom_id.id,
                 'location_id': move.location_id.id,
-                'location_dest_id': move.location_dest_id.id,
+                'location_dest_id': line.location_id.id,
                 'thickness': line.thickness,
                 'thickness_uom': line.thickness_uom,
                 'core_id': line.core_id,

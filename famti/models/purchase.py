@@ -94,6 +94,31 @@ class PurchaseOrderLine(models.Model):
     # uom_conv_id = fields.Many2one('uom.convert.wizard',string="UOM Conversion Wizard")
     pieces = fields.Float(string="Pieces")
 
+    description = fields.Text(string="Product Description")
+    remarks = fields.Text(string="Remarks")
+
+    treatment_in = fields.Selection([
+            ('corona', 'Corona'),
+            ('met_corona', 'Met on Corona'),
+            ('met_chemical', 'Met on Chemical'),
+            ('met_plain', 'Met on Plain'),
+            ('plain', 'Plain'),
+            ('pvdc', 'PVDC COATED'),
+            ('soft_touch', 'SOFT TOUCH'),
+            ('alox', 'Top coat Alox'),
+        ], string="Treatment IN")
+
+    treatment_out = fields.Selection([
+            ('acrylic', 'ACRYLIC'),
+            ('corona', 'Corona'),
+            ('met_plain', 'Met on Plain'),
+            ('met_corona', 'Met on Corona'),
+            ('met_corona_out', 'Metallized on Corona Outside'),
+            ('met_chemical', 'Metallized on Chemical'),
+            ('plain', 'Plain'),
+            ('pvdc_out', 'PVDC COATED'),
+        ], string="Treatment OUT")
+
 
     def action_open_uom_conversion(self):
         print(f'-line 46--------{self}--{self.ids}')
@@ -108,10 +133,8 @@ class PurchaseOrderLine(models.Model):
             }
         }
 
-
-
-
-
-
-
-
+    @api.onchange('product_id')
+    def _onchange_product_id_set_film_description(self):
+        if self.product_id:
+            if self.product_id.film_description:
+                self.description = self.product_id.film_description

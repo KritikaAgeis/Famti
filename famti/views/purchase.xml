@@ -74,8 +74,10 @@
                 </xpath>
 
                 <xpath expr="//field[@name='order_line']/list/field[@name='product_id']" position="after">
-                    <field name="weight_val"/>
-                    <field name="weight_uom" no_label="1"/>
+                    <field name="description"/>
+                    <field name="treatment_in"/>
+                    <field name="treatment_out"/>
+                    <field name="remarks"/>
                     <field name="thickness_val"/>
                     <field name="thickness_uom" no_label="1"/>
                     <field name="width_val"/>

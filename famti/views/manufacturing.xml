@@ -51,7 +51,7 @@
                             <field name="thickness_uom" optional="hide"/>
                             <field name="width" optional="hide" required="1"/>
                             <field name="width_uom" optional="hide"/>
-                            <field name="core_id" optional="hide" required="1"/>
+                            <field name="core_id" optional="hide" />
                             <field name="length" optional="hide" required="1"/>
                             <field name="length_uom" optional="hide"/>
                             <field name="total_input"/>
@@ -87,7 +87,7 @@
 
             <xpath expr="//page[@name='components']" position="replace">
                 <page name="components" string="Components">
-                    <field name="raw_material_move_ids" idget="stock_move_one2many" context="{'default_date': date_start, 'default_date_deadline': date_start, 'default_location_id': location_src_id, 'default_location_dest_id': production_location_id, 'default_warehouse_id': warehouse_id, 'default_state': 'draft', 'default_raw_material_production_id': id, 'default_picking_type_id': picking_type_id, 'default_company_id': company_id, 'form_view_ref': 'mrp.view_mrp_stock_move_operations', 'active_mo_id': id}" readonly="state == 'cancel' or (state == 'done' and is_locked)">
+                    <field name="raw_material_move_ids" widget="stock_move_one2many" context="{'default_date': date_start, 'default_date_deadline': date_start, 'default_location_id': location_src_id, 'default_location_dest_id': production_location_id, 'default_warehouse_id': warehouse_id, 'default_state': 'draft', 'default_raw_material_production_id': id, 'default_picking_type_id': picking_type_id, 'default_company_id': company_id, 'form_view_ref': 'mrp.view_mrp_stock_move_operations', 'active_mo_id': id}" readonly="state == 'cancel' or (state == 'done' and is_locked)">
                         <list default_order="is_done, manual_consumption desc, sequence" editable="bottom">
                             <control>
                                 <create string="Add a line"/>
@@ -143,14 +143,14 @@
 
             <xpath expr="//page[@name='components']" position="after">
                 <page string="Consumables">
-                    <field name="consumable_move_ids" idget="stock_move_one2many" context="{'default_date': date_start, 'default_date_deadline': date_start, 'default_location_id': location_src_id, 'default_location_dest_id': production_location_id, 'default_warehouse_id': warehouse_id, 'default_state': 'draft', 'default_raw_material_production_id': id, 'default_picking_type_id': picking_type_id, 'default_company_id': company_id, 'form_view_ref': 'mrp.view_mrp_stock_move_operations', 'active_mo_id': id}" readonly="state == 'cancel' or (state == 'done' and is_locked)">
+                    <field name="consumable_move_ids" widget="stock_move_one2many" context="{'default_date': date_start, 'default_date_deadline': date_start, 'default_location_id': location_src_id, 'default_location_dest_id': production_location_id, 'default_warehouse_id': warehouse_id, 'default_state': 'draft', 'default_raw_material_production_id': id, 'default_picking_type_id': picking_type_id, 'default_company_id': company_id, 'form_view_ref': 'mrp.view_mrp_stock_move_operations', 'active_mo_id': id}" readonly="state == 'cancel' or (state == 'done' and is_locked)">
                         <list default_order="is_done, manual_consumption desc, sequence" editable="bottom">
                             <control>
                                 <create string="Add a line"/>
                                 <button name="action_add_from_catalog_raw" string="Catalog" type="object" class="px-4 btn-link" context="{'order_id': parent.id}"/>
                             </control>
                             <field name="product_id" force_save="1" context="{'default_is_storable': True}" required="1" readonly="move_lines_count &gt; 0 or state == 'cancel' or (state != 'draft' and not additional)" domain="['&amp;', ('type', '=', 'consu'), ('id', '!=', parent.product_id)]"/>
-                            <field name="location_id" string="From" readonly="1" force_save="1" groups="stock.group_stock_multi_locations" optional="show"/>
+                            <field name="location_id" string="From" force_save="1" groups="stock.group_stock_multi_locations" optional="show"/>
                             <!-- test_immediate_validate_uom_2, test_product_produce_different_uom -->
                             <field name="product_uom" column_invisible="True"/>
                             <field name="propagate_cancel" column_invisible="True"/>

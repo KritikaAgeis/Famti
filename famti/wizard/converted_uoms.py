@@ -6,7 +6,7 @@ class UOMConversionWizard(models.TransientModel):
     _name = "uom.convert.wizard"
     _description = "UOM Conversion Wizard"
 
-    uom_id = fields.Selection([('kg','Kilogram (kg)'),('gm','Gram (g)'),('lbs','Pound (lb)'),('oz',' Ounce (oz)'),('ton','• Ton / Metric Ton')],string="UOM",default='kg')
+    uom_id = fields.Selection([('kg','Kilogram (kg)'),('lbs','Pound (lb)')],string="UOM",default='kg')
 
     purchase_id = fields.Many2one('purchase.order')
 

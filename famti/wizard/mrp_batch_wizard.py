@@ -92,24 +92,22 @@ class MrpBatchProduce(models.TransientModel):
             'core_id': "Core",
             'length': "Length",
             'length_uom': "Length UOM",
+            'grade_type': "Grade Type",
         }
 
         for index, line in enumerate(self.line_ids, start=1):
             serial = line.serial_number or f"Line {index}"
-
+        
             for field_name, field_label in required_fields.items():
-                if not line[field_name]:
-                    raise ValidationError(f"Line {index}: {field_label} is required.")
+                if not line.scrap or line.scrap == 0:
+                    if not line[field_name]:
+                        raise ValidationError(f"Line {index}: {field_label} is required.")
                     
         
 
         for line in self.line_ids:
             
             if line.scrap and line.scrap > 0:
-                if not line.grade_type:
-                    raise ValidationError(
-                        f"Serial {serial}: Grade is required when Scrap is entered."
-                    )
                 if not line.scrap_reason_tag_ids:
                     raise ValidationError(
                         f"Serial {serial}: Scrap Reason is required when Scrap is entered."
