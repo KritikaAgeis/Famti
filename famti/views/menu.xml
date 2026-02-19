@@ -22,5 +22,20 @@
         <record id="mrp.menu_mrp_traceability" model="ir.ui.menu">
             <field name="name">Serial Numbers</field>
         </record>
+
+                <!-- Parent Menu -->
+        <menuitem
+            id="tolling_customers"
+            name="Tolling"
+            parent="purchase.menu_purchase_root"
+            sequence="3"/>
+
+        <menuitem
+            id="tolling_customers_menu"
+            name="Customers PO"
+            parent="tolling_customers"
+            action="famti.action_tolling_orders"
+            sequence="4"/>
+
     </data>
 </odoo>

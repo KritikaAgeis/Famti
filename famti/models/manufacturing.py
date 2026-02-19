@@ -118,6 +118,8 @@ class MrpProduction(models.Model):
                     'quantity': production.qty_producing,
                     'uom_id': production.product_uom_id.id,
                     'total_input': production.product_qty,
+                    'mo_product_code':production.product_code,
+                    'po_product_code': production.move_raw_ids[-1].product_id.default_code
                 })
 
         return res

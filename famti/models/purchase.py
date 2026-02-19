@@ -24,6 +24,7 @@ class Purchase(models.Model):
     vendor_vat = fields.Char()
     vendor_email = fields.Char(string="Email")
     vendor_phone = fields.Char(string="Contact")
+    is_tolling = fields.Boolean(string='Is Tolling?')
 
     @api.onchange('partner_id')
     def _onchange_partner_id_address(self):
