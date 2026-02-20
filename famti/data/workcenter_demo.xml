@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="workcenter_s1" model="mrp.workcenter">
+            <field name="name">Dahua Slitter</field>
+            <field name="code">S1</field>
+        </record>
+
+        <record id="workcenter_s2" model="mrp.workcenter">
+            <field name="name">Kody Slitter 1</field>
+            <field name="code">S2</field>
+        </record>
+
+        <record id="workcenter_s3" model="mrp.workcenter">
+            <field name="name">Kody Slitter 2</field>
+            <field name="code">S3</field>
+        </record>
+
+        <record id="workcenter_s4" model="mrp.workcenter">
+            <field name="name">Kody Slitter 3</field>
+            <field name="code">S4</field>
+        </record>
+
+        <record id="workcenter_s5" model="mrp.workcenter">
+            <field name="name">Kody Slitter 4</field>
+            <field name="code">S5</field>
+        </record>
+
+
+        <record id="workcenter_m1" model="mrp.workcenter">
+            <field name="name">Metalliser 1</field>
+            <field name="code">M1</field>
+        </record>
+
+        <record id="workcenter_m2" model="mrp.workcenter">
+            <field name="name">Metalliser 2</field>
+            <field name="code">M2</field>
+        </record>
+
+    </data>
+</odoo>
