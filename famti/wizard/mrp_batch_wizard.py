@@ -141,7 +141,7 @@ class MrpBatchProduce(models.TransientModel):
                     'production_scrap_id': production.id,
                     'source_location_id': production.location_dest_id.id,
                     'scrap_reason_tag_ids': [(6, 0, line.scrap_reason_tag_ids.ids)],
-                    'location_id': production.scrap_location_id.id, 
+                    'location_id': line.location_id.id, 
                     'serial_number': line.serial_number,
                     'quantity': line.scrap,
                     'uom_id': line.uom_id.id,

@@ -75,7 +75,30 @@
                     <field name="partner_outstanding" readonly="1"/>
                     <field name="partner_lc_document"/>
                 </group>
+                    <field name="customer_email"/>
+                    <field name="customer_phone"/>
             </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="customer_email"/>
+                <field name="customer_phone"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
+                <field name="description"/>
+                <field name="treatment_in"/>
+                <field name="treatment_out"/>
+                <field name="remarks"/>
+                <field name="thickness_val"/>
+                <field name="thickness_uom"/>
+                <field name="width_val"/>
+                <field name="width_uom"/>
+                <field name="core_id"/>
+                <field name="pieces"/>
+                <field name="length_val"/>
+                <field name="length_uom"/>
+            </xpath>
+
+            
         </field>
     </record>
 </odoo>

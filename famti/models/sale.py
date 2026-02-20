@@ -35,6 +35,11 @@ class SaleOrder(models.Model):
         readonly=True
     )
 
+    customer_email = fields.Char(string="Email")
+    customer_phone = fields.Char(string="Contact")
+
+
+
     @api.depends('partner_id')
     def _compute_partner_credit_info(self):
         for order in self:
@@ -107,3 +112,41 @@ class SaleOrder(models.Model):
                 'famti.group_cheif_financial_officer'):
             raise UserError("Sale Order requires CFO approval.")
         return super().action_confirm()
+
+
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    description = fields.Text(string="Product Description")
+    remarks = fields.Text(string="Remarks")
+
+    treatment_in = fields.Selection([
+        ('corona', 'Corona'),
+        ('met_corona', 'Met on Corona'),
+        ('met_chemical', 'Met on Chemical'),
+        ('met_plain', 'Met on Plain'),
+        ('plain', 'Plain'),
+        ('pvdc', 'PVDC COATED'),
+        ('soft_touch', 'SOFT TOUCH'),
+        ('alox', 'Top coat Alox'),
+    ], string="Treatment IN")
+
+    treatment_out = fields.Selection([
+        ('acrylic', 'ACRYLIC'),
+        ('corona', 'Corona'),
+        ('met_plain', 'Met on Plain'),
+        ('met_corona', 'Met on Corona'),
+        ('met_corona_out', 'Metallized on Corona Outside'),
+        ('met_chemical', 'Metallized on Chemical'),
+        ('plain', 'Plain'),
+        ('pvdc_out', 'PVDC COATED'),
+    ], string="Treatment OUT")
+
+    thickness_val = fields.Float(string="Thickness",help="This helps to categorise specific product.")
+    thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron'),('mm','MM'),('mil','Mil')],default='micron',string=" ")
+    width_val = fields.Float(string="Width",help="This helps to categorise specific product.")
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch'),('mm','MM'),('mil','Mil')],default='mm',string=" ")
+    core_id = fields.Selection(selection=[('3','3 Inch'),('6','6 Inch')],string="Core")
+    length_val = fields.Float(string="Length", help="Product Length")
+    length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
+    pieces = fields.Float(string="Pieces")
