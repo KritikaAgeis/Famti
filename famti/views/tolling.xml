@@ -93,8 +93,6 @@
             </field>
         </record>
 
-<<<<<<< HEAD
-=======
         <record id="view_stock_picking_form_tolling" model="ir.ui.view">
             <field name="name">stock.picking.form.tolling</field>
             <field name="model">stock.picking</field>
@@ -137,8 +135,6 @@
                 }
             </field>
         </record>
-
->>>>>>> 74cb1d6 ([update] for tolling and other changes)
 
 
     </data>
