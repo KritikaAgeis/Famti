@@ -37,5 +37,12 @@
             action="famti.action_tolling_orders"
             sequence="4"/>
 
+        <menuitem
+            id="tolling_receipts_menu"
+            name="Customers Receipts"
+            parent="tolling_customers"
+            action="famti.action_tolling_receipts"
+            sequence="5"/>
+
     </data>
 </odoo>

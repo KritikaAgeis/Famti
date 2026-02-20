@@ -6,9 +6,55 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
 
-                <!-- Change Vendor Label -->
-                <xpath expr="//field[@name='partner_id']" position="attributes">
+                <xpath expr="//field[@name='partner_id'][1]" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_id'][1]" position="after">
+                    <field name="partner_id"
+                        string="Vendor"
+                        domain="[('is_supplier','=',True)]"
+                        invisible="is_tolling"/>
+
+                    <field name="partner_id"
+                        string="Customer"
+                        domain="[('is_supplier','=',False)]"
+                        invisible="not is_tolling"/>
+                </xpath>
+
+                <!-- <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="string">Customer</attribute>
+                    <attribute name="domain">
+                    [('is_supplier','=',0)] if is_tolling else [('is_supplier','!=',0)]</attribute>
+                </xpath> -->
+
+                <xpath expr="//field[@name='vendor_vat']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='vendor_vat']" position="after">
+                    <field name="vendor_vat"
+                        string="Vendor VAT"
+                        invisible="is_tolling"/>
+
+                    <field name="vendor_vat"
+                        string="Customer VAT"
+                        invisible="not is_tolling"/>
+                </xpath>
+
+
+                <xpath expr="//field[@name='partner_ref']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_ref']" position="after">
+                    <field name="partner_ref"
+                        string="Vendor Reference"
+                        invisible="is_tolling"/>
+
+                    <field name="partner_ref"
+                        string="Customer Reference"
+                        invisible="not is_tolling"/>
                 </xpath>
 
             </field>
@@ -47,6 +93,52 @@
             </field>
         </record>
 
+<<<<<<< HEAD
+=======
+        <record id="view_stock_picking_form_tolling" model="ir.ui.view">
+            <field name="name">stock.picking.form.tolling</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="domain">
+                        [('is_supplier','=',False)] if purchase_id.is_tolling else [('is_supplier','=',True)]
+                    </attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="action_tolling_receipts" model="ir.actions.act_window">
+            <field name="name">Tolling Receipts</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_mode">kanban,list,form</field>
+
+            <field name="views" eval="[
+                (ref('stock.vpicktree'), 'list'),
+                (ref('view_stock_picking_form_tolling'), 'form')
+            ]"/>
+
+            <field name="domain">
+                [
+                    ('picking_type_id.code', '=', 'incoming'),
+                    ('purchase_id.is_tolling', '=', True)
+                ]
+            </field>
+
+            <field name="context">
+                {
+                    'default_picking_type_code': 'incoming',
+                    'contact_display': 'partner_address', 
+                    'restricted_picking_type_code': 'incoming', 
+                    'search_default_reception': 1,
+                    'default_is_tolling': 'True'
+                }
+            </field>
+        </record>
+
+>>>>>>> 74cb1d6 ([update] for tolling and other changes)
 
 
     </data>

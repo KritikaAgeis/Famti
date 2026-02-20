@@ -1,6 +1,12 @@
 from odoo import models, fields, api
 
-class StockLocation(models.Model):
-    _inherit = 'stock.location'
+# class StockLocation(models.Model):
+#     _inherit = 'stock.location'
 
-    serial_prefix = fields.Char(string="Serial Prefix")
+#     serial_prefix = fields.Char(string="Serial Prefix")
+
+
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
+
+    is_tolling = fields.Boolean(string="Is Tolling")
