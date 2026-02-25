@@ -48,7 +48,7 @@ class MrpBatchProduceLine(models.TransientModel):
             product_name = component_move.product_id.name.replace(" ", "")
             numeric = re.search(r'(\d+)$', rec.serial_number)
             numeric_part = numeric.group(1) if numeric else rec.serial_number
-            rec.serial_number = f"W{product_name}{numeric_part}"
+            rec.serial_number = f"W{product_name}"
 
 
 class MrpBatchProduce(models.TransientModel):

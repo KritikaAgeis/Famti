@@ -22,7 +22,7 @@ class ResPartner(models.Model):
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('verified_vendor', 'Certificate Vendor'),
+        ('verified_vendor', 'Certificate Verified'),
         ('certificate_expired', 'Certificate Expired'),
     ], string="Vendor Status", default='draft', tracking=True)
 

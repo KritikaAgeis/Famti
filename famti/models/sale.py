@@ -74,7 +74,7 @@ class SaleOrder(models.Model):
 
         today = date.today()
         for inv in unpaid_invoices:
-            if inv.invoice_date_due and inv.invoice_date_due < today:
+            if inv.invoice_date_due < today:
                 overdue_days = (today - inv.invoice_date_due).days
                 if overdue_days > partner.credit_grace_days:
                     return (

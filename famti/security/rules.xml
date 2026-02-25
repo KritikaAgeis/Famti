@@ -15,8 +15,13 @@
                 <field name="category_id" ref="famti.module_category_famti_users"/>
             </record>
 
-           <record id="group_sales_dep_users" model="res.groups">
+            <record id="group_sales_dep_users" model="res.groups">
                 <field name="name">Sales User</field>
+                <field name="category_id" ref="famti.module_category_famti_users"/>
+            </record>
+
+            <record id="group_inventory_dep_users" model="res.groups">
+                <field name="name">Inventory User</field>
                 <field name="category_id" ref="famti.module_category_famti_users"/>
             </record>
 
@@ -25,7 +30,12 @@
         <record id="purchase_order_own_records_rule" model="ir.rule">
             <field name="name">Famti Purchase Order: Own Documents Only</field>
             <field name="model_id" ref="purchase.model_purchase_order"/>
-            <field name="domain_force">[('create_uid', '=', user.id)]</field>
+            <!-- <field name="domain_force">[('create_uid', '=', user.id)]</field> -->
+            <field name="domain_force">[
+                    '|',
+                    ('user_id', '=', user.id),
+                    ('user_id', '=', False)
+                ]</field>
             <field name="groups" eval="[(4, ref('famti.group_purchase_dep_users'))]"/>
         </record>
 
