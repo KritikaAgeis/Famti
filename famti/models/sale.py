@@ -37,6 +37,13 @@ class SaleOrder(models.Model):
 
     customer_email = fields.Char(string="Email")
     customer_phone = fields.Char(string="Contact")
+    valuation_line_ids = fields.One2many('sale.mo.valuation', 'sale_id', string="MO Valuation")
+    mo_ids = fields.One2many(
+	'mrp.production',
+	'origin',
+	string="Manufacturing Orders",
+	compute="_compute_mo_ids"
+    )
 
     so_type = fields.Selection([
         ('sample', 'Sample'),
