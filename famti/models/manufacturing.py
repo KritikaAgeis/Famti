@@ -347,7 +347,7 @@ class MrpProduction(models.Model):
                 'product_uom_id': line.uom_id.id,
                 'lot_id': lot.id,
                 # 'location_id': line.source_location_id.id or self.location_src_id.id,
-                'location_id': line.location_id.id,
+                'location_id': self.location_dest_id.id or line.location_id.id,
                 'scrap_location_id': line.location_id.id,
                 'company_id': self.company_id.id,
                 'origin': self.name,
@@ -355,7 +355,20 @@ class MrpProduction(models.Model):
                 'scrap_reason_tag_ids': [(6, 0, line.scrap_reason_tag_ids.ids)],
             })
 
-            scrap.action_validate()
+            action = scrap.with_context(
+                not_unlink_on_discard=True
+            ).action_validate()
+
+            if isinstance(action, dict):
+                wizard = self.env[action['res_model']].with_context(
+                    action.get('context', {})
+                ).create({
+                    'scrap_id': scrap.id
+                })
+
+                wizard.action_done()
+
+            # scrap.action_validate()
 
 
     def action_product_code(self):

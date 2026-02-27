@@ -22,7 +22,7 @@ class ResPartner(models.Model):
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('verified_vendor', 'Certificate Vendor'),
+        ('verified_vendor', 'Certified Vendor'),
         ('certificate_expired', 'Certificate Expired'),
     ], string="Vendor Status", default='draft', tracking=True)
 
@@ -30,12 +30,17 @@ class ResPartner(models.Model):
 
     credit_grace_days = fields.Integer(string="Credit Grace Period (Days)", default=0)
     lc_required = fields.Boolean(string="LC Required")
-    lc_document = fields.Binary(string="LC Document")
+    lc_document = fields.Binary(string="LC Document",required=True)
 
 
     def action_iso_certificate_updated(self):
         for rec in self:
-            rec.state = 'verified_vendor'
+            if rec.is_supplier:
+                if not rec.iso_vendor_certificate:
+                    raise UserError("Please Upload The ISO Certificate.")
+                if not rec.vendor_document_expiry:
+                    raise UserError("Please Mention The Certificate Expiry Date.")
+                rec.state = 'verified_vendor'
 
     def action_iso_certificate_renew(self):
         for rec in self:

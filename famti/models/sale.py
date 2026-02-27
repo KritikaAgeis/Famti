@@ -38,6 +38,13 @@ class SaleOrder(models.Model):
     customer_email = fields.Char(string="Email")
     customer_phone = fields.Char(string="Contact")
 
+    so_type = fields.Selection([
+        ('sample', 'Sample'),
+        ('normal', 'Normal'),
+        ('tolling', 'Tolling'),
+        ('fgf', 'FGF'),
+    ], string='SO Type', tracking=True, default='sample')
+
 
 
     @api.depends('partner_id')

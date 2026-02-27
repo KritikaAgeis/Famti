@@ -82,6 +82,9 @@
                 <field name="customer_email"/>
                 <field name="customer_phone"/>
             </xpath>
+             <xpath expr="//field[@name='date_order']" position="before">
+                <field name="so_type"/>
+            </xpath>
 
             <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
                 <field name="description"/>
