@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools import float_compare
 from datetime import date
 
@@ -230,7 +230,17 @@ class MrpProduction(models.Model):
                 )
 
     def button_mark_done(self):
+        failed_lots=[]
         for mo in self:
+            if mo.move_raw_ids:
+                for prod in mo.move_raw_ids:
+                    for lot in prod.lot_ids:
+                            if lot.qc_status in ['pending','failed']:
+                                failed_lots.append(lot.name)
+            if failed_lots:
+                raise UserError(
+                    f"The following Lots are not QC Approved:\n{', '.join(failed_lots)}"
+                )
 
             not_done_workorders = self.workorder_ids.filtered(
                 lambda wo: wo.state != 'done'
