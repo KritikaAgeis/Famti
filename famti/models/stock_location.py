@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 # class StockLocation(models.Model):
 #     _inherit = 'stock.location'

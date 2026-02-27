@@ -218,6 +218,20 @@
 <!--        </field>-->
 <!--    </record>-->
 
+    <record id="mrp_bom_form_inherit_required_ref" model="ir.ui.view">
+        <field name="name">mrp.bom.form.required.ref</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_qty']/.." position="after">
+                <field name="cost_price"/>
+            </xpath>
+        </field>
+    </record>
+
 
 
 </odoo>

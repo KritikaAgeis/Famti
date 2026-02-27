@@ -276,7 +276,44 @@ class MrpProduction(models.Model):
             # if not mo.product_code:
             #     mo.product_code = mo.action_product_code()
 
-        return super().button_mark_done()
+        # return super().button_mark_done()
+        res = super().button_mark_done()
+        self._create_sale_mo_valuation()
+
+        return res
+
+
+    def _create_sale_mo_valuation(self):
+        for mo in self:
+            if not mo.procurement_group_id.sale_id:
+                continue
+            valuation_layers = self.env['stock.valuation.layer'].search([
+                ('stock_move_id.production_id', '=', mo.id)
+            ])
+
+            unit_cost = sum(valuation_layers.mapped('unit_cost'))
+            total_cost = sum(valuation_layers.mapped('value'))
+            existing = self.env['sale.mo.valuation'].search([
+                ('sale_id', '=', mo.procurement_group_id.sale_id.id),
+                ('reference', '=', mo.name)
+            ], limit=1)
+
+            vals = {
+                'sale_id': mo.procurement_group_id.sale_id.id,
+                'mo_id': mo.id,
+                'date': fields.Datetime.now(),
+                'reference': mo.name,
+                'product_id': mo.product_id.id,
+                'quantity': mo.product_qty,
+                'unit_cost': unit_cost,
+                'total_cost': total_cost,
+            }
+
+            if existing:
+                existing.write(vals)   
+            else:
+                self.env['sale.mo.valuation'].create(vals) 
+                
 
     def _create_lots_and_move_lines(self):
         StockLot = self.env['stock.lot']
@@ -525,3 +562,37 @@ class MrpWorkorder(models.Model):
             if mo and not mo.product_code:
                 mo.action_product_code()
         return res
+
+
+class MrpBom(models.Model):
+    _inherit = 'mrp.bom'
+
+    _sql_constraints = [
+        ('bom_code_unique',
+         'unique(code)',
+         'BoM Reference must be unique!')
+    ]
+
+    cost_price = fields.Float(
+        string="Total Cost Price",
+        compute="_compute_total_cost",
+        store=True,
+        digits="Product Price"
+    )
+
+    @api.depends('bom_line_ids.product_id','bom_line_ids.product_qty','bom_line_ids.product_id.standard_price',
+        'operation_ids.time_cycle_manual','operation_ids.workcenter_id.costs_hour')
+    def _compute_total_cost(self):
+        for bom in self:
+            total = 0.0
+
+            for line in bom.bom_line_ids:
+                total += line.product_id.standard_price * line.product_qty
+
+            for operation in bom.operation_ids:
+                duration_minutes = operation.time_cycle_manual or 0.0
+                cost_per_hour = operation.workcenter_id.costs_hour or 0.0
+
+                total += (duration_minutes / 60.0) * cost_per_hour
+
+            bom.cost_price = total

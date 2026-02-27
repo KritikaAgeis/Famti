@@ -45,6 +45,16 @@ class SaleOrder(models.Model):
         ('fgf', 'FGF'),
     ], string='SO Type', tracking=True, default='sample')
 
+    mo_count = fields.Integer(
+        string="Manufacturing Orders",
+        compute="_compute_mo_count"
+    )
+
+    def _compute_mo_count(self):
+        for order in self:
+            order.mo_count = self.env['mrp.production'].search_count(
+                [('sale_id', '=', order.id)]
+            )
 
 
     @api.depends('partner_id')
@@ -120,6 +130,37 @@ class SaleOrder(models.Model):
             raise UserError("Sale Order requires CFO approval.")
         return super().action_confirm()
 
+    def action_view_mo(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Manufacturing Orders',
+            'res_model': 'mrp.production',
+            'view_mode': 'list,form',
+            'domain': [('sale_id', '=', self.id)],
+            'context': {'default_sale_id': self.id},
+        }
+
+
+    def action_view_manufacturing_cost(self):
+        self.ensure_one()
+
+        service_product = self.env['product.product'].search([
+            ('type', '=', 'service'),
+            ('mo_service_cost', '=', True)
+        ], limit=1)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Manufacturing Cost',
+            'res_model': 'manufacturing.cost.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_sale_id': self.id,
+                'default_manufacturing_service_id': service_product.id,
+            }
+        }
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
@@ -157,3 +198,23 @@ class SaleOrderLine(models.Model):
     length_val = fields.Float(string="Length", help="Product Length")
     length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
     pieces = fields.Float(string="Pieces")
+    mo_price = fields.Float(string="MO Price")
+
+
+class SaleMoValuation(models.Model):
+    _name = 'sale.mo.valuation'
+    _description = 'MO Valuation Lines'
+
+    sale_id = fields.Many2one('sale.order', string="Sale Order")
+
+    date = fields.Datetime(string="Date")
+    reference = fields.Char(string="Reference")
+    product_id = fields.Many2one('product.product', string="Product")
+    mo_id = fields.Many2one(
+        'mrp.production',
+        string="Manufacturing Order"
+    )
+    quantity = fields.Float(string="Quantity")
+    unit_cost = fields.Float(string="Unit Cost")
+    total_cost = fields.Float(string="Total Cost")
+

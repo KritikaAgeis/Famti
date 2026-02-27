@@ -29,7 +29,7 @@
     </record>
 
     <record id="location_toll" model="stock.location">
-        <field name="name">Tolling</field>
+        <field name="name">TL</field>
         <field name="posx">0</field>
         <field name="location_id" model="stock.location"
                 eval="obj().env.ref('famti.warehouse_famti_fw').lot_stock_id.id"/>

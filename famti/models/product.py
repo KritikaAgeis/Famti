@@ -14,6 +14,7 @@ class ProductTemplate(models.Model):
     treatment_in = fields.Char(string="Treatment In")
     treatment_out = fields.Char(string="Treatment Out")
     product_reference_code = fields.Char(string="Product Code")
+    mo_service_cost = fields.Boolean(string="Is Manufacturing Cost")
 
 
 
@@ -29,6 +30,7 @@ class ProductProduct(models.Model):
     type_reference = fields.Char(string="Type")
     treatment_in = fields.Char(string="Treatment In")
     treatment_out = fields.Char(string="Treatment Out")
+    mo_service_cost = fields.Boolean(string="Is Manufacturing Cost")
 
     low_stock_alert_sent = fields.Boolean(
         string="Low Stock Alert Sent",

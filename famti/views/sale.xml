@@ -100,6 +100,47 @@
                 <field name="length_val"/>
                 <field name="length_uom"/>
             </xpath>
+            
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="after">
+                <field name="mo_price"/>
+            </xpath>
+
+            <xpath expr="//page[@name='order_lines']" position="after">
+                <page string="MO Valuation">
+
+                    <field name="valuation_line_ids">
+                        <list editable="bottom">
+                            <field name="date"/>
+                            <field name="reference"/>
+                            <field name="product_id"/>
+                            <field name="quantity"/>
+                            <field name="unit_cost"/>
+                            <field name="total_cost"/>
+                        </list>
+                    </field>
+
+                </page>
+            </xpath>
+
+            <xpath expr="//div[@name='so_button_below_order_lines']" position="inside">
+                    <button name="action_view_manufacturing_cost"
+                        type="object"
+                        string="Manufacturing Cost"
+                    />
+            </xpath>
+
+            <!-- <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_mo"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-industry">
+
+                    <field name="mo_count"
+                        widget="statinfo"
+                        string="Manufacturing Orders"/>
+
+                </button>
+            </xpath> -->
 
             
         </field>
