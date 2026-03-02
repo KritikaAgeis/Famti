@@ -9,5 +9,16 @@
             <field name="interval_type">days</field>
             <field name="active">True</field>
         </record>
+
+        <record id="ir_cron_low_stock_alert" model="ir.cron">
+            <field name="name">Low Stock Product Check</field>
+            <field name="model_id" search="[('model','=','product.product')]"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
+            <field name="code">model.check_low_stock_products()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active">True</field>
+        </record>
     </data>
 </odoo>

@@ -25,8 +25,8 @@ class Purchase(models.Model):
     vendor_email = fields.Char(string="Email")
     vendor_phone = fields.Char(string="Contact")
     is_tolling = fields.Boolean(string='Is Tolling?')
-    logo = fields.Image("Logo", max_width=1920, max_height=1920,default=lambda self: self.env.company.logo)
 
+    remarks = fields.Text("Remarks")
 
     @api.onchange('partner_id')
     def _onchange_partner_id_address(self):
@@ -70,6 +70,20 @@ class Purchase(models.Model):
         if not self.env.user.has_group('purchase.group_purchase_manager'):
             raise  UserError("You are not allowed to process this purchase. Please send to 'CFO' for approval")
         return super().button_confirm()
+
+    @api.model
+    def create(self, vals):
+        if not vals.get('notes'):
+            vals['notes'] = """
+                <p><strong>Terms & Conditions:</strong></p>
+
+                <ul>
+                <li>Invoice each P.O. separately in duplicate showing the above P.O. number and shipping information.</li>
+                <li>All duty and/or taxes must be shown separately on invoice where applicable.</li>
+                <li>This order is subject to the terms and conditions stated.</li>
+                </ul>
+                """
+        return super().create(vals)
 
 
 

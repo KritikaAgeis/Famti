@@ -7,3 +7,4 @@ from . import stock_move_line
 from . import stock_quant,manufacturing
 from . import product
 from . import costing_sheet,stock_location
+from . import accounting

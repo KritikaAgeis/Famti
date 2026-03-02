@@ -45,6 +45,11 @@ class StockLot(models.Model):
     product_code =fields.Char(string="Product Code")
     mo_product_code =fields.Char(string="MO Product Code")
     grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
+
+    production_id = fields.Many2one(
+        'mrp.production',
+        string="Produced From MO"
+    )
     
     # @api.depends('product_id')
     # def _compute_product_code(self):

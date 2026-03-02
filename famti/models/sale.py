@@ -14,7 +14,7 @@ class SaleOrder(models.Model):
         ('done', 'Locked'),
         ('cancel', 'Cancelled'),
     ], string='Status', readonly=True, tracking=True, default='draft')
-    logo = fields.Image("Logo", max_width=1920, max_height=1920,default=lambda self: self.env.company.logo)
+
 
     partner_credit_limit = fields.Monetary(
         string="Credit Limit",
@@ -37,6 +37,13 @@ class SaleOrder(models.Model):
 
     customer_email = fields.Char(string="Email")
     customer_phone = fields.Char(string="Contact")
+    valuation_line_ids = fields.One2many('sale.mo.valuation', 'sale_id', string="MO Valuation")
+    mo_ids = fields.One2many(
+	'mrp.production',
+	'origin',
+	string="Manufacturing Orders",
+	compute="_compute_mo_ids"
+    )
 
     so_type = fields.Selection([
         ('sample', 'Sample'),
@@ -45,6 +52,16 @@ class SaleOrder(models.Model):
         ('fgf', 'FGF'),
     ], string='SO Type', tracking=True, default='sample')
 
+    mo_count = fields.Integer(
+        string="Manufacturing Orders",
+        compute="_compute_mo_count"
+    )
+
+    def _compute_mo_count(self):
+        for order in self:
+            order.mo_count = self.env['mrp.production'].search_count(
+                [('sale_id', '=', order.id)]
+            )
 
 
     @api.depends('partner_id')
@@ -81,7 +98,7 @@ class SaleOrder(models.Model):
 
         today = date.today()
         for inv in unpaid_invoices:
-            if inv.invoice_date_due and inv.invoice_date_due < today:
+            if inv.invoice_date_due < today:
                 overdue_days = (today - inv.invoice_date_due).days
                 if overdue_days > partner.credit_grace_days:
                     return (
@@ -120,6 +137,100 @@ class SaleOrder(models.Model):
             raise UserError("Sale Order requires CFO approval.")
         return super().action_confirm()
 
+    def action_view_mo(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Manufacturing Orders',
+            'res_model': 'mrp.production',
+            'view_mode': 'list,form',
+            'domain': [('sale_id', '=', self.id)],
+            'context': {'default_sale_id': self.id},
+        }
+
+
+    def action_view_manufacturing_cost(self):
+        self.ensure_one()
+
+        service_product = self.env['product.product'].search([
+            ('type', '=', 'service'),
+            ('mo_service_cost', '=', True)
+        ], limit=1)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Manufacturing Cost',
+            'res_model': 'manufacturing.cost.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_sale_id': self.id,
+                'default_manufacturing_service_id': service_product.id,
+            }
+        }
+
+
+    @api.onchange('partner_id')
+    def _onchange_partner_set_terms(self):
+        if self.partner_id:
+            self.note = f"""
+                <p><strong>Delivery:</strong></p>
+
+                <p>
+                1. SHIPMENT - ETD - <br/>
+                2. DELIVER TO ADDRESS MENTIONED ABOVE <br/>
+                3. THE PRODUCTS IS AS PER OUR TDS WHICH ARE INDICATIVE VALUES <br/>
+                4. SUBJECT TO JURISDICTION IN TORONTO, CANADA <br/>
+                5. DELAYED PAYMENT WILL BE CHARGED @ 18% P.A <br/>
+                6. LABEL INSTRUCTIONS - <br/>
+                7. PACKING INSTRUCTIONS -
+                </p>
+
+                <p><strong>CONTACT DETAILS:</strong></p>
+
+                <p>
+                CUSTOMER NAME: {self.partner_id.name or ''} <br/>
+                Email: {self.partner_id.email or ''} <br/>
+                Phone Number: {self.partner_id.phone or ''}
+                </p>
+                """
+
+    def _prepare_invoice(self):
+        invoice_vals = super()._prepare_invoice()
+
+        bank_journal = self.env['account.journal'].search([
+            ('type', '=', 'bank')
+        ], limit=1)
+
+        bank_details = ""
+
+        if bank_journal and bank_journal.bank_account_id:
+            bank = bank_journal.bank_account_id.bank_id
+            print("bank id",bank)
+
+            bank_details = f"""
+            <p><strong>Payment Method:</strong></p>
+
+            <p>
+            1. Wire Transfer:<br/>
+            {self.company_id.name} BANKING DETAILS<br/>
+            BANK NAME: {bank.name}<br/>
+            ACCOUNT NO.: {bank_journal.bank_account_id.acc_number}<br/>
+            TRANSIT NO.: {bank_journal.bank_account_id.transit_no or ''}<br/>
+            INST. NO.: {bank_journal.bank_account_id.institution_no or ''}
+            </p>
+
+            <p>
+            2. By Cheque:<br/>
+            Please make a cheque payment to {self.company_id.name}
+            and kindly mention invoice number.
+            </p>
+            """
+
+        invoice_vals['narration'] = bank_details
+
+        return invoice_vals
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
@@ -157,3 +268,23 @@ class SaleOrderLine(models.Model):
     length_val = fields.Float(string="Length", help="Product Length")
     length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
     pieces = fields.Float(string="Pieces")
+    mo_price = fields.Float(string="MO Price")
+
+
+class SaleMoValuation(models.Model):
+    _name = 'sale.mo.valuation'
+    _description = 'MO Valuation Lines'
+
+    sale_id = fields.Many2one('sale.order', string="Sale Order")
+
+    date = fields.Datetime(string="Date")
+    reference = fields.Char(string="Reference")
+    product_id = fields.Many2one('product.product', string="Product")
+    mo_id = fields.Many2one(
+        'mrp.production',
+        string="Manufacturing Order"
+    )
+    quantity = fields.Float(string="Quantity")
+    unit_cost = fields.Float(string="Unit Cost")
+    total_cost = fields.Float(string="Total Cost")
+

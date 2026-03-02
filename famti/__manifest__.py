@@ -27,6 +27,7 @@
         'wizard/stock_lot_wiz.xml',
         'wizard/mrp_batch_wizard.xml',
         'wizard/mrp_scrap_wizard.xml',
+        'wizard/sales_mo_cost_wizard.xml',
         'views/purchase.xml',
         'views/res_partner.xml',
         'views/product.xml',

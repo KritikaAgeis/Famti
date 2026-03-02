@@ -13,7 +13,7 @@
                 <xpath expr="//field[@name='partner_id'][1]" position="after">
                     <field name="partner_id"
                         string="Vendor"
-                        domain="[('is_supplier','=',True)]"
+                        domain="[('is_supplier','=',True),('state','=','verified_vendor')]"
                         invisible="is_tolling"/>
 
                     <field name="partner_id"

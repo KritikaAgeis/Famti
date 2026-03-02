@@ -6,16 +6,6 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
-
-                <xpath expr="//sheet/div[@class='oe_title']" position="inside">
-                    <div class="oe_avatar_container" style="position:absolute; right:16px; top:4px;">
-                        <field name="logo"
-                               widget="image"
-                               class="oe_avatar"
-                               options='{"zoom": true}'/>
-                    </div>
-                </xpath>
-
                 <xpath expr="//form/header/button[@name='button_confirm' and @id='bid_confirm']"
                     position="attributes">
                     <attribute name="invisible">True</attribute>
@@ -99,6 +89,10 @@
                     <field name="category"  optional="hide"  column_invisible="parent.is_tolling"/>
                     <field name="film"  optional="hide"  column_invisible="parent.is_tolling"/>
                     <field name="film_type" optional="hide"  column_invisible="parent.is_tolling"/>
+                </xpath>
+
+                <xpath expr="//page[@name='purchase_delivery_invoice']//group[@name='other_info']/field[@name='incoterm_location']" position="after">
+                    <field name="remarks"/>
                 </xpath>
 
                 <control>

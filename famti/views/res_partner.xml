@@ -80,13 +80,27 @@
                         <field name="credit_grace_days"/>
                     </group>
                     <group>
-                        <field name="lc_document" widget="binary"/>
+                        <field name="lc_document" widget="binary" invisible="is_supplier == 1"/>
                     </group>
                 </group>
             </xpath>
         </field>
     </record>
 
+
+    <record id="view_res_partner_bank_form_inherit_famti" model="ir.ui.view">
+        <field name="name">res.partner.bank.form.inherit.famti</field>
+        <field name="model">res.partner.bank</field>
+        <field name="inherit_id" ref="base.view_partner_bank_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='acc_number']" position="after">
+                <field name="transit_no"/>
+                <field name="institution_no"/>
+            </xpath>
+
+        </field>
+    </record>
 
 
     </data>
