@@ -14,7 +14,7 @@ class ResPartner(models.Model):
 
 
     iso_vendor_certificate = fields.Binary(string="ISO Vendor Certificate",
-        attachment=True
+        attachment=True,required=True
     )
     iso_certificate_name = fields.Char(string="Certificate Name")
     
@@ -87,3 +87,8 @@ class ResPartner(models.Model):
             }).send()
 
     
+class ResPartnerBank(models.Model):
+    _inherit = 'res.partner.bank'
+
+    transit_no = fields.Char("Transit No")
+    institution_no = fields.Char("Institution No")

@@ -14,7 +14,7 @@ class SaleOrder(models.Model):
         ('done', 'Locked'),
         ('cancel', 'Cancelled'),
     ], string='Status', readonly=True, tracking=True, default='draft')
-    logo = fields.Image("Logo", max_width=1920, max_height=1920,default=lambda self: self.env.company.logo)
+
 
     partner_credit_limit = fields.Monetary(
         string="Credit Limit",
@@ -168,6 +168,69 @@ class SaleOrder(models.Model):
                 'default_manufacturing_service_id': service_product.id,
             }
         }
+
+
+    @api.onchange('partner_id')
+    def _onchange_partner_set_terms(self):
+        if self.partner_id:
+            self.note = f"""
+                <p><strong>Delivery:</strong></p>
+
+                <p>
+                1. SHIPMENT - ETD - <br/>
+                2. DELIVER TO ADDRESS MENTIONED ABOVE <br/>
+                3. THE PRODUCTS IS AS PER OUR TDS WHICH ARE INDICATIVE VALUES <br/>
+                4. SUBJECT TO JURISDICTION IN TORONTO, CANADA <br/>
+                5. DELAYED PAYMENT WILL BE CHARGED @ 18% P.A <br/>
+                6. LABEL INSTRUCTIONS - <br/>
+                7. PACKING INSTRUCTIONS -
+                </p>
+
+                <p><strong>CONTACT DETAILS:</strong></p>
+
+                <p>
+                CUSTOMER NAME: {self.partner_id.name or ''} <br/>
+                Email: {self.partner_id.email or ''} <br/>
+                Phone Number: {self.partner_id.phone or ''}
+                </p>
+                """
+
+    def _prepare_invoice(self):
+        invoice_vals = super()._prepare_invoice()
+
+        bank_journal = self.env['account.journal'].search([
+            ('type', '=', 'bank')
+        ], limit=1)
+
+        bank_details = ""
+
+        if bank_journal and bank_journal.bank_account_id:
+            bank = bank_journal.bank_account_id.bank_id
+            print("bank id",bank)
+
+            bank_details = f"""
+            <p><strong>Payment Method:</strong></p>
+
+            <p>
+            1. Wire Transfer:<br/>
+            {self.company_id.name} BANKING DETAILS<br/>
+            BANK NAME: {bank.name}<br/>
+            ACCOUNT NO.: {bank_journal.bank_account_id.acc_number}<br/>
+            TRANSIT NO.: {bank_journal.bank_account_id.transit_no or ''}<br/>
+            INST. NO.: {bank_journal.bank_account_id.institution_no or ''}
+            </p>
+
+            <p>
+            2. By Cheque:<br/>
+            Please make a cheque payment to {self.company_id.name}
+            and kindly mention invoice number.
+            </p>
+            """
+
+        invoice_vals['narration'] = bank_details
+
+        return invoice_vals
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
