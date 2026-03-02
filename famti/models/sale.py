@@ -14,7 +14,7 @@ class SaleOrder(models.Model):
         ('done', 'Locked'),
         ('cancel', 'Cancelled'),
     ], string='Status', readonly=True, tracking=True, default='draft')
-
+    logo = fields.Image("Logo", max_width=1920, max_height=1920,default=lambda self: self.env.company.logo)
 
     partner_credit_limit = fields.Monetary(
         string="Credit Limit",
