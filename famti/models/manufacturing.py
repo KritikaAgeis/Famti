@@ -41,7 +41,8 @@ class MrpProduction(models.Model):
         domain=[('product_id.is_consumables', '=', True)],
         string="Consumables"
     )
-    
+    logo = fields.Image("Logo", max_width=1920, max_height=1920,default=lambda self: self.env.company.logo)
+
     
 
     @api.onchange('product_id')
