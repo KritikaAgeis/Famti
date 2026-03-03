@@ -60,6 +60,13 @@ class MrpProduction(models.Model):
     #                 'product_uom_qty': rec.product_qty,
     #             })]
 
+    @api.model
+    def create(self, vals):
+        if vals.get('origin'):
+            vals['bom_id'] = False
+
+        return super().create(vals)
+
     def action_confirm(self):
         for rec in self:
             for move in rec.move_raw_ids:

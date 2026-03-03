@@ -21,16 +21,16 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    mo_serial_no = fields.Boolean(string="Is Metalize")
-    is_consumables = fields.Boolean(string="Is Consumables")
+    mo_serial_no = fields.Boolean(string="Is Metalize",related='product_tmpl_id.mo_serial_no')
+    is_consumables = fields.Boolean(string="Is Consumables",related='product_tmpl_id.is_consumables')
 
-    supplier_name = fields.Many2one('res.partner',string="Supplier Name")
-    film_description = fields.Text(string="Film Description")
-    material_type = fields.Char(string="Material Type")
-    type_reference = fields.Char(string="Type")
-    treatment_in = fields.Char(string="Treatment In")
-    treatment_out = fields.Char(string="Treatment Out")
-    mo_service_cost = fields.Boolean(string="Is Manufacturing Cost")
+    supplier_name = fields.Many2one('res.partner',string="Supplier Name",related='product_tmpl_id.supplier_name')
+    film_description = fields.Text(string="Film Description",related='product_tmpl_id.film_description')
+    material_type = fields.Char(string="Material Type",related='product_tmpl_id.material_type')
+    type_reference = fields.Char(string="Type",related='product_tmpl_id.type_reference')
+    treatment_in = fields.Char(string="Treatment In",related='product_tmpl_id.treatment_in')
+    treatment_out = fields.Char(string="Treatment Out",related='product_tmpl_id.treatment_out')
+    mo_service_cost = fields.Boolean(string="Is Manufacturing Cost",related='product_tmpl_id.mo_service_cost')
 
     low_stock_alert_sent = fields.Boolean(
         string="Low Stock Alert Sent",

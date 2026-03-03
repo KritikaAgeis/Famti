@@ -56,6 +56,7 @@ class SaleOrder(models.Model):
         string="Manufacturing Orders",
         compute="_compute_mo_count"
     )
+    remarks = fields.Text(string="Remarks")
 
     def _compute_mo_count(self):
         for order in self:
@@ -112,18 +113,18 @@ class SaleOrder(models.Model):
 
     def action_cfo_approval(self):
          for order in self:
+            if not order.order_line:
+                raise UserError("Sales Order must have at least one order line.")
+            self.write({'state': 'to_approve'})
+
+    def action_approve(self):
+        for order in self:
             issue = order._check_credit_and_overdue()
             if issue:
                 raise UserError(issue)
             else:
-                if not order.order_line:
-                    raise UserError("Sales Order must have at least one order line.")
-                self.write({'state': 'to_approve'})
-
-    def action_approve(self):
-        for order in self:
-            if order.state == 'to_approve':
-                order.write({'state': 'draft'})
+                if order.state == 'to_approve':
+                    order.write({'state': 'draft'})
 
             order.action_confirm()
 
