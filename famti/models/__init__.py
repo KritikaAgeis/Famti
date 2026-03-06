@@ -8,3 +8,4 @@ from . import stock_quant,manufacturing
 from . import product
 from . import costing_sheet,stock_location
 from . import accounting
+from . import freight_order

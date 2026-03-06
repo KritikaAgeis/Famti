@@ -80,7 +80,7 @@
                         <field name="credit_grace_days"/>
                     </group>
                     <group>
-                        <field name="lc_document" widget="binary" invisible="is_supplier == 1"/>
+                        <field name="lc_document" widget="url" invisible="is_supplier == 1"/>
                     </group>
                 </group>
             </xpath>

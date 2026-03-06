@@ -28,6 +28,45 @@ class Purchase(models.Model):
     logo = fields.Image("Logo", max_width=1920, max_height=1920, default=lambda self: self.env.company.logo)
 
     remarks = fields.Text("Remarks")
+    freight_ids = fields.One2many(
+        'freight.order',
+        'purchase_id',
+        string="Freight Orders"
+    )
+
+    freight_count = fields.Integer(
+        string="Freight Count",
+        compute="_compute_freight_count"
+    )
+
+
+    def _compute_freight_count(self):
+        for order in self:
+            order.freight_count = len(order.freight_ids)
+
+    def action_view_freight_orders(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id(
+            "famti.freight_order_action"
+        )
+        action['domain'] = [('purchase_id', '=', self.id)]
+        action['context'] = {'default_purchase_id': self.id}
+
+        return action
+
+    def button_approve(self, force=False):
+        result = super(Purchase, self).button_approve(force=force)
+        self._create_freight_cost()
+        return result
+
+    def _create_freight_cost(self):
+        freight = self.env['freight.order']
+        loading_port_id = self.env['freight.port'].search([])[0]
+        discharging_port_id = self.env['freight.port'].search([])[0]
+        for order in self.filtered(lambda po: po.state in ('purchase', 'done')):
+            freight.create([{'shipper_id': order.partner_id.id, 'type': 'import', 'transport_type': 'land','loading_port_id': loading_port_id.id,
+                             'discharging_port_id':discharging_port_id.id,'agent_id':self.env.user.partner_id.id,'purchase_id':order.id}])
+        return
 
     @api.onchange('partner_id')
     def _onchange_partner_id_address(self):
