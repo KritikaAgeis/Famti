@@ -11,6 +11,8 @@
                     'stock',
                     'mrp',
                     'account',
+        'freight_management_system',
+
 
 ],
     'data': [
@@ -43,6 +45,7 @@
         'views/manufacturing.xml',
         'views/costing_sheet.xml',
         'views/accounting.xml',
+        'views/freight_order.xml',
 
     ],
     'demo': [
