@@ -85,7 +85,7 @@
                             <field name="land_type"
                                    invisible="transport_type != 'land'"/>
                             <field name="water_type"
-                                   invisible="transport_type != 'water'"/>
+                                   invisible="transport_type != 'ocean'"/>
                         </group>
                     </group>
                     <group>
@@ -96,6 +96,7 @@
                             <field name="discharging_port_id"/>
                         </group>
                     </group>
+
                     <group>
                         <group>
                             <field name="agent_id"/>
@@ -104,12 +105,30 @@
                             <field name="expected_date"/>
                         </group>
                     </group>
+                    <group>
+                        <group>
+                            <field name="commercial_invoice"/>
+                        </group>
+                        <group>
+                            <field name="certificate_of_analysis"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="bill_of_loading"/>
+                        </group>
+<!--                        <group>-->
+<!--                            <field name="certificate_of_analysis"/>-->
+<!--                        </group>-->
+                    </group>
                     <notebook>
                         <page string="Order">
                             <field name="order_ids">
                                 <list string="Order Lines"
                                       editable="bottom">
                                     <field name="container_id"/>
+                                    <field name="vessel_id"/>
+                                    <field name="packing_list_ids" widget="many2many_tags"/>
                                     <field name="product_id"/>
                                     <field name="billing_type"/>
                                     <field name="pricing_id"/>

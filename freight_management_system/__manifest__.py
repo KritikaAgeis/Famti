@@ -43,6 +43,7 @@
         'views/custom_clearance_views.xml',
         'views/freight_service_views.xml',
         'views/order_track_views.xml',
+        'views/freight_vessel.xml',
         'report/freight_report_templates.xml',
         'report/tracking_report_templates.xml',
         'wizard/custom_clearance_revision_views.xml'

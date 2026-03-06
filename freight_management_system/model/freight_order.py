@@ -87,10 +87,11 @@ class FreightOrder(models.Model):
                                  help="Current company",
                                  default=lambda
                                      self: self.env.company.id)
-    purchase_id = fields.Many2one(
-        'purchase.order',
-        string="Purchase Order"
-    )
+    purchase_id = fields.Many2one('purchase.order',string="Purchase Order")
+    commercial_invoice = fields.Binary(string="Upload Inv.",help="Upload The Commercial Invoice.")
+    certificate_of_analysis = fields.Binary(string="Upload COA")
+    bill_of_loading = fields.Binary(string="Upload BOL",help="Upload the bill of loading.")
+
 
     @api.depends('order_ids.total_price', 'order_ids.volume',
                  'order_ids.weight')
@@ -415,6 +416,8 @@ class FreightOrderLine(models.Model):
                                  help="Current company",
                                  default=lambda
                                      self: self.env.company.id)
+    vessel_id = fields.Many2one('freight.vessel',string="Vessel")
+    packing_list_ids = fields.Many2many('stock.quant.package',string="Packing List")
 
     @api.constrains('weight')
     def _check_weight(self):
