@@ -1,0 +1,129 @@
+<odoo>
+
+    <record id="account_payment_term_10_days_net" model="account.payment.term">
+        <field name="name">10 DAYS NET</field>
+        <field name="note">10 DAYS NET</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 100.0,'nb_days': 10})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_10_adv_bal_cad" model="account.payment.term">
+        <field name="name">10% ADVANCE BAL CAD</field>
+        <field name="note">10% ADVANCE BALANCE CAD</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 10.0,'nb_days': 0}),
+            Command.create({'value': 'percent','value_amount': 90.0,'nb_days': 0})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_10_advance_docs" model="account.payment.term">
+        <field name="name">10% ADVANCE</field>
+        <field name="note">10% ADVANCE AGAINST DOCUMENTS COPY</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 10.0,'nb_days': 0}),
+            Command.create({'value': 'percent','value_amount': 90.0,'nb_days': 0})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_15_days_net" model="account.payment.term">
+        <field name="name">15 DAYS NET</field>
+        <field name="note">15 DAYS NET AFTER DELIVERY</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 100.0,'nb_days': 15})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_20_adv_80_bl" model="account.payment.term">
+        <field name="name">20% ADV 80% BL</field>
+        <field name="note">20% ADVANCE, 80% AGAINST DOCUMENTS</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 20.0,'nb_days': 0}),
+            Command.create({'value': 'percent','value_amount': 80.0,'nb_days': 0})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_30_adv_70_bl" model="account.payment.term">
+        <field name="name">30% ADV 70% BL</field>
+        <field name="note">30% ADVANCE 70% AT SIGHT OF BL COPY</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 30.0,'nb_days': 0}),
+            Command.create({'value': 'percent','value_amount': 70.0,'nb_days': 0})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_30_days_net" model="account.payment.term">
+        <field name="name">30 DAYS NET</field>
+        <field name="note">30 DAYS NET AFTER DELIVERY</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 100.0,'nb_days': 30})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_45_days_bl" model="account.payment.term">
+        <field name="name">45 DAYS FROM BL</field>
+        <field name="note">45 DAYS FROM BL</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 100.0,'nb_days': 45})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_50_advance" model="account.payment.term">
+        <field name="name">50% ADVANCE</field>
+        <field name="note">50% ADVANCE BALANCE BEFORE SHIP</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 50.0,'nb_days': 0}),
+            Command.create({'value': 'percent','value_amount': 50.0,'nb_days': 0})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_60_days_bl" model="account.payment.term">
+        <field name="name">60 DAYS FROM BL</field>
+        <field name="note">60 DAYS FROM BL</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 100.0,'nb_days': 60})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_adv_15_bal_30" model="account.payment.term">
+        <field name="name">ADV 15% BAL 30</field>
+        <field name="note">ADV 15% BALANCE 30 DAYS FROM BL</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 15.0,'nb_days': 0}),
+            Command.create({'value': 'percent','value_amount': 85.0,'nb_days': 30})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_net_30_delivery" model="account.payment.term">
+        <field name="name">NET 30 DAYS</field>
+        <field name="note">NET 30 AFTER DELIVERY</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 100.0,'nb_days': 30})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_100_advance" model="account.payment.term">
+        <field name="name">100 % ADVANCE</field>
+        <field name="note">100 % ADVANCE</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 100.0,'nb_days': 0})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_due_receipt" model="account.payment.term">
+        <field name="name">DUE ON RECEIPT</field>
+        <field name="note">DUE ON RECEIPT</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 100.0,'nb_days': 0})
+        ]"/>
+    </record>
+
+    <record id="account_payment_term_cod" model="account.payment.term">
+        <field name="name">COD</field>
+        <field name="note">PAYMENT UPON DELIVERY</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent','value_amount': 100.0,'nb_days': 0})
+        ]"/>
+    </record>
+
+</odoo>

@@ -110,4 +110,27 @@ class StockMove(models.Model):
     #                     ('quantity', '>', 0)
     #                 ]
     #             }
-    #         }
+    #         } 
+
+    units_display = fields.Char(
+        string="Units",
+        compute="_compute_units_display"
+    )
+    so_type = fields.Selection(
+        related='picking_id.sale_id.so_type',
+        string="SO Type",
+        store=True
+    )
+    pieces = fields.Float(string="Pieces")
+   
+
+    @api.depends('move_line_ids')
+    def _compute_units_display(self):
+        for rec in self:
+            if rec.sale_line_id and rec.sale_line_id.pieces:
+                rec.units_display = f"{rec.sale_line_id.pieces} Rolls"
+                rec.pieces = rec.sale_line_id.pieces
+            else:
+                count = len(rec.move_line_ids)
+                rec.units_display = f"{count} Rolls"
+                rec.pieces = count

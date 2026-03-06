@@ -270,6 +270,8 @@ class SaleOrderLine(models.Model):
     length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
     pieces = fields.Float(string="Pieces")
     mo_price = fields.Float(string="MO Price")
+    rolls_uom_id = fields.Many2one('uom.uom', string="UoM",domain="[('name','=','rolls')]",
+        default=lambda self: self.env['uom.uom'].search([('name','=','rolls')], limit=1))
 
 
 class SaleMoValuation(models.Model):

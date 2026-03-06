@@ -88,30 +88,40 @@
                     <field name="customer_phone"/>
             </xpath>
             <xpath expr="//field[@name='payment_term_id']" position="after">
-                <field name="customer_email"/>
-                <field name="customer_phone"/>
+                <field name="customer_email" readonly="state in ['cancel', 'sale']"/>
+                <field name="customer_phone" readonly="state in ['cancel', 'sale']"/>
             </xpath>
              <xpath expr="//field[@name='date_order']" position="before">
-                <field name="so_type"/>
+                <field name="so_type" readonly="state in ['cancel', 'sale']"/>
             </xpath>
 
             <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
                 <field name="description"/>
                 <field name="treatment_in"/>
                 <field name="treatment_out"/>
-                <field name="remarks"/>
                 <field name="thickness_val"/>
                 <field name="thickness_uom"/>
                 <field name="width_val"/>
                 <field name="width_uom"/>
                 <field name="core_id"/>
-                <field name="pieces"/>
                 <field name="length_val"/>
                 <field name="length_uom"/>
             </xpath>
             
+            <xpath expr="//field[@name='order_line']/list/field[@name='qty_invoiced']" position="after">
+                <field name="pieces"/>
+                <field name="rolls_uom_id" column_invisible="parent.so_type != 'fgf'"/>
+            </xpath>
+            <xpath expr="(//field[@name='order_line']/list/field[@name='product_uom'])[1]" position="attributes">
+                <attribute name="column_invisible">parent.so_type == 'fgf'</attribute>
+            </xpath>
+
+            <xpath expr="(//field[@name='order_line']/list/field[@name='product_uom'])[2]" position="attributes">
+                <attribute name="column_invisible">parent.so_type == 'fgf'</attribute>
+            </xpath>
+
             <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="after">
-                <field name="mo_price"/>
+                <field name="remarks"/>
             </xpath>
 
             <xpath expr="//page[@name='order_lines']" position="after">
@@ -142,6 +152,10 @@
                         type="object"
                         string="Manufacturing Cost"
                     />
+            </xpath>
+
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="incoterm" string="Delivery terms" readonly="state in ['cancel', 'sale']"/>
             </xpath>
 
             <!-- <xpath expr="//div[@name='button_box']" position="inside">

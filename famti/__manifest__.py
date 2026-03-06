@@ -21,6 +21,7 @@
         'data/ir_cron.xml',
         'data/product_data.xml',
         # 'data/inventory_data.xml',
+        'data/payment_terms_data.xml',
         'data/workcenter_demo.xml',
         'wizard/converted_uoms.xml',
         'wizard/lot_import_wizard.xml',
@@ -41,6 +42,7 @@
         'views/res_company_view.xml',
         'views/manufacturing.xml',
         'views/costing_sheet.xml',
+        'views/accounting.xml',
 
     ],
     'demo': [
