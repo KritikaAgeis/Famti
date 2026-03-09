@@ -5,15 +5,18 @@ from odoo.exceptions import UserError
 class Purchase(models.Model):
     _inherit = "purchase.order"
 
-    state = fields.Selection([
-        ('draft', 'RFQ'),
-        ('sent', 'RFQ Sent'),
-        ('to approve', 'To Approve'),
-        ('cfo_rejected', 'CFO Rejected'),
-        ('purchase', 'Purchase Order'),
-        ('done', 'Locked'),
-        ('cancel', 'Cancelled')
-    ], string='Status', readonly=True, index=True, copy=False, default='draft')
+    # state = fields.Selection([
+    #     ('draft', 'RFQ'),
+    #     ('sent', 'RFQ Sent'),
+    #     ('to approve', 'To Approve'),
+    #     ('cfo_rejected', 'CFO Rejected'),
+    #     ('purchase', 'Purchase Order'),
+    #     ('done', 'Locked'),
+    #     ('cancel', 'Cancelled')
+    # ], string='Status', readonly=True, index=True, copy=False, default='draft')
+    state = fields.Selection(
+        selection_add=[('cfo_rejected', 'CFO Rejected')]
+    )
     
     vendor_street = fields.Char()
     vendor_street2 = fields.Char()

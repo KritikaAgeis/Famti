@@ -11,3 +11,8 @@ class FreightOrder(models.Model):
         'purchase.order',
         string="Purchase Order"
     )
+    
+    sale_id = fields.Many2one(
+        'sale.order',
+        string="Sales Order"
+    )

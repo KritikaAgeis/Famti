@@ -171,6 +171,19 @@
                 </button>
             </xpath> -->
 
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button type="object"
+                    name="action_view_freight_orders"
+                    class="oe_stat_button"
+                    icon="fa-ship"
+                    invisible="state not in ('sale','done')">
+
+                    <field name="freight_count"
+                        widget="statinfo"
+                        string="Freight"/>
+                </button>
+            </xpath>
+
             
         </field>
     </record>

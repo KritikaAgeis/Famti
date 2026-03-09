@@ -58,6 +58,30 @@ class SaleOrder(models.Model):
     )
     remarks = fields.Text(string="Remarks")
 
+    freight_ids = fields.One2many(
+        'freight.order',
+        'sale_id',
+        string="Freight Orders"
+    )
+
+    freight_count = fields.Integer(
+        string="Freight Count",
+        compute="_compute_freight_count"
+    )
+
+    def _compute_freight_count(self):
+        for order in self:
+            order.freight_count = len(order.freight_ids)
+
+    def action_view_freight_orders(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id(
+            "famti.freight_order_action"
+        )
+        action['domain'] = [('sale_id', '=', self.id)]
+        action['context'] = {'default_sale_id': self.id}
+        return action
+
     def _compute_mo_count(self):
         for order in self:
             order.mo_count = self.env['mrp.production'].search_count(
@@ -136,7 +160,28 @@ class SaleOrder(models.Model):
         if self.state == 'to_approve' and not self.env.user.has_group(
                 'famti.group_cheif_financial_officer'):
             raise UserError("Sale Order requires CFO approval.")
-        return super().action_confirm()
+        # return super().action_confirm()
+        res = super().action_confirm()
+        self._create_freight_cost()
+        return res
+    
+    def _create_freight_cost(self):
+        freight = self.env['freight.order']
+        print("=======vfreight======")
+        loading_port_id = self.env['freight.port'].search([])[0]
+        discharging_port_id = self.env['freight.port'].search([])[0]
+        print("=======loading_port_id======",loading_port_id)
+        print("=======discharging_port_id======",discharging_port_id)
+        for order in self.filtered(lambda so: so.state in ('sale', 'done')):
+            freight.create([{
+                'shipper_id': order.partner_id.id, 
+                'type': 'export', 
+                'transport_type': 'land',
+                'loading_port_id': loading_port_id.id,
+                'discharging_port_id':discharging_port_id.id,
+                'agent_id':self.env.user.partner_id.id,
+                'sale_id': order.id}])
+        return
 
     def action_view_mo(self):
         self.ensure_one()
