@@ -47,6 +47,11 @@
                             type="object"
                             invisible="state not in ('draft', 'submit', 'confirm', 'invoice')"
                             data-hotkey="w"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft"
+                            type="object"
+                            invisible="state not in ('submit', 'confirm')"
+                            data-hotkey="w"/>
+
                     <field name="state" widget="statusbar"
                            statusbar_visible="draft,submit,confirm"
                            readonly="1"/>
@@ -73,57 +78,57 @@
                     </div>
                     <group>
                         <group>
-                            <field name="shipper_id"/>
-                            <field name="consignee_id"/>
-                            <field name="order_date"/>
-                            <field name="company_id" invisible="1"/>
+                            <field name="shipper_id" readonly="state not in 'draft'"/>
+                            <field name="consignee_id" readonly="state not in 'draft'"/>
+                            <field name="order_date" readonly="state not in 'draft'"/>
+                            <field name="company_id" invisible="1" readonly="state not in 'draft'"/>
                         </group>
                         <group>
-                            <field name="clearance" invisible="1"/>
-                            <field name="type"/>
-                            <field name="transport_type"/>
+                            <field name="clearance" invisible="1" readonly="state not in 'draft'"/>
+                            <field name="type" readonly="state not in 'draft'"/>
+                            <field name="transport_type" readonly="state not in 'draft'"/>
                             <field name="land_type"
-                                   invisible="transport_type != 'land'"/>
+                                   invisible="transport_type != 'land'" readonly="state not in 'draft'"/>
                             <field name="water_type"
-                                   invisible="transport_type != 'ocean'"/>
+                                   invisible="transport_type != 'ocean'" readonly="state not in 'draft'"/>
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name="loading_port_id"/>
+                            <field name="loading_port_id" readonly="state not in 'draft'"/>
                         </group>
                         <group>
-                            <field name="discharging_port_id"/>
+                            <field name="discharging_port_id" readonly="state not in 'draft'"/>
                         </group>
                     </group>
 
                     <group>
                         <group>
-                            <field name="agent_id"/>
+                            <field name="agent_id" readonly="state not in 'draft'"/>
                         </group>
                         <group>
-                            <field name="expected_date"/>
-                        </group>
-                    </group>
-                    <group>
-                        <group>
-                            <field name="incoterm"/>
-                        </group>
-                        <group>
-                            <field name="certificate_of_analysis"/>
+                            <field name="expected_date" readonly="state not in 'draft'"/>
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name="bill_of_loading"/>
+                            <field name="incoterm" readonly="state not in 'draft'"/>
                         </group>
                         <group>
-                            <field name="commercial_invoice"/>
+                            <field name="certificate_of_analysis" readonly="state not in 'draft'"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="bill_of_loading" readonly="state not in 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="commercial_invoice" readonly="state not in 'draft'"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Order">
-                            <field name="order_ids">
+                            <field name="order_ids" readonly="state not in 'draft'">
                                 <list string="Order Lines"
                                       editable="bottom">
                                     <field name="container_id"/>
@@ -158,7 +163,7 @@
                             </group>
                         </page>
                         <page string="Routes">
-                            <field name="route_ids">
+                            <field name="route_ids" readonly="state not in 'draft'">
                                 <list string="Routes" editable="bottom">
                                     <field name="routes_id"/>
                                     <field name="origin_location"/>
@@ -178,9 +183,9 @@
                             </group>
                         </page>
                         <page string="Services">
-                            <field name="service_ids">
+                            <field name="service_ids" readonly="state not in 'draft'">
                                 <list string="Services" editable="bottom">
-                                    <field name="partner_id" invisible="1"/>
+                                    <field name="partner_id" />
                                     <field name="service_id"/>
                                     <field name="qty"/>
                                     <field name="sale"/>

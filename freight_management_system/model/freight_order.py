@@ -96,6 +96,9 @@ class FreightOrder(models.Model):
                                                                                                                  "forwarder,CIF: Supplier arranges freight & insurance to destination port,CFR: Supplier arranges freight only,"
                                                                                                                  "DDP: Supplier responsible for full delivery to FAM Ti")
 
+    def action_reset_to_draft(self):
+        for rec in self:
+            rec.state = 'draft'
 
     @api.depends('order_ids.total_price', 'order_ids.volume',
                  'order_ids.weight')
