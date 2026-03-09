@@ -107,7 +107,7 @@
                     </group>
                     <group>
                         <group>
-                            <field name="commercial_invoice"/>
+                            <field name="incoterm"/>
                         </group>
                         <group>
                             <field name="certificate_of_analysis"/>
@@ -117,9 +117,9 @@
                         <group>
                             <field name="bill_of_loading"/>
                         </group>
-<!--                        <group>-->
-<!--                            <field name="certificate_of_analysis"/>-->
-<!--                        </group>-->
+                        <group>
+                            <field name="commercial_invoice"/>
+                        </group>
                     </group>
                     <notebook>
                         <page string="Order">
@@ -210,6 +210,13 @@
                         </page>
                     </notebook>
                 </sheet>
+                 <!-- Chatter -->
+                <chatter/>
+<!--                    <div class="oe_chatter">-->
+<!--                        <field name="message_follower_ids" groups="base.group_user"/>-->
+<!--                        <field name="activity_ids"/>-->
+<!--                        <field name="message_ids"/>-->
+<!--                    </div>-->
             </form>
         </field>
     </record>

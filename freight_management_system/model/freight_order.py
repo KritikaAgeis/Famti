@@ -6,47 +6,48 @@ from odoo.exceptions import ValidationError
 class FreightOrder(models.Model):
     """Model for creating freight orders"""
     _name = 'freight.order'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Freight Order'
 
     name = fields.Char(string='Name', default='New', readonly=True,
-                       help='Name of the order')
+                       help='Name of the order',tracking=True)
     shipper_id = fields.Many2one('res.partner', string='Shipper', required=True,
-                                 help="Shipper's Details")
+                                 help="Shipper's Details",tracking=True)
     consignee_id = fields.Many2one('res.partner', 'Consignee',
-                                   help="Select the consignee for the order")
-    type = fields.Selection([('import', 'Import'), ('export', 'Export')],
+                                   help="Select the consignee for the order",tracking=True)
+    type = fields.Selection([('import', 'Import'), ('export', 'Export')],tracking=True,
                             string='Import/Export', required=True,
                             help="Type of freight operation")
     transport_type = fields.Selection([('land', 'Land'), ('air', 'Air'),
                                        ('ocean', 'Ocean')], string='Transport',
                                       help='Type of transportation',
-                                      required=True)
+                                      required=True,tracking=True)
     land_type = fields.Selection([('ltl', 'LTL'), ('ftl', 'FTL')],
                                  string='Land Shipping',
                                  help="Types of shipment movement involved in"
-                                      "Land")
+                                      "Land",tracking=True)
     water_type = fields.Selection([('fcl', 'FCL'), ('lcl', 'LCL')],
                                   string='Water Shipping',
                                   help="Types of shipment movement involved in"
-                                       "Water")
+                                       "Water",tracking=True)
     order_date = fields.Date(string='Date', default=fields.Date.today(),
-                             help="Date of order")
+                             help="Date of order",tracking=True)
     loading_port_id = fields.Many2one('freight.port', string="Loading Port",
                                       required=True,
-                                      help="Loading port of the freight order")
+                                      help="Loading port of the freight order",tracking=True)
     discharging_port_id = fields.Many2one('freight.port',
                                           string="Discharging Port",
                                           required=True,
                                           help="Discharging port of freight"
-                                               "order")
+                                               "order",tracking=True)
     state = fields.Selection([('draft', 'Draft'), ('submit', 'Submitted'),
                               ('confirm', 'Confirmed'),
                               ('invoice', 'Invoiced'), ('done', 'Done'),
                               ('cancel', 'Cancel')],
                              default='draft', string="State",
-                             help='Different states of freight order')
+                             help='Different states of freight order',tracking=True)
     clearance = fields.Boolean(string='Clearance', help='Checking the'
-                                                        'clearance')
+                                                        'clearance',)
     clearance_count = fields.Integer(compute='_compute_count',
                                      string='Clearance Count',
                                      help='The number of clearance')
@@ -76,9 +77,9 @@ class FreightOrder(models.Model):
                                       compute="_compute_total_service_cost",
                                       help='The total service cost of order')
     agent_id = fields.Many2one('res.partner', string='Agent',
-                               required=True, help="Details of agent")
+                               required=True, help="Details of agent",tracking=True)
     expected_date = fields.Date(string='Expected Date', help='The expected date'
-                                                             'of the order')
+                                                             'of the order',tracking=True)
     track_ids = fields.One2many('freight.track', 'freight_id',
                                 string='Tracking', help='For tracking the'
                                                         'freight orders')
@@ -88,9 +89,12 @@ class FreightOrder(models.Model):
                                  default=lambda
                                      self: self.env.company.id)
     purchase_id = fields.Many2one('purchase.order',string="Purchase Order")
-    commercial_invoice = fields.Binary(string="Upload Inv.",help="Upload The Commercial Invoice.")
+    commercial_invoice = fields.Binary(string="Upload Inv.",help="Upload The Commercial Invoice.",tracking=True)
     certificate_of_analysis = fields.Binary(string="Upload COA")
     bill_of_loading = fields.Binary(string="Upload BOL",help="Upload the bill of loading.")
+    incoterm = fields.Selection([('fob','FOB'),('cif','CIF'),('cfr','CFR'),('ddp','DDP')],tracking=True,string='Incoterm',help="FOB: FAM Ti books freight & insurance via freight "
+                                                                                                                 "forwarder,CIF: Supplier arranges freight & insurance to destination port,CFR: Supplier arranges freight only,"
+                                                                                                                 "DDP: Supplier responsible for full delivery to FAM Ti")
 
 
     @api.depends('order_ids.total_price', 'order_ids.volume',

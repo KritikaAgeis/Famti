@@ -31,7 +31,7 @@
     'website': 'https://www.cybrosys.com',
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
-    'depends': ['base', 'product', 'account'],
+    'depends': ['base', 'product', 'account','mail'],
     'data': [
         'security/freight_security.xml',
         'security/ir.model.access.csv',
