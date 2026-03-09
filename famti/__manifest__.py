@@ -25,6 +25,7 @@
         # 'data/inventory_data.xml',
         'data/payment_terms_data.xml',
         'data/workcenter_demo.xml',
+        'data/sequence.xml',
         'wizard/converted_uoms.xml',
         'wizard/lot_import_wizard.xml',
         'wizard/stock_lot_wiz.xml',
