@@ -48,5 +48,27 @@
             </field>
         </record>
 
+        <record id="view_picking_form_inherit_units" model="ir.ui.view">
+            <field name="name">stock.picking.form.units</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="so_type"/>
+                </xpath>
+
+                <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='product_uom']" position="replace">
+                    <field name="product_uom" string="Units" column_invisible="parent.so_type == 'fgf'"/>
+                </xpath>
+
+                <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='quantity']" position="after">
+                    <field name="pieces" string="Pieces" column_invisible="parent.so_type != 'fgf'"/>
+                    <field name="units_display" string="Units" column_invisible="parent.so_type != 'fgf'"/>
+                </xpath>
+
+            </field>
+        </record>
+
     </data>
 </odoo>

@@ -10,13 +10,14 @@
                     <header>
                         <field name="state"
                             widget="statusbar"
-                            statusbar_visible="draft,verified_vendor,certificate_expired"/>
+                            statusbar_visible="draft,verified_vendor,certificate_expired"
+                            invisible="is_supplier == 0"/>
 
                         <button name="action_iso_certificate_updated"
                             string="Verify Certificate"
                             type="object"
                             class="btn-primary"
-                            invisible="state != 'draft'"/>
+                            invisible="state != 'draft' or is_supplier == 0"/>
 
                         <button name="action_iso_certificate_renew"
                             string="Certificate renewed"

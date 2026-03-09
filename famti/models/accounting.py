@@ -1,8 +1,14 @@
-from odoo import models, api
+from odoo import models, api, fields
 
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
+
+    so_type = fields.Selection(
+        related="invoice_line_ids.sale_line_ids.order_id.so_type",
+        store=True
+    )
+    
 
     def _get_bank_payment_html(self):
         bank_journal = self.env['account.journal'].search([
@@ -40,3 +46,11 @@ class AccountMove(models.Model):
             vals['narration'] = self._get_bank_payment_html()
 
         return super().create(vals)
+
+
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
+
+    pieces = fields.Float(string="Pieces", related="sale_line_ids.pieces", store=True)
+    rolls_uom_id = fields.Many2one('uom.uom', string="UoM",domain="[('name','=','rolls')]",
+        default=lambda self: self.env['uom.uom'].search([('name','=','rolls')], limit=1))

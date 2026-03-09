@@ -56,6 +56,31 @@ class SaleOrder(models.Model):
         string="Manufacturing Orders",
         compute="_compute_mo_count"
     )
+    remarks = fields.Text(string="Remarks")
+
+    freight_ids = fields.One2many(
+        'freight.order',
+        'sale_id',
+        string="Freight Orders"
+    )
+
+    freight_count = fields.Integer(
+        string="Freight Count",
+        compute="_compute_freight_count"
+    )
+
+    def _compute_freight_count(self):
+        for order in self:
+            order.freight_count = len(order.freight_ids)
+
+    def action_view_freight_orders(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id(
+            "famti.freight_order_action"
+        )
+        action['domain'] = [('sale_id', '=', self.id)]
+        action['context'] = {'default_sale_id': self.id}
+        return action
 
     def _compute_mo_count(self):
         for order in self:
@@ -112,18 +137,18 @@ class SaleOrder(models.Model):
 
     def action_cfo_approval(self):
          for order in self:
+            if not order.order_line:
+                raise UserError("Sales Order must have at least one order line.")
+            self.write({'state': 'to_approve'})
+
+    def action_approve(self):
+        for order in self:
             issue = order._check_credit_and_overdue()
             if issue:
                 raise UserError(issue)
             else:
-                if not order.order_line:
-                    raise UserError("Sales Order must have at least one order line.")
-                self.write({'state': 'to_approve'})
-
-    def action_approve(self):
-        for order in self:
-            if order.state == 'to_approve':
-                order.write({'state': 'draft'})
+                if order.state == 'to_approve':
+                    order.write({'state': 'draft'})
 
             order.action_confirm()
 
@@ -135,7 +160,28 @@ class SaleOrder(models.Model):
         if self.state == 'to_approve' and not self.env.user.has_group(
                 'famti.group_cheif_financial_officer'):
             raise UserError("Sale Order requires CFO approval.")
-        return super().action_confirm()
+        # return super().action_confirm()
+        res = super().action_confirm()
+        self._create_freight_cost()
+        return res
+    
+    def _create_freight_cost(self):
+        freight = self.env['freight.order']
+        print("=======vfreight======")
+        loading_port_id = self.env['freight.port'].search([])[0]
+        discharging_port_id = self.env['freight.port'].search([])[0]
+        print("=======loading_port_id======",loading_port_id)
+        print("=======discharging_port_id======",discharging_port_id)
+        for order in self.filtered(lambda so: so.state in ('sale', 'done')):
+            freight.create([{
+                'shipper_id': order.partner_id.id, 
+                'type': 'export', 
+                'transport_type': 'land',
+                'loading_port_id': loading_port_id.id,
+                'discharging_port_id':discharging_port_id.id,
+                'agent_id':self.env.user.partner_id.id,
+                'sale_id': order.id}])
+        return
 
     def action_view_mo(self):
         self.ensure_one()
@@ -269,6 +315,8 @@ class SaleOrderLine(models.Model):
     length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
     pieces = fields.Float(string="Pieces")
     mo_price = fields.Float(string="MO Price")
+    rolls_uom_id = fields.Many2one('uom.uom', string="UoM",domain="[('name','=','rolls')]",
+        default=lambda self: self.env['uom.uom'].search([('name','=','rolls')], limit=1))
 
 
 class SaleMoValuation(models.Model):
