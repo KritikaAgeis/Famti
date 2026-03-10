@@ -1,0 +1,116 @@
+<odoo>
+    <data noupdate="1">
+    <!-- Port -->
+        <record id="freight_port_chennai_land" model="freight.port">
+            <field name="name">Chennai Inland Port</field>
+            <field name="code">CIP</field>
+            <field name="country_id" ref="base.in"/>
+            <field name="state_id" ref="base.state_in_tn"/>
+            <field name="land">True</field>
+        </record>
+
+        <record id="freight_port_dubai_air" model="freight.port">
+            <field name="name">Dubai International Airport</field>
+            <field name="code">DXB</field>
+            <field name="country_id" ref="base.ae"/>
+            <field name="air">True</field>
+        </record>
+
+        <record id="freight_port_singapore_sea" model="freight.port">
+            <field name="name">Port of Singapore</field>
+            <field name="code">SGP</field>
+            <field name="country_id" ref="base.sg"/>
+            <field name="water">True</field>
+        </record>
+
+
+        <!-- Prices -->
+        <record id="freight_price_standard" model="freight.price">
+            <field name="name">Standard Freight</field>
+            <field name="volume">120</field>
+            <field name="weight">95</field>
+        </record>
+
+        <record id="freight_price_express" model="freight.price">
+            <field name="name">Express Freight</field>
+            <field name="volume">200</field>
+            <field name="weight">150</field>
+        </record>
+
+
+        <!-- Routes -->
+        <record id="freight_route_land_india" model="freight.routes">
+            <field name="name">India Domestic Land Route</field>
+            <field name="land_sale">50</field>
+            <field name="air_sale">0</field>
+            <field name="water_sale">0</field>
+            <field name="transport_type">land</field>
+        </record>
+
+        <record id="freight_route_air_global" model="freight.routes">
+            <field name="name">International Air Route</field>
+            <field name="land_sale">0</field>
+            <field name="air_sale">300</field>
+            <field name="water_sale">0</field>
+            <field name="transport_type">air</field>
+        </record>
+
+        <record id="freight_route_ocean_global" model="freight.routes">
+            <field name="name">International Ocean Route</field>
+            <field name="land_sale">0</field>
+            <field name="air_sale">0</field>
+            <field name="water_sale">120</field>
+            <field name="transport_type">ocean</field>
+        </record>
+
+        <!-- Container -->
+
+        <record id="freight_container_20ft" model="freight.container">
+            <field name="name">20 Feet Standard Container</field>
+            <field name="code">20FT</field>
+            <field name="size">20</field>
+            <field name="size_uom_id" ref="uom.product_uom_meter"/>
+            <field name="weight">28000</field>
+            <field name="weight_uom_id" ref="uom.product_uom_kgm"/>
+            <field name="volume">33</field>
+            <field name="volume_uom_id" ref="uom.product_uom_cubic_meter"/>
+            <field name="state">available</field>
+        </record>
+
+        <record id="freight_container_40ft" model="freight.container">
+            <field name="name">40 Feet High Cube Container</field>
+            <field name="code">40HC</field>
+            <field name="size">40</field>
+            <field name="size_uom_id" ref="uom.product_uom_meter"/>
+            <field name="weight">30000</field>
+            <field name="weight_uom_id" ref="uom.product_uom_kgm"/>
+            <field name="volume">67</field>
+            <field name="volume_uom_id" ref="uom.product_uom_cubic_meter"/>
+            <field name="state">available</field>
+        </record>
+        
+        <!-- Service -->
+        <record id="freight_service_customs_clearance" model="freight.service">
+            <field name="name">Customs Clearance</field>
+            <field name="sale_price">150</field>
+        </record>
+
+        <record id="freight_service_cargo_insurance" model="freight.service">
+            <field name="name">Cargo Insurance</field>
+            <field name="sale_price">100</field>
+        </record>
+
+        <!-- Vessel -->
+        <record id="freight_vessel_evergreen" model="freight.vessel">
+            <field name="name">Evergreen Marine</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="freight_vessel_maersk" model="freight.vessel">
+            <field name="name">Maersk Line</field>
+            <field name="active">True</field>
+        </record>
+
+    </data>
+
+</odoo>
