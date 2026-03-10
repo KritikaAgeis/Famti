@@ -129,9 +129,12 @@
                     </group>
                     <group>
                         <group>
-                            <field name="land_sale"/>
-                            <field name="air_sale"/>
-                            <field name="water_sale"/>
+                            <field name="transport_type"/>
+                        </group>
+                        <group>
+                            <field name="land_sale" invisible="transport_type not in 'land'"/>
+                            <field name="air_sale" invisible="transport_type not in 'air'"/>
+                            <field name="water_sale" invisible="transport_type not in 'ocean'"/>
                             <field name="company_id" invisible="1"/>
                         </group>
                     </group>

@@ -14,7 +14,7 @@ class FreightOrder(models.Model):
     shipper_id = fields.Many2one('res.partner', string='Shipper', required=True,
                                  help="Shipper's Details",tracking=True)
     consignee_id = fields.Many2one('res.partner', 'Consignee',
-                                   help="Select the consignee for the order",tracking=True)
+                                   help="Select the consignee for the order",tracking=True, required=True)
     type = fields.Selection([('import', 'Import'), ('export', 'Export')],tracking=True,
                             string='Import/Export', required=True,
                             help="Type of freight operation")
@@ -79,7 +79,7 @@ class FreightOrder(models.Model):
     agent_id = fields.Many2one('res.partner', string='Agent',
                                required=True, help="Details of agent",tracking=True)
     expected_date = fields.Date(string='Expected Date', help='The expected date'
-                                                             'of the order',tracking=True)
+                                                             'of the order',tracking=True, required=True)
     track_ids = fields.One2many('freight.track', 'freight_id',
                                 string='Tracking', help='For tracking the'
                                                         'freight orders')
@@ -92,7 +92,7 @@ class FreightOrder(models.Model):
     commercial_invoice = fields.Binary(string="Upload Inv.",help="Upload The Commercial Invoice.",tracking=True)
     certificate_of_analysis = fields.Binary(string="Upload COA")
     bill_of_loading = fields.Binary(string="Upload BOL",help="Upload the bill of loading.")
-    incoterm = fields.Selection([('fob','FOB'),('cif','CIF'),('cfr','CFR'),('ddp','DDP')],tracking=True,string='Incoterm',help="FOB: FAM Ti books freight & insurance via freight "
+    incoterm = fields.Selection([('fob','FOB'),('cif','CIF'),('cfr','CFR'),('ddp','DDP')],tracking=True, required=True, string='Incoterm',help="FOB: FAM Ti books freight & insurance via freight "
                                                                                                                  "forwarder,CIF: Supplier arranges freight & insurance to destination port,CFR: Supplier arranges freight only,"
                                                                                                                  "DDP: Supplier responsible for full delivery to FAM Ti")
 
@@ -504,13 +504,21 @@ class FreightOrderRoutesLine(models.Model):
     def _onchange_routes_id(self):
         """Calculate the price of route operation"""
         for rec in self:
-            if rec.routes_id and rec.transport_type:
-                if rec.transport_type == 'land':
-                    rec.sale = rec.routes_id.land_sale
-                elif rec.transport_type == 'air':
-                    rec.sale = rec.routes_id.air_sale
-                elif rec.transport_type == 'ocean':
-                    rec.sale = rec.routes_id.water_sale
+            if rec.transport_type:
+                route = self.env['freight.routes'].search(
+                    [('transport_type', '=', rec.transport_type)],
+                    limit=1
+                )
+                rec.routes_id = route.id
+
+                if route:
+                    if rec.transport_type == 'land':
+                        rec.sale = route.land_sale
+                    elif rec.transport_type == 'air':
+                        rec.sale = route.air_sale
+                    elif rec.transport_type == 'ocean':
+                        rec.sale = route.water_sale
+            
 
 
 class FreightOrderServiceLine(models.Model):

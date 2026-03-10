@@ -88,9 +88,9 @@
                             <field name="type" readonly="state not in 'draft'"/>
                             <field name="transport_type" readonly="state not in 'draft'"/>
                             <field name="land_type"
-                                   invisible="transport_type != 'land'" readonly="state not in 'draft'"/>
+                                   invisible="1" readonly="state not in 'draft'"/>
                             <field name="water_type"
-                                   invisible="transport_type != 'ocean'" readonly="state not in 'draft'"/>
+                                   invisible="1" readonly="state not in 'draft'"/>
                         </group>
                     </group>
                     <group>
