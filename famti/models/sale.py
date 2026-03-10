@@ -318,6 +318,11 @@ class SaleOrderLine(models.Model):
     rolls_uom_id = fields.Many2one('uom.uom', string="UoM",domain="[('name','=','rolls')]",
         default=lambda self: self.env['uom.uom'].search([('name','=','rolls')], limit=1))
 
+    @api.onchange('product_id', 'order_id.so_type')
+    def _onchange_product_price_sample(self):
+        if self.order_id.so_type == 'sample':
+            self.price_unit = 0
+
 
 class SaleMoValuation(models.Model):
     _name = 'sale.mo.valuation'
