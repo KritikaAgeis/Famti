@@ -11,5 +11,18 @@
             </p>
         </field>
     </record>
+
+        <record id="freight_order_view_form_inherit_partner_domain" model="ir.ui.view">
+            <field name="name">freight.order.view.form.inherit.partner.domain</field>
+            <field name="model">freight.order</field>
+            <field name="inherit_id" ref="freight_management_system.freight_order_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='service_ids']//field[@name='partner_id']" position="attributes">
+                    <attribute name="domain">[('supplier_rank','>',0),('state','=','verified_vendor')]</attribute>
+                </xpath>
+
+            </field>
+        </record>
     </data>
 </odoo>

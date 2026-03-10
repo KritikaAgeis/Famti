@@ -9,7 +9,7 @@ class StockQuant(models.Model):
 class StockQuantPackage(models.Model):
     _inherit = 'stock.quant.package'
 
-    name = fields.Char(string="Package Name", readonly=True, copy=False)
+    name = fields.Char(string="Package Name", readonly=True, copy=False,default='New')
 
     @api.model
     def create(self, vals):

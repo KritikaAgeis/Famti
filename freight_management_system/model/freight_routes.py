@@ -41,3 +41,7 @@ class FreightRoutes(models.Model):
                                  help="Current company",
                                  default=lambda
                                      self: self.env.company.id)
+    transport_type = fields.Selection([('land', 'Land'), ('air', 'Air'),
+                                       ('ocean', 'Ocean')], string='Transport',
+                                      help='Type of transportation',
+                                      required=True,tracking=True)

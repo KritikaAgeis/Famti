@@ -20,19 +20,19 @@
                 <header>
                     <button name="action_confirm" string="Confirm" type="object"
                             class="oe_highlight" invisible="state != 'draft'"/>
-                    <button name="action_revision" string="Revision"
+                    <!-- <button name="action_revision" string="Revision"
                             type="object" class="oe_highlight"
-                            invisible="state != 'confirm'"/>
+                            invisible="state != 'confirm'"/> -->
                     <field name="state" widget="statusbar"
                            statusbar_visible="draft,confirm" readonly="1"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
+                    <!-- <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" type="object"
                                 name="action_get_revision"
                                 icon="fa-id-card-o" string="Revision">
                         </button>
-                    </div>
+                    </div> -->
                     <group>
                         <field name="name"/>
                     </group>
