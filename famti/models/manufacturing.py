@@ -274,6 +274,43 @@ class MrpProduction(models.Model):
                                 _("Serial %s: Please Enter the value for  %s .")
                                 % (rec.serial_number or '', label)
                             )
+            density = 0
+            raw_move = mo.move_raw_ids.filtered(lambda m: m.product_id)[:1]
+            if raw_move:
+                density = raw_move.product_id.density or 0
+
+            for rec in mo.serial_line_ids:
+                calculated_weight = 0
+                if rec.thickness and rec.width and rec.length and density:
+                    calculated_weight = (
+                        rec.thickness * rec.width * rec.length * density
+                    ) / 1000000
+                    print("calculated_weight---------",calculated_weight)
+                    print("rec.recived---------",rec.recived)
+
+                    if calculated_weight:
+
+                        tolerance = calculated_weight * 0.03
+                        print("tolerance---------",tolerance)
+                        min_weight = calculated_weight - tolerance
+                        print("min_weight---------",min_weight)
+                        max_weight = calculated_weight + tolerance
+                        print("max_weight---------",max_weight)
+
+                        if rec.recived < min_weight or rec.recived > max_weight:
+                            raise ValidationError(
+                                _(
+                                    "Serial %s weight is outside allowed tolerance.\n"
+                                    "Expected Weight: %.2f kg\n"
+                                    "Allowed Range: %.2f - %.2f kg (±3%%)"
+                                )
+                                % (
+                                    rec.serial_number or '',
+                                    calculated_weight,
+                                    min_weight,
+                                    max_weight,
+                                )
+                            )
 
             if mo.product_id.tracking == 'lot' and mo.serial_line_ids:
                 mo._create_lots_and_move_lines()
@@ -487,6 +524,9 @@ class MrpProductionSerialLine(models.Model):
     length = fields.Float(string='Length')
     length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
     recived = fields.Float(string='Recived')
+    recived_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch'),('kg', 'Kg'),
+                                        ('lbs', 'Lbs'),
+                                        ('gm', 'Gm'),],default='kg',string=" ")
     billed = fields.Float(string='Billed')
     film_category = fields.Char(string="Film Category",  help="This helps to categorise specific product.")
     film = fields.Char(string="Film", help="Product Film.")
@@ -499,6 +539,7 @@ class MrpProductionSerialLine(models.Model):
     grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
     mo_product_code = fields.Char(string="Mo Product Code")
     po_product_code = fields.Char(string="Product Code")
+    density = fields.Float(string="Roll Density")
 
 
 
@@ -533,6 +574,7 @@ class MrpProductionScrapLine(models.Model):
     film_category = fields.Char(string="Film Category",  help="This helps to categorise specific product.")
     film = fields.Char(string="Film", help="Product Film.")
     film_type = fields.Char(string="Film Type", help="Film Type")
+    
 
 
 class MrpWorkcenter(models.Model):

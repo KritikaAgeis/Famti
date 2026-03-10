@@ -113,6 +113,11 @@ class MrpBatchProduce(models.TransientModel):
                         f"Serial {serial}: Scrap Reason is required when Scrap is entered."
                     )
 
+            density = 0
+            if production.raw_material_move_ids:
+                product = production.raw_material_move_ids[0].product_id
+                density = product.density or 0
+
             serial_line_vals.append({
                 'production_id': production.id,
                 'serial_number': line.serial_number,
@@ -134,6 +139,7 @@ class MrpBatchProduce(models.TransientModel):
                 'total_output': line.quantity,
                 'total_scrap': line.scrap,
                 'grade_type': line.grade_type,
+                'density': density,
             })
 
             if line.scrap and line.scrap > 0:

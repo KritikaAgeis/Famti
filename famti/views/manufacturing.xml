@@ -56,13 +56,15 @@
                             <field name="mo_product_code"/>
                             <field name="po_product_code"/>
                             <field name="location_id"/>
-                            <field name="thickness" optional="hide" required="1"/>
-                            <field name="thickness_uom" optional="hide"/>
-                            <field name="width" optional="hide" required="1"/>
-                            <field name="width_uom" optional="hide"/>
-                            <field name="core_id" optional="hide" />
-                            <field name="length" optional="hide" required="1"/>
-                            <field name="length_uom" optional="hide"/>
+                            <field name="thickness" required="1"/>
+                            <field name="thickness_uom" />
+                            <field name="width" required="1"/>
+                            <field name="width_uom"/>
+                            <field name="core_id"/>
+                            <field name="length" required="1"/>
+                            <field name="length_uom" />
+                            <field name="recived"/>
+                            <field name="recived_uom"/>
                             <field name="total_input"/>
                             <!-- <field name="total_output"/> -->
                             <field name="quantity" string="Output"/>

@@ -28,6 +28,7 @@
                     <group>
                         <field name="treatment_in"/>
                         <field name="treatment_out"/>
+                        <field name="density"/>
                     </group>
                     <label for="film_description"/>
                     <div>

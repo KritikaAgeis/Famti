@@ -15,6 +15,7 @@ class ProductTemplate(models.Model):
     treatment_out = fields.Char(string="Treatment Out")
     product_reference_code = fields.Char(string="Product Code")
     mo_service_cost = fields.Boolean(string="Is Manufacturing Cost")
+    density = fields.Float(string="Roll Density", help="This helps to categorise specific product.")
 
 
 
@@ -31,6 +32,7 @@ class ProductProduct(models.Model):
     treatment_in = fields.Char(string="Treatment In",related='product_tmpl_id.treatment_in')
     treatment_out = fields.Char(string="Treatment Out",related='product_tmpl_id.treatment_out')
     mo_service_cost = fields.Boolean(string="Is Manufacturing Cost",related='product_tmpl_id.mo_service_cost')
+    density = fields.Float(string="Roll Density", help="This helps to categorise specific product.",related='product_tmpl_id.density')
 
     low_stock_alert_sent = fields.Boolean(
         string="Low Stock Alert Sent",
