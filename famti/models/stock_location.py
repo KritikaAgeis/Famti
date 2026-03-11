@@ -18,3 +18,8 @@ class StockPicking(models.Model):
         string="SO Type",
         store=True
     )
+    po_type = fields.Selection(
+        related='purchase_id.po_type',
+        string="PO Type",
+        store=True
+    )

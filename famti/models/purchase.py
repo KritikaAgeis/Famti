@@ -42,6 +42,14 @@ class Purchase(models.Model):
         compute="_compute_freight_count"
     )
 
+    po_type = fields.Selection([
+        ('sample', 'Sample'),
+        ('normal', 'Normal'),
+        ('tolling', 'Tolling'),
+        ('fgf', 'FGF'),
+    ], string='PO Type', tracking=True, default='normal')
+
+
 
     def _compute_freight_count(self):
         for order in self:
@@ -178,6 +186,9 @@ class PurchaseOrderLine(models.Model):
             ('plain', 'Plain'),
             ('pvdc_out', 'PVDC COATED'),
         ], string="Treatment OUT")
+
+    rolls_uom_id = fields.Many2one('uom.uom', string="UoM",domain="[('name','=','rolls')]",
+        default=lambda self: self.env['uom.uom'].search([('name','=','rolls')], limit=1))
 
 
     def action_open_uom_conversion(self):

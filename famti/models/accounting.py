@@ -8,6 +8,10 @@ class AccountMove(models.Model):
         related="invoice_line_ids.sale_line_ids.order_id.so_type",
         store=True
     )
+    po_type = fields.Selection(
+        related="invoice_line_ids.purchase_line_id.order_id.po_type",
+        store=True
+    )
     
 
     def _get_bank_payment_html(self):
@@ -52,5 +56,6 @@ class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     pieces = fields.Float(string="Pieces", related="sale_line_ids.pieces", store=True)
+    pieces_po = fields.Float(string="Pieces", related="purchase_line_id.pieces", store=True)
     rolls_uom_id = fields.Many2one('uom.uom', string="UoM",domain="[('name','=','rolls')]",
         default=lambda self: self.env['uom.uom'].search([('name','=','rolls')], limit=1))

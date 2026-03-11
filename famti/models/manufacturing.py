@@ -286,7 +286,7 @@ class MrpProduction(models.Model):
                         rec.thickness * rec.width * rec.length * density
                     ) / 1000000
                     print("calculated_weight---------",calculated_weight)
-                    print("rec.recived---------",rec.recived)
+                    print("rec.recived---------",rec.quantity)
 
                     if calculated_weight:
 
@@ -297,7 +297,7 @@ class MrpProduction(models.Model):
                         max_weight = calculated_weight + tolerance
                         print("max_weight---------",max_weight)
 
-                        if rec.recived < min_weight or rec.recived > max_weight:
+                        if rec.quantity < min_weight or rec.quantity > max_weight:
                             raise ValidationError(
                                 _(
                                     "Serial %s weight is outside allowed tolerance.\n"

@@ -69,6 +69,9 @@ class SaleOrder(models.Model):
         compute="_compute_freight_count"
     )
 
+    buyer_po_number = fields.Char( string="Buyer PO Number")
+    buyer_po_date = fields.Date(string="Buyer PO Date")
+
     def _compute_freight_count(self):
         for order in self:
             order.freight_count = len(order.freight_ids)
