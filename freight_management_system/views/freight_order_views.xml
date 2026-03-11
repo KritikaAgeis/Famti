@@ -22,7 +22,7 @@
             <form>
                 <header>
                     <button name="action_create_custom_clearance"
-                            string="Custom Clearance" type="object"
+                            string="Create Custom Clearance" type="object"
                             class="oe_highlight"
                             data-hotkey="w"
                             invisible="clearance == 'True'"/>
