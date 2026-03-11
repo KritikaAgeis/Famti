@@ -132,5 +132,5 @@ class StockMove(models.Model):
                 rec.pieces = rec.sale_line_id.pieces
             else:
                 count = len(rec.move_line_ids)
-                rec.units_display = f"Rolls"
+                rec.units_display = "Rolls"
                 rec.pieces = count

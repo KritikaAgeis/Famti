@@ -523,7 +523,7 @@ class MrpProductionSerialLine(models.Model):
     core_id = fields.Selection(selection=[('3','3 Inch'),('6','6 Inch')],string="Core")
     length = fields.Float(string='Length')
     length_uom = fields.Selection(selection=[('m','M'),('feet','Feet')],default='feet',string=" ")
-    recived = fields.Float(string='Recived')
+    recived = fields.Float(string='Receive')
     recived_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch'),('kg', 'Kg'),
                                         ('lbs', 'Lbs'),
                                         ('gm', 'Gm'),],default='kg',string=" ")

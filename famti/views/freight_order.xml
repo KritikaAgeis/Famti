@@ -19,7 +19,7 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='service_ids']//field[@name='partner_id']" position="attributes">
-                    <attribute name="domain">[('supplier_rank','>',0),('state','=','verified_vendor')]</attribute>
+                    <attribute name="domain">[('supplier_rank','>',0)]</attribute>
                 </xpath>
 
             </field>
