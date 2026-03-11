@@ -63,8 +63,6 @@
                             <field name="core_id"/>
                             <field name="length" required="1"/>
                             <field name="length_uom" />
-                            <field name="recived"/>
-                            <field name="recived_uom"/>
                             <field name="total_input"/>
                             <!-- <field name="total_output"/> -->
                             <field name="quantity" string="Output"/>

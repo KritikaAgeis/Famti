@@ -183,7 +183,9 @@ class SaleOrder(models.Model):
                 'loading_port_id': loading_port_id.id,
                 'discharging_port_id':discharging_port_id.id,
                 'agent_id':self.env.user.partner_id.id,
-                'sale_id': order.id}])
+                'sale_id': order.id,
+                'incoterm_id':order.incoterm.id}])
+                
         return
 
     def action_view_mo(self):

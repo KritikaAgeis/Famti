@@ -72,11 +72,23 @@ class Purchase(models.Model):
 
     def _create_freight_cost(self):
         freight = self.env['freight.order']
+        freightorderline = self.env['freight.order.line']
         loading_port_id = self.env['freight.port'].search([])[0]
         discharging_port_id = self.env['freight.port'].search([])[0]
         for order in self.filtered(lambda po: po.state in ('purchase', 'done')):
+            line_vals = []
+            for line in order.order_line:
+                line_vals.append((0, 0, {
+                    'product_id': line.product_id.id,
+                    'weight': line.product_qty,
+                    'billing_type': 'weight',
+                    'price': line.price_unit,
+                }))
+
             freight.create([{'shipper_id': order.partner_id.id, 'type': 'import', 'transport_type': 'land','loading_port_id': loading_port_id.id,
-                             'discharging_port_id':discharging_port_id.id,'agent_id':self.env.user.partner_id.id,'purchase_id':order.id}])
+                             'discharging_port_id':discharging_port_id.id,'agent_id':self.env.user.partner_id.id,'purchase_id':order.id,
+                             'expected_date':order.date_planned,'incoterm_id':order.incoterm_id.id,
+                             'order_ids': line_vals}])
         return
 
     @api.onchange('partner_id')
