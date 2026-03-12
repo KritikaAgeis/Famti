@@ -426,7 +426,7 @@ class FreightOrderLine(models.Model):
                                  default=lambda
                                      self: self.env.company.id)
     vessel_id = fields.Many2one('freight.vessel',string="Vessel")
-    vessel = fields.Char(string="Vessel Name")
+    vessel = fields.Char(string="Vessel")
     packing_no = fields.Char(string="No.of packet list")
     packing_list_ids = fields.Many2many('stock.quant.package',string="Packing List")
 

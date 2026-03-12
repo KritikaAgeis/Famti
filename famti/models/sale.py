@@ -170,12 +170,22 @@ class SaleOrder(models.Model):
     
     def _create_freight_cost(self):
         freight = self.env['freight.order']
+        freightorderline = self.env['freight.order.line']
         print("=======vfreight======")
         loading_port_id = self.env['freight.port'].search([])[0]
         discharging_port_id = self.env['freight.port'].search([])[0]
         print("=======loading_port_id======",loading_port_id)
         print("=======discharging_port_id======",discharging_port_id)
         for order in self.filtered(lambda so: so.state in ('sale', 'done')):
+            line_vals = []
+            for line in order.order_line:
+                line_vals.append((0, 0, {
+                    'product_id': line.product_id.id,
+                    'weight': line.product_uom_qty,
+                    'billing_type': 'weight',
+                    'price': line.price_unit,
+                }))
+
             freight.create([{
                 'shipper_id': order.partner_id.id, 
                 'type': 'export', 
@@ -184,7 +194,8 @@ class SaleOrder(models.Model):
                 'discharging_port_id':discharging_port_id.id,
                 'agent_id':self.env.user.partner_id.id,
                 'sale_id': order.id,
-                'incoterm_id':order.incoterm.id}])
+                'incoterm_id':order.incoterm.id,
+                'order_ids': line_vals}])
                 
         return
 

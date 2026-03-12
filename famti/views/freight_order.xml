@@ -21,6 +21,28 @@
                 <xpath expr="//field[@name='service_ids']//field[@name='partner_id']" position="attributes">
                     <attribute name="domain">[('supplier_rank','>',0)]</attribute>
                 </xpath>
+                <xpath expr="//sheet/div[@class='oe_title']" position="inside">
+                    <div class="oe_avatar_container" style="position:absolute; right:16px; top:4px;">
+                        <field name="logo"
+                               widget="image"
+                               class="oe_avatar"
+                               options='{"zoom": true}'/>
+                    </div>
+                </xpath>
+
+                <xpath expr="//field[@name='expected_date']" position="after">
+                    <field name="etd"/>
+                    <field name="net_weight"/>
+                </xpath>
+                <xpath expr="//field[@name='agent_id']" position="after">
+                    <field name="bl_number"/>
+                    <field name="gross_weight"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_ids']/list/field[@name='container_id']" position="before">
+                    <field name="purchase_id" column_invisible="not parent.purchase_id"/>
+                    <field name="sale_id" column_invisible="not parent.sale_id"/>
+                </xpath>
 
             </field>
         </record>

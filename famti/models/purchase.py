@@ -221,3 +221,9 @@ class PurchaseOrderLine(models.Model):
         if self.product_id:
             if self.product_id.film_description:
                 self.description = self.product_id.film_description
+        
+
+    @api.onchange('product_id','order_id.po_type')
+    def _onchange_sample_price(self):
+        if self.order_id.po_type == 'sample':
+            self.price_unit = 0

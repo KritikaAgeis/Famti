@@ -78,7 +78,7 @@
         </record>
 
         <record id="freight_container_40ft" model="freight.container">
-            <field name="name">40 Feet High Cube Container</field>
+            <field name="name">40ft Container</field>
             <field name="code">40HC</field>
             <field name="size">40</field>
             <field name="size_uom_id" ref="uom.product_uom_meter"/>

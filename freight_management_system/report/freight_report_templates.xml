@@ -56,6 +56,20 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td name="consignee_id">
+                                    <strong>Consignee</strong>
+                                </td>
+                                <td name="consignee">
+                                    <span t-field="doc.consignee_id.name"/>
+                                </td>
+                                <td name="agent">
+                                    <strong>Agent</strong>
+                                </td>
+                                <td name="agent_name">
+                                    <span t-field="doc.agent_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td name="direction">
                                     <strong>Direction</strong>
                                 </td>
@@ -83,120 +97,169 @@
                                     <span t-field="doc.expected_date"/>
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                    <div name="orders">
-                        <strong>Orders:</strong>
-                    </div>
-                    <table class="table o_main_table">
-                        <thead style="display: table-row-group">
                             <tr>
-                                <th name="th_container" class="text-left">
-                                    Container
-                                </th>
-                                <th name="th_goods" class="text-left">Goods</th>
-                                <th name="th_billing_on" class="text-left">
-                                    Billing On
-                                </th>
-                                <th name="th_pricing" class="text-left">
-                                    Pricing
-                                </th>
-                                <th name="th_volume" class="text-left">Volume
-                                </th>
-                                <th name="th_weight" class="text-left">Weight
-                                </th>
-                                <th name="th_unit_price" class="text-left">Unit
-                                    Price
-                                </th>
-                                <th name="th_total_price" class="text-left">
-                                    Total Price
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr t-att-class="'bg-200 font-weight-bold'"
-                                t-foreach="doc.order_ids" t-as="order">
-                                <td t-esc="order.container_id.name"/>
-                                <td t-esc="order.product_id.name"/>
-                                <td>
-                                    <span t-field="order.billing_type"/>
+                                <td name="etd">
+                                    <strong>Estimated Time of Departure</strong>
                                 </td>
-                                <td t-esc="order.pricing_id.name"/>
-                                <td t-esc="order.volume"/>
-                                <td t-esc="order.weight"/>
-                                <td t-esc="order.price"/>
-                                <td t-esc="order.total_price"/>
+                                <td name="etd">
+                                    <span t-field="doc.etd"/>
+                                </td>
+                                <td name="bl_number">
+                                    <strong>Bill of Lading Number</strong>
+                                </td>
+                                <td name="bl_number">
+                                    <span t-field="doc.bl_number"/>
+                                </td>
                             </tr>
-                        </tbody>
-                    </table>
-                    <t name="th_operation" class="text-left" colspan="8">Total
-                    </t>
-                    <div name="route">
-                        <strong>Route:</strong>
-                    </div>
-                    <table class="table o_main_table">
-                        <thead style="display: table-row-group">
                             <tr>
-                                <th name="th_operation" class="text-left">
-                                    Operation
-                                </th>
-                                <th name="th_source" class="text-left">Source
-                                    location
-                                </th>
-                                <th name="th_destination" class="text-left">
-                                    Destination Location
-                                </th>
-                                <th name="th_transport" class="text-left">
-                                    Transport
-                                </th>
-                                <th name="th_price" class="text-left">Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr t-att-class="'bg-200 font-weight-bold'"
-                                t-foreach="doc.route_ids" t-as="route">
-                                <td t-esc="route.routes_id.name"/>
-                                <td t-esc="route.source_loc_id.name"/>
-                                <td t-esc="route.destination_loc_id.name"/>
-                                <td>
-                                    <span t-field="route.transport_type"/>
+                                <td name="net_weight">
+                                    <strong>Net Weight</strong>
                                 </td>
-                                <td t-esc="route.sale"/>
+                                <td name="net_weight">
+                                    <span t-field="doc.net_weight"/>
+                                </td>
+                                <td name="gross_weight">
+                                    <strong>Gross Weight</strong>
+                                </td>
+                                <td name="gross_weight">
+                                    <span t-field="doc.gross_weight"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td name="incoterm">
+                                    <strong>Delivery Term</strong>
+                                </td>
+                                <td name="incoterm_name">
+                                    <span t-esc="'[%s] %s' % (doc.incoterm_id.code, doc.incoterm_id.name)"/>
+                                </td>
+                                <td name="status">
+                                    <strong>Status</strong>
+                                </td>
+                                <td name="status_name">
+                                    <span t-field="doc.state"/>
+                                </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table><br/>
+                    <div style="page-break-inside: avoid;">
+                        <div name="orders">
+                            <strong>Orders:</strong>
+                        </div>
+                        <table class="table o_main_table">
+                            <thead style="display: table-row-group">
+                                <tr>
+                                    <t t-set="has_po" t-value="any(line.purchase_id for line in doc.order_ids)"/>
+                                    <t t-set="has_so" t-value="any(line.sale_id for line in doc.order_ids)"/>
+                                    <th name="th_po_ref" t-if="has_po" class="text-left">PO Number</th>
+                                    <th name="th_so_ref"  t-if="has_so" class="text-left">SO Number</th>
+                                    <th name="th_container" class="text-left">
+                                        Container
+                                    </th>
+                                    <th name="th_vessel" class="text-left">Vessel</th>
+                                    <th name="th_packet_list" class="text-center">No.of packet list</th>
+                                    <th name="th_goods" class="text-left">Goods</th>
+                                    <th name="th_billing_on" class="text-left">
+                                        Billing On
+                                    </th>
+                                    <th name="th_pricing" class="text-left">
+                                        Pricing
+                                    </th>
+                                    <th name="th_weight" class="text-left">Weight
+                                    </th>
+                                    <th name="th_unit_price" class="text-left">Unit
+                                        Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-att-class="'bg-200 font-weight-bold'"
+                                    t-foreach="doc.order_ids" t-as="order">
+                                    <td t-if="has_po" t-esc="order.purchase_id.name or ''"/>
+                                    <td t-if="has_so" t-esc="order.sale_id.name or ''"/>
+                                    <td t-esc="order.container_id.name or ''" />
+                                    <td t-esc="order.vessel or ''"/>
+                                    <td t-esc="order.packing_no or ''"/>
+                                    <td t-esc="(order.product_id.default_code or '') + ' - ' + (order.product_id.name or '')"/>
+                                    <td><span t-esc="order.billing_type or ''"/></td>
+                                    <td t-esc="order.pricing_id.name or ''"/>
+                                    <td t-esc="order.weight or ''" />
+                                    <td t-esc="order.price or ''"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <br/>
-                    <div name="route">
-                        <strong>Service:</strong>
+                    <div style="page-break-inside: avoid;">
+                        <div name="route">
+                            <strong>Route:</strong>
+                        </div>
+                        <table class="table o_main_table">
+                            <thead style="display: table-row-group">
+                                <tr>
+                                    <th name="th_operation" class="text-left">
+                                        Operation
+                                    </th>
+                                    <th name="th_source" class="text-left">Source
+                                        location
+                                    </th>
+                                    <th name="th_destination" class="text-left">
+                                        Destination Location
+                                    </th>
+                                    <th name="th_transport" class="text-left">
+                                        Transport
+                                    </th>
+                                    <th name="th_price" class="text-left">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-att-class="'bg-200 font-weight-bold'"
+                                    t-foreach="doc.route_ids" t-as="route">
+                                    <td t-esc="route.routes_id.name"/>
+                                    <td t-esc="route.source_loc_id.name"/>
+                                    <td t-esc="route.destination_loc_id.name"/>
+                                    <td>
+                                        <span t-field="route.transport_type"/>
+                                    </td>
+                                    <td t-esc="route.sale"/>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <table class="table o_main_table">
-                        <thead style="display: table-row-group">
-                            <tr>
-                                <th name="th_vendor" class="text-left">Vendor
-                                </th>
-                                <th name="th_service" class="text-left">
-                                    Service
-                                </th>
-                                <th name="th_quantity" class="text-left">
-                                    Quantity
-                                </th>
-                                <th name="th_sale" class="text-left">Sale</th>
-                                <th name="th_sale_total" class="text-left">Total
-                                    sale
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr t-att-class="'bg-200 font-weight-bold'"
-                                t-foreach="doc.service_ids" t-as="service">
-                                <td t-esc="service.partner_id.name"/>
-                                <td t-esc="service.service_id.name"/>
-                                <td t-esc="service.qty"/>
-                                <td t-esc="service.sale"/>
-                                <td t-esc="service.total_sale"/>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <br/>
+                    <div style="page-break-inside: avoid;">
+                        <div name="route">
+                            <strong>Service:</strong>
+                        </div>
+                        <table class="table o_main_table">
+                            <thead style="display: table-row-group">
+                                <tr>
+                                    <th name="th_vendor" class="text-left">Vendor
+                                    </th>
+                                    <th name="th_service" class="text-left">
+                                        Service
+                                    </th>
+                                    <th name="th_quantity" class="text-left">
+                                        Quantity
+                                    </th>
+                                    <th name="th_sale" class="text-left">Sale</th>
+                                    <th name="th_sale_total" class="text-left">Total
+                                        sale
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-att-class="'bg-200 font-weight-bold'"
+                                    t-foreach="doc.service_ids" t-as="service">
+                                    <td t-esc="service.partner_id.name"/>
+                                    <td t-esc="service.service_id.name"/>
+                                    <td t-esc="service.qty"/>
+                                    <td t-esc="service.sale"/>
+                                    <td t-esc="service.total_sale"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <tr><strong>Service Total: </strong><span t-esc="doc.total_service_sale"/><strong>(<span t-esc="doc.company_id.currency_id.amount_to_text(doc.total_service_sale)"/>)</strong></tr>
+                    </div>
                 </t>
             </t>
         </t>
