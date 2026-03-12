@@ -56,15 +56,16 @@
                 
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="so_type"/>
+                    <field name="po_type"/>
                 </xpath>
 
                 <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='product_uom']" position="replace">
-                    <field name="product_uom" string="Units" column_invisible="parent.so_type == 'fgf'"/>
+                    <field name="product_uom" string="Units" column_invisible="parent.so_type == 'fgf' or parent.po_type == 'fgf'"/>
                 </xpath>
 
                 <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='quantity']" position="after">
-                    <field name="pieces" string="Pieces" column_invisible="parent.so_type != 'fgf'"/>
-                    <field name="units_display" string="Units" column_invisible="parent.so_type != 'fgf'"/>
+                    <field name="pieces" string="Pieces" column_invisible="parent.so_type != 'fgf' and parent.po_type != 'fgf'"/>
+                    <field name="rolls_uom_id" string="Units" column_invisible="parent.so_type != 'fgf' and parent.po_type != 'fgf'"/>
                 </xpath>
 
             </field>

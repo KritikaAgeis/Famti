@@ -37,6 +37,7 @@
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'data/freight_routes_data.xml',
+        'data/fright_port_data.xml',
         'views/freight_order_views.xml',
         'views/freight_port_views.xml',
         'views/freight_container_views.xml',

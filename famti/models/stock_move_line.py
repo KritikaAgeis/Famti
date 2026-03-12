@@ -122,6 +122,8 @@ class StockMove(models.Model):
         store=True
     )
     pieces = fields.Float(string="Pieces")
+    rolls_uom_id = fields.Many2one('uom.uom', string="Units",domain="[('name','=','rolls')]",
+        default=lambda self: self.env['uom.uom'].search([('name','=','rolls')], limit=1))
    
 
     @api.depends('move_line_ids')
@@ -132,5 +134,5 @@ class StockMove(models.Model):
                 rec.pieces = rec.sale_line_id.pieces
             else:
                 count = len(rec.move_line_ids)
-                rec.units_display = f"Rolls"
+                rec.units_display = "Rolls"
                 rec.pieces = count

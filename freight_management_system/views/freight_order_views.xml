@@ -22,10 +22,10 @@
             <form>
                 <header>
                     <button name="action_create_custom_clearance"
-                            string="Custom Clearance" type="object"
+                            string="Create Custom Clearance" type="object"
                             class="oe_highlight"
                             data-hotkey="w"
-                            invisible="clearance == 'True'"/>
+                            invisible="1"/>
                     <button name="action_submit" string="Submit"
                             type="object" class="oe_highlight"
                             data-hotkey="w" invisible="state != 'draft'"/>
@@ -78,62 +78,64 @@
                     </div>
                     <group>
                         <group>
-                            <field name="shipper_id" readonly="state not in 'draft'"/>
-                            <field name="consignee_id" readonly="state not in 'draft'"/>
-                            <field name="order_date" readonly="state not in 'draft'"/>
-                            <field name="company_id" invisible="1" readonly="state not in 'draft'"/>
+                            <field name="shipper_id" readonly="state in 'done'"/>
+                            <field name="consignee_id" readonly="state in 'done'"/>
+                            <field name="order_date" readonly="state in 'done'"/>
+                            <field name="company_id" invisible="1" readonly="state in 'done'"/>
                         </group>
                         <group>
-                            <field name="clearance" invisible="1" readonly="state not in 'draft'"/>
-                            <field name="type" readonly="state not in 'draft'"/>
-                            <field name="transport_type" readonly="state not in 'draft'"/>
+                            <field name="clearance" invisible="1" readonly="state in 'done'"/>
+                            <field name="type" readonly="state in 'done'"/>
+                            <field name="transport_type" readonly="state in 'done'"/>
                             <field name="land_type"
-                                   invisible="1" readonly="state not in 'draft'"/>
+                                   invisible="1" readonly="state in 'done'"/>
                             <field name="water_type"
-                                   invisible="1" readonly="state not in 'draft'"/>
+                                   invisible="1" readonly="state in 'done'"/>
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name="loading_port_id" readonly="state not in 'draft'"/>
+                            <field name="loading_port_id" readonly="state in 'done'"/>
                         </group>
                         <group>
-                            <field name="discharging_port_id" readonly="state not in 'draft'"/>
+                            <field name="discharging_port_id" readonly="state in 'done'"/>
                         </group>
                     </group>
 
                     <group>
                         <group>
-                            <field name="agent_id" readonly="state not in 'draft'"/>
+                            <field name="agent_id" readonly="state in 'done'"/>
                         </group>
                         <group>
-                            <field name="expected_date" readonly="state not in 'draft'"/>
-                        </group>
-                    </group>
-                    <group>
-                        <group>
-                            <field name="incoterm" readonly="state not in 'draft'"/>
-                        </group>
-                        <group>
-                            <field name="certificate_of_analysis" readonly="state not in 'draft'"/>
+                            <field name="expected_date" readonly="state in 'done'"/>
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name="bill_of_loading" readonly="state not in 'draft'"/>
+                            <field name="incoterm_id" readonly="state in 'done'"/>
                         </group>
                         <group>
-                            <field name="commercial_invoice" readonly="state not in 'draft'"/>
+                            <field name="certificate_of_analysis" readonly="state in 'done'"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="bill_of_loading" readonly="state in 'done'"/>
+                        </group>
+                        <group>
+                            <field name="commercial_invoice" readonly="state in 'done'"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Order">
-                            <field name="order_ids" readonly="state not in 'draft'">
+                            <field name="order_ids" readonly="state in 'done'">
                                 <list string="Order Lines"
                                       editable="bottom">
                                     <field name="container_id"/>
-                                    <field name="vessel_id"/>
-                                    <field name="packing_list_ids" widget="many2many_tags"/>
+                                    <!-- <field name="vessel_id"/> -->
+                                    <field name="vessel"/>
+                                    <field name="packing_no"/>
+                                    <!-- <field name="packing_list_ids" widget="many2many_tags" string="No.of packet list"/> -->
                                     <field name="product_id"/>
                                     <field name="billing_type"/>
                                     <field name="pricing_id"/>
@@ -142,7 +144,7 @@
                                     <field name="weight"
                                            invisible="billing_type != 'weight'"/>
                                     <field name="price"/>
-                                    <field name="total_price"/>
+                                    <!-- <field name="total_price"/> -->
                                 </list>
                             </field>
                             <group class="oe_subtotal_footer oe_right"
@@ -163,7 +165,7 @@
                             </group>
                         </page>
                         <page string="Routes">
-                            <field name="route_ids" readonly="state not in 'draft'">
+                            <field name="route_ids" readonly="state in 'done'">
                                 <list string="Routes" editable="bottom">
                                     <field name="routes_id"/>
                                     <field name="origin_location"/>
@@ -183,7 +185,7 @@
                             </group>
                         </page>
                         <page string="Services">
-                            <field name="service_ids" readonly="state not in 'draft'">
+                            <field name="service_ids" readonly="state in 'done'">
                                 <list string="Services" editable="bottom">
                                     <field name="partner_id" />
                                     <field name="service_id"/>

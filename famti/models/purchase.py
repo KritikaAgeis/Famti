@@ -42,6 +42,14 @@ class Purchase(models.Model):
         compute="_compute_freight_count"
     )
 
+    po_type = fields.Selection([
+        ('sample', 'Sample'),
+        ('normal', 'Normal'),
+        ('tolling', 'Tolling'),
+        ('fgf', 'FGF'),
+    ], string='PO Type', tracking=True, default='normal')
+
+
 
     def _compute_freight_count(self):
         for order in self:
@@ -64,11 +72,23 @@ class Purchase(models.Model):
 
     def _create_freight_cost(self):
         freight = self.env['freight.order']
+        freightorderline = self.env['freight.order.line']
         loading_port_id = self.env['freight.port'].search([])[0]
         discharging_port_id = self.env['freight.port'].search([])[0]
         for order in self.filtered(lambda po: po.state in ('purchase', 'done')):
+            line_vals = []
+            for line in order.order_line:
+                line_vals.append((0, 0, {
+                    'product_id': line.product_id.id,
+                    'weight': line.product_qty,
+                    'billing_type': 'weight',
+                    'price': line.price_unit,
+                }))
+
             freight.create([{'shipper_id': order.partner_id.id, 'type': 'import', 'transport_type': 'land','loading_port_id': loading_port_id.id,
-                             'discharging_port_id':discharging_port_id.id,'agent_id':self.env.user.partner_id.id,'purchase_id':order.id}])
+                             'discharging_port_id':discharging_port_id.id,'agent_id':self.env.user.partner_id.id,'purchase_id':order.id,
+                             'expected_date':order.date_planned,'incoterm_id':order.incoterm_id.id,
+                             'order_ids': line_vals}])
         return
 
     @api.onchange('partner_id')
@@ -179,6 +199,9 @@ class PurchaseOrderLine(models.Model):
             ('pvdc_out', 'PVDC COATED'),
         ], string="Treatment OUT")
 
+    rolls_uom_id = fields.Many2one('uom.uom', string="UoM",domain="[('name','=','rolls')]",
+        default=lambda self: self.env['uom.uom'].search([('name','=','rolls')], limit=1))
+
 
     def action_open_uom_conversion(self):
         print(f'-line 46--------{self}--{self.ids}')
@@ -198,3 +221,9 @@ class PurchaseOrderLine(models.Model):
         if self.product_id:
             if self.product_id.film_description:
                 self.description = self.product_id.film_description
+        
+
+    @api.onchange('product_id','order_id.po_type')
+    def _onchange_sample_price(self):
+        if self.order_id.po_type == 'sample':
+            self.price_unit = 0

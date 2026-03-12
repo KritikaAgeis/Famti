@@ -92,10 +92,12 @@ class FreightOrder(models.Model):
     commercial_invoice = fields.Binary(string="Upload Inv.",help="Upload The Commercial Invoice.",tracking=True)
     certificate_of_analysis = fields.Binary(string="Upload COA")
     bill_of_loading = fields.Binary(string="Upload BOL",help="Upload the bill of loading.")
-    incoterm = fields.Selection([('fob','FOB'),('cif','CIF'),('cfr','CFR'),('ddp','DDP')],tracking=True, required=True, string='Incoterm',help="FOB: FAM Ti books freight & insurance via freight "
+    incoterm = fields.Selection([('fob','FOB'),('cif','CIF'),('cfr','CFR'),('ddp','DDP')],tracking=True, string='Incoterm',help="FOB: FAM Ti books freight & insurance via freight "
                                                                                                                  "forwarder,CIF: Supplier arranges freight & insurance to destination port,CFR: Supplier arranges freight only,"
                                                                                                                  "DDP: Supplier responsible for full delivery to FAM Ti")
-
+    incoterm_id = fields.Many2one('account.incoterms', string='Incoterm',tracking=True, required=True,  help="FOB: FAM Ti books freight & insurance via freight "
+                                                                                                                 "forwarder,CIF: Supplier arranges freight & insurance to destination port,CFR: Supplier arranges freight only,"
+                                                                                                                 "DDP: Supplier responsible for full delivery to FAM Ti")
     def action_reset_to_draft(self):
         for rec in self:
             rec.state = 'draft'
@@ -424,6 +426,8 @@ class FreightOrderLine(models.Model):
                                  default=lambda
                                      self: self.env.company.id)
     vessel_id = fields.Many2one('freight.vessel',string="Vessel")
+    vessel = fields.Char(string="Vessel")
+    packing_no = fields.Char(string="No.of packet list")
     packing_list_ids = fields.Many2many('stock.quant.package',string="Packing List")
 
     @api.constrains('weight')
@@ -459,15 +463,15 @@ class FreightOrderLine(models.Model):
                 rec.weight = 0.00
                 rec.price = rec.pricing_id.volume
 
-    @api.onchange('pricing_id', 'billing_type', 'volume', 'weight')
-    def _onchange_total_price(self):
-        """Calculate sub total price"""
-        for rec in self:
-            if rec.billing_type and rec.pricing_id:
-                if rec.billing_type == 'weight':
-                    rec.total_price = rec.weight * rec.price
-                elif rec.billing_type == 'volume':
-                    rec.total_price = rec.volume * rec.price
+    # @api.onchange('pricing_id', 'billing_type', 'volume', 'weight')
+    # def _onchange_total_price(self):
+    #     """Calculate sub total price"""
+    #     for rec in self:
+    #         if rec.billing_type and rec.pricing_id:
+    #             if rec.billing_type == 'weight':
+    #                 rec.total_price = rec.weight * rec.price
+    #             elif rec.billing_type == 'volume':
+    #                 rec.total_price = rec.volume * rec.price
 
 
 class FreightOrderRoutesLine(models.Model):

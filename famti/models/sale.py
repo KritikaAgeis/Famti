@@ -50,7 +50,7 @@ class SaleOrder(models.Model):
         ('normal', 'Normal'),
         ('tolling', 'Tolling'),
         ('fgf', 'FGF'),
-    ], string='SO Type', tracking=True, default='sample')
+    ], string='SO Type', tracking=True, default='normal')
 
     mo_count = fields.Integer(
         string="Manufacturing Orders",
@@ -68,6 +68,9 @@ class SaleOrder(models.Model):
         string="Freight Count",
         compute="_compute_freight_count"
     )
+
+    buyer_po_number = fields.Char( string="Buyer PO Number")
+    buyer_po_date = fields.Date(string="Buyer PO Date")
 
     def _compute_freight_count(self):
         for order in self:
@@ -167,12 +170,22 @@ class SaleOrder(models.Model):
     
     def _create_freight_cost(self):
         freight = self.env['freight.order']
+        freightorderline = self.env['freight.order.line']
         print("=======vfreight======")
         loading_port_id = self.env['freight.port'].search([])[0]
         discharging_port_id = self.env['freight.port'].search([])[0]
         print("=======loading_port_id======",loading_port_id)
         print("=======discharging_port_id======",discharging_port_id)
         for order in self.filtered(lambda so: so.state in ('sale', 'done')):
+            line_vals = []
+            for line in order.order_line:
+                line_vals.append((0, 0, {
+                    'product_id': line.product_id.id,
+                    'weight': line.product_uom_qty,
+                    'billing_type': 'weight',
+                    'price': line.price_unit,
+                }))
+
             freight.create([{
                 'shipper_id': order.partner_id.id, 
                 'type': 'export', 
@@ -180,7 +193,10 @@ class SaleOrder(models.Model):
                 'loading_port_id': loading_port_id.id,
                 'discharging_port_id':discharging_port_id.id,
                 'agent_id':self.env.user.partner_id.id,
-                'sale_id': order.id}])
+                'sale_id': order.id,
+                'incoterm_id':order.incoterm.id,
+                'order_ids': line_vals}])
+                
         return
 
     def action_view_mo(self):

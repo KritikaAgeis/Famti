@@ -6,11 +6,12 @@
         <field name="arch" type="xml">
 
             <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='product_uom_id']" position="attributes">
-                <attribute name="column_invisible">parent.so_type == 'fgf'</attribute>
+                <attribute name="column_invisible">parent.so_type == 'fgf' or parent.po_type == 'fgf'</attribute>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='quantity']" position="after">
                 <field name="pieces" column_invisible="parent.so_type != 'fgf'"/>
-                <field name="rolls_uom_id" column_invisible="parent.so_type != 'fgf'"/>
+                <field name="pieces_po" column_invisible="parent.po_type != 'fgf'"/>
+                <field name="rolls_uom_id" column_invisible="parent.so_type != 'fgf' and parent.po_type != 'fgf'"/>
             </xpath>
             <xpath expr="//field[@name='delivery_date']" position="before">
                 <field name="invoice_incoterm_id" string="Delivery terms" readonly="state in ['cancel', 'posted']"/>
