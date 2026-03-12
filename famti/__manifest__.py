@@ -12,12 +12,14 @@
                     'mrp',
                     'account',
         'freight_management_system',
+        'maintenance'
 
 
 ],
     'data': [
         'security/rules.xml',
         'security/ir.model.access.csv',
+        'data/maintenance_demo.xml',
         'data/ir_server_actions.xml',
         'data/mail_template.xml',
         'data/ir_cron.xml',
@@ -47,7 +49,7 @@
         'views/costing_sheet.xml',
         'views/accounting.xml',
         'views/freight_order.xml',
-
+        'views/maintenance_request.xml',
     ],
     'demo': [
         # 'demo/account_demo.xml',

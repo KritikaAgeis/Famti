@@ -11,6 +11,7 @@
                 <field name="transport_type"/>
                 <field name="loading_port_id"/>
                 <field name="discharging_port_id"/>
+                <field name="state"/>
             </list>
         </field>
     </record>

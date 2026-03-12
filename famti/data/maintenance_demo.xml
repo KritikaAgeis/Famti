@@ -1,0 +1,9 @@
+<odoo>
+
+    <record id="maintenace_stage_data_to_approve" model="maintenance.stage">
+        <field name="name">To Approve</field>
+        <field name="sequence">2</field>
+    </record>
+
+
+</odoo>
