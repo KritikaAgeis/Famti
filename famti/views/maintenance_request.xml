@@ -8,9 +8,9 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//button[@name='archive_equipment_request']" position="before">
-                    <button string="Supervisor Appoval"
+                    <button string="Appoval"
                             type="object" name="send_for_cfo_appoval"
-                            groups="famti.group_supervisor_dep_users"
+                            groups="maintenance.group_equipment_manager"
                             invisible="not show_supervisor_button"
                             class="btn-primary"/>
 
@@ -30,8 +30,8 @@
                 <xpath expr="//field[@name='name']" position="attributes">
                     <attribute name="readonly">show_supervisor_button</attribute>
                 </xpath>
-                <xpath expr="//field[@name='employee_id']" position="attributes">
-                    <attribute name="readonly">1</attribute>
+                <xpath expr="//field[@name='employee_id']" position="replace">
+                    <field name="employee_id" readonly="1" options="{'no_open': True}"/>
                 </xpath>
                 <xpath expr="//field[@name='email_cc']" position="attributes">
                     <attribute name="readonly">show_supervisor_button</attribute>
@@ -39,10 +39,12 @@
                 <xpath expr="//field[@name='equipment_id']" position="attributes">
                     <attribute name="readonly">show_supervisor_button</attribute>
                     <attribute name="required">1</attribute>
+                    <attribute name="options">{'no_open': True}</attribute>
                 </xpath>
 
                 <xpath expr="//field[@name='category_id']" position="attributes">
-                    <attribute name="readonly">show_supervisor_button</attribute>
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="options">{'no_open': True}</attribute>
                 </xpath>
 
                 <xpath expr="//field[@name='request_date']" position="attributes">
@@ -61,10 +63,12 @@
                 <xpath expr="//field[@name='user_id']" position="attributes">
                     <attribute name="readonly">show_supervisor_button</attribute>
                     <attribute name="invisible">show_responsible</attribute>
+                    <attribute name="options">{'no_open': True}</attribute>
                 </xpath>
 
                 <xpath expr="//field[@name='schedule_date']" position="attributes">
                     <attribute name="readonly">show_supervisor_button</attribute>
+                    <attribute name="required">1</attribute>
                 </xpath>
 
                 <xpath expr="//field[@name='duration']" position="attributes">
@@ -93,15 +97,20 @@
 
                 <xpath expr="//field[@name='priority']" position="attributes">
                     <attribute name="readonly">show_supervisor_button</attribute>
+                    <attribute name="required">1</attribute>
                 </xpath>
 
                 <xpath expr="//sheet//field[@name='company_id']" position="attributes">
                     <attribute name="readonly">show_supervisor_button</attribute>
+                    <attribute name="options">{'no_open': True}</attribute>
                 </xpath>
 
                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="contractor_name" invisible="not show_responsible" readonly="show_supervisor_button"/>
                     <field name="contractor_phone" invisible="not show_responsible" readonly="show_supervisor_button"/>
+                </xpath>
+                <xpath expr="//field[@name='stage_id']" position="replace">
+                    <field name="stage_id" widget="statusbar" options="{'clickable': 0}" invisible="archive"/>
                 </xpath>
 
             </field>
