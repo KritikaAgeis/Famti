@@ -34,9 +34,11 @@
                     <field name="etd"/>
                     <field name="net_weight"/>
                 </xpath>
-                <xpath expr="//field[@name='agent_id']" position="after">
-                    <field name="bl_number"/>
+                <xpath expr="//field[@name='incoterm_id']" position="before">
                     <field name="gross_weight"/>
+                </xpath>
+                <xpath expr="//field[@name='incoterm_id']" position="after">
+                    <field name="bl_number"/>
                 </xpath>
 
                 <xpath expr="//field[@name='order_ids']/list/field[@name='container_id']" position="before">
