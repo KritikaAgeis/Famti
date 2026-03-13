@@ -27,6 +27,82 @@
                             class="btn-primary"/>
 
                 </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+                <xpath expr="//field[@name='employee_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='email_cc']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+                <xpath expr="//field[@name='equipment_id']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                    <attribute name="required">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='category_id']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='request_date']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='maintenance_type']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='maintenance_team_id']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                    <attribute name="required">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                    <attribute name="invisible">show_responsible</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='schedule_date']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='duration']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='recurring_maintenance']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='repeat_interval']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='repeat_unit']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='repeat_type']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='repeat_until']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='priority']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//sheet//field[@name='company_id']" position="attributes">
+                    <attribute name="readonly">show_supervisor_button</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="contractor_name" invisible="not show_responsible" readonly="show_supervisor_button"/>
+                    <field name="contractor_phone" invisible="not show_responsible" readonly="show_supervisor_button"/>
+                </xpath>
 
             </field>
         </record>
