@@ -302,55 +302,56 @@ class FreightOrder(models.Model):
         for rec in self:
             custom_clearance = self.env['custom.clearance'].search([
                 ('freight_id', '=', self.id)])
-            if custom_clearance:
-                for clearance in custom_clearance:
-                    if clearance.state == 'confirm':
-                        rec.state = 'confirm'
-                        base_url = self.env['ir.config_parameter'].sudo().get_param(
-                            'web.base.url')
-                        Urls = urls.url_join(base_url,
-                                             'odoo/action-%(actionId)s/%(id)s' % {
-                                                 'id': self.id, 'actionId': self.env.ref('freight_management_system.freight_order_action').id})
-                        mail_content = _('Hi %s,<br> '
-                                         'The Freight Order %s is Confirmed '
-                                         '<div style = "text-align: center; '
-                                         'margin-top: 16px;"><a href = "%s"'
-                                         'style = "padding: 5px 10px; '
-                                         'font-size: 12px; line-height: 18px; '
-                                         'color: #FFFFFF; border-color:#875A7B; '
-                                         'text-decoration: none; '
-                                         'display: inline-block; '
-                                         'margin-bottom: 0px; font-weight: 400;'
-                                         'text-align: center; '
-                                         'vertical-align: middle; '
-                                         'cursor: pointer; white-space: nowrap; '
-                                         'background-image: none; '
-                                         'background-color: #875A7B; '
-                                         'border: 1px solid #875A7B; '
-                                         'border-radius:3px;">'
-                                         'View %s</a></div>'
-                                         ) % (rec.agent_id.name, rec.name,
-                                              Urls, rec.name)
-                        email_to = self.env['res.partner'].search([
-                            ('id', 'in', (self.shipper_id.id,
-                                          self.consignee_id.id, self.agent_id.id))])
-                        for mail in email_to:
-                            main_content = {
-                                'subject': _(
-                                    'Freight Order %s is Confirmed') % self.name,
-                                'author_id': self.env.user.partner_id.id,
-                                'body_html': mail_content,
-                                'email_to': mail.email
-                            }
-                            mail_id = self.env['mail.mail'].create(main_content)
-                            mail_id.mail_message_id.body = mail_content
-                            mail_id.send()
-                    elif clearance.state == 'draft':
-                        raise ValidationError("the custom clearance ' %s ' is "
-                                              "not confirmed" % clearance.name)
-            else:
-                raise ValidationError(
-                    "Create a custom clearance for %s" % rec.name)
+            rec.state = 'confirm'
+            # if custom_clearance:
+            #     for clearance in custom_clearance:
+            #         if clearance.state == 'confirm':
+            #             rec.state = 'confirm'
+            #             base_url = self.env['ir.config_parameter'].sudo().get_param(
+            #                 'web.base.url')
+            #             Urls = urls.url_join(base_url,
+            #                                  'odoo/action-%(actionId)s/%(id)s' % {
+            #                                      'id': self.id, 'actionId': self.env.ref('freight_management_system.freight_order_action').id})
+            #             mail_content = _('Hi %s,<br> '
+            #                              'The Freight Order %s is Confirmed '
+            #                              '<div style = "text-align: center; '
+            #                              'margin-top: 16px;"><a href = "%s"'
+            #                              'style = "padding: 5px 10px; '
+            #                              'font-size: 12px; line-height: 18px; '
+            #                              'color: #FFFFFF; border-color:#875A7B; '
+            #                              'text-decoration: none; '
+            #                              'display: inline-block; '
+            #                              'margin-bottom: 0px; font-weight: 400;'
+            #                              'text-align: center; '
+            #                              'vertical-align: middle; '
+            #                              'cursor: pointer; white-space: nowrap; '
+            #                              'background-image: none; '
+            #                              'background-color: #875A7B; '
+            #                              'border: 1px solid #875A7B; '
+            #                              'border-radius:3px;">'
+            #                              'View %s</a></div>'
+            #                              ) % (rec.agent_id.name, rec.name,
+            #                                   Urls, rec.name)
+            #             email_to = self.env['res.partner'].search([
+            #                 ('id', 'in', (self.shipper_id.id,
+            #                               self.consignee_id.id, self.agent_id.id))])
+            #             for mail in email_to:
+            #                 main_content = {
+            #                     'subject': _(
+            #                         'Freight Order %s is Confirmed') % self.name,
+            #                     'author_id': self.env.user.partner_id.id,
+            #                     'body_html': mail_content,
+            #                     'email_to': mail.email
+            #                 }
+            #                 mail_id = self.env['mail.mail'].create(main_content)
+            #                 mail_id.mail_message_id.body = mail_content
+            #                 mail_id.send()
+            #         elif clearance.state == 'draft':
+            #             raise ValidationError("the custom clearance ' %s ' is "
+            #                                   "not confirmed" % clearance.name)
+            # else:
+            #     raise ValidationError(
+            #         "Create a custom clearance for %s" % rec.name)
             for line in rec.order_ids:
                 line.container_id.state = 'reserve'
 
@@ -463,15 +464,15 @@ class FreightOrderLine(models.Model):
                 rec.weight = 0.00
                 rec.price = rec.pricing_id.volume
 
-    # @api.onchange('pricing_id', 'billing_type', 'volume', 'weight')
-    # def _onchange_total_price(self):
-    #     """Calculate sub total price"""
-    #     for rec in self:
-    #         if rec.billing_type and rec.pricing_id:
-    #             if rec.billing_type == 'weight':
-    #                 rec.total_price = rec.weight * rec.price
-    #             elif rec.billing_type == 'volume':
-    #                 rec.total_price = rec.volume * rec.price
+    @api.onchange('pricing_id', 'billing_type', 'volume', 'weight')
+    def _onchange_total_price(self):
+        """Calculate sub total price"""
+        for rec in self:
+            if rec.billing_type and rec.pricing_id:
+                if rec.billing_type == 'weight':
+                    rec.total_price = rec.weight * rec.price
+                elif rec.billing_type == 'volume':
+                    rec.total_price = rec.volume * rec.price
 
 
 class FreightOrderRoutesLine(models.Model):

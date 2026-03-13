@@ -8,9 +8,24 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//button[@name='archive_equipment_request']" position="before">
-                    <button string="CFO Approval"
+                    <button string="Supervisor Appoval"
                             type="object" name="send_for_cfo_appoval"
-                            groups="base.group_system"/>
+                            groups="famti.group_supervisor_dep_users"
+                            invisible="not show_supervisor_button"
+                            class="btn-primary"/>
+
+                    <button string="Approve Maintenance"
+                            type="object" name="maintenance_approval"
+                            groups="famti.group_maintenance_dep_users"
+                            invisible="not show_approve_button"
+                            class="btn-primary"/>
+                    
+                    <button string="Submit for Approval"
+                            type="object" name="submit_for_approval"
+                            groups="base.group_system"
+                            invisible="not show_submit_button"
+                            class="btn-primary"/>
+
                 </xpath>
 
             </field>

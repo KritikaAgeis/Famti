@@ -145,7 +145,7 @@
                                     <field name="weight"
                                            invisible="billing_type != 'weight'"/>
                                     <field name="price"/>
-                                    <!-- <field name="total_price"/> -->
+                                    <field name="total_price"/>
                                 </list>
                             </field>
                             <group class="oe_subtotal_footer oe_right"
