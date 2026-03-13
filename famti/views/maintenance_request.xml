@@ -14,7 +14,7 @@
                             invisible="not show_supervisor_button"
                             class="btn-primary"/>
 
-                    <button string="Approve Maintenance"
+                    <button string="Maintenance Done"
                             type="object" name="maintenance_approval"
                             groups="famti.group_maintenance_dep_users"
                             invisible="not show_approve_button"
