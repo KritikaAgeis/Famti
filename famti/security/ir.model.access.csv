@@ -19,7 +19,8 @@ access_converted_uoms_admin,access_converted_uoms_admin,model_uom_convert_wizard
 access_converted_uoms_po_users,access_converted_uoms_po_users,model_uom_convert_wizard,group_purchase_dep_users,1,1,1,1
 access_sale_mo_valuation,access_sale_mo_valuation,model_sale_mo_valuation,base.group_system,1,1,1,1
 access_manufacturing_cost_wizard,access_manufacturing_cost_wizard,model_manufacturing_cost_wizard,base.group_system,1,1,1,1
-
+access_employee_document_user,employee.document.user,model_hr_employee_document,base.group_user,1,1,1,1
+access_employee_document_hr,employee.document.hr,model_hr_employee_document,hr.group_hr_user,1,1,1,1
 
 
 

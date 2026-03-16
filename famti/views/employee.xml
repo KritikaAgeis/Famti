@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_employee_form_documents" model="ir.ui.view">
+            <field name="name">hr.employee.form.documents</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//page[@name='personal_information']" position="after">
+                    <page string="Related Documents">
+                        <field name="document_ids">
+                            <list editable="bottom">
+                                <field name="document_name"/>
+                                <field name="document_file" filename="document_filename"/>
+                                <field name="uploaded_by" readonly="1"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="view_employee_public_documents" model="ir.ui.view">
+            <field name="name">hr.employee.public.documents</field>
+            <field name="model">hr.employee.public</field>
+            <field name="inherit_id" ref="hr.hr_employee_public_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//notebook" position="inside">
+                    <page string="Related Documents" invisible="user_id != uid">
+                        <field name="document_ids">
+                            <list editable="bottom">
+                                <field name="document_name"/>
+                                <field name="document_file" filename="document_filename"/>
+                                <field name="uploaded_by" readonly="1"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+                <xpath expr="//page[@name='public']" position="attributes">
+                    <attribute name="invisible">user_id != uid</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- <record id="employee_public_see_own" model="ir.rule">
+            <field name="name">Employee Public: see own</field>
+            <field name="model_id" ref="hr.model_hr_employee_public"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record> -->
+
+        
+    </data>
+</odoo>

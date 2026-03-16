@@ -50,6 +50,7 @@
         'views/accounting.xml',
         'views/freight_order.xml',
         'views/maintenance_request.xml',
+        'views/employee.xml',
     ],
     'demo': [
         # 'demo/account_demo.xml',
