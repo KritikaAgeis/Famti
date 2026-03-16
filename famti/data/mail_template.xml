@@ -29,5 +29,55 @@
             </field>
         </record>
 
+        <record id="email_template_offer_letter" model="mail.template">
+            <field name="name">Offer Letter Email</field>
+            <field name="model_id" ref="hr_recruitment.model_hr_applicant"/>
+            <field name="subject">Offer Letter for the Position of ${object.job_id.name}</field>
+
+            <field name="email_to">${object.email_from}</field>
+
+            <field name="body_html">
+                <![CDATA[
+                <div style="font-family: Arial, sans-serif; font-size:14px;">
+                
+                <p>Dear ${object.partner_name},</p>
+
+                <p>
+                Greetings from <strong>${object.company_id.name}</strong>.
+                </p>
+
+                <p>
+                We are pleased to inform you that you have been selected for the position of 
+                <strong>${object.job_id.name}</strong> with our organization.
+                </p>
+
+                <p>
+                Please find attached your <strong>Offer Letter</strong>, which contains the details 
+                regarding your role, compensation, and other employment terms.
+                </p>
+
+                <p>
+                Kindly review the document and confirm your acceptance by replying to this email.
+                If you have any questions or require further clarification, feel free to contact us.
+                </p>
+
+                <p>
+                We look forward to welcoming you to our team and wish you a successful journey with 
+                <strong>${object.company_id.name}</strong>.
+                </p>
+
+                <br/>
+
+                <p>
+                Best Regards,<br/>
+                <strong>HR Department</strong><br/>
+                ${object.company_id.name}
+                </p>
+
+                </div>
+                ]]>
+            </field>
+        </record>
+
     </data>
 </odoo>
