@@ -35,6 +35,7 @@
         'wizard/mrp_batch_wizard.xml',
         'wizard/mrp_scrap_wizard.xml',
         'wizard/sales_mo_cost_wizard.xml',
+        'wizard/maintenance_wizard.xml',
         'reports/offer_letter_report.xml',
         'views/purchase.xml',
         'views/res_partner.xml',
