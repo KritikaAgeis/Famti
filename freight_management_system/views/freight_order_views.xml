@@ -33,13 +33,13 @@
                     <button name="action_confirm" string="Confirm"
                             type="object" class="oe_highlight"
                             data-hotkey="w" invisible="state != 'submit'"/>
-                    <button name="action_create_invoice" string="Invoice"
+                    <!-- <button name="action_create_invoice" string="Invoice"
                             type="object" class="oe_highlight"
                             data-hotkey="w" invisible="state != 'confirm'"/>
                     <button name="action_track_order" string="Tracking"
                             type="object" class="oe_highlight"
                             invisible="state not in ('confirm', 'invoice')"
-                            data-hotkey="w"/>
+                            data-hotkey="w"/> -->
                     <button name="action_done" string="Done" type="object"
                             class="oe_highlight"
                             invisible="state not in ('confirm', 'invoice')"
@@ -58,7 +58,7 @@
                            readonly="1"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
+                    <!-- <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" type="object"
                                 name="get_custom_clearance"
                                 icon="fa-id-card-o">
@@ -71,7 +71,7 @@
                             <field string="Invoice" name="invoice_count"
                                    widget="statinfo"/>
                         </button>
-                    </div>
+                    </div> -->
                     <div class="oe_title">
                         <h1 class="mt0">
                             <field name="name"/>
@@ -88,10 +88,6 @@
                             <field name="clearance" invisible="1" readonly="state in 'done'"/>
                             <field name="type" readonly="state in 'done'"/>
                             <field name="transport_type" readonly="state in 'done'"/>
-                            <field name="land_type"
-                                   invisible="1" readonly="state in 'done'"/>
-                            <field name="water_type"
-                                   invisible="1" readonly="state in 'done'"/>
                         </group>
                     </group>
                     <group>
@@ -204,7 +200,7 @@
                                        nolabel="1"/>
                             </group>
                         </page>
-                        <page string="Track">
+                        <!-- <page string="Track">
                             <field name="track_ids">
                                 <list string="Services" editable="bottom"
                                       create="0">
@@ -215,7 +211,7 @@
                                     <field name="type"/>
                                 </list>
                             </field>
-                        </page>
+                        </page> -->
                     </notebook>
                 </sheet>
                  <!-- Chatter -->

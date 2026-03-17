@@ -8,6 +8,7 @@ class MaintenanceRequest(models.Model):
     show_approve_button = fields.Boolean(compute="_compute_stage_buttons",store=False)
     show_submit_button =  fields.Boolean( compute="_compute_stage_buttons", store=False)
     show_responsible = fields.Boolean(compute="_compute_responsible_field", store=False)
+    show_scrap_button = fields.Boolean(compute="_compute_stage_buttons", store=False)
 
     contractor_name = fields.Char(string="Contractor Name", required="True")
     contractor_phone = fields.Char(string="Phone No", required="True")
@@ -25,6 +26,7 @@ class MaintenanceRequest(models.Model):
             rec.show_supervisor_button = False
             rec.show_approve_button = False
             rec.show_submit_button = False
+            rec.show_scrap_button = False
 
             if rec.stage_id.name == "To Approve":
                 rec.show_supervisor_button = True
@@ -34,6 +36,9 @@ class MaintenanceRequest(models.Model):
 
             if rec.stage_id.name == "New Request":
                 rec.show_submit_button = True
+
+            if rec.stage_id.name == "Scrap":
+                rec.show_scrap_button = True
 
 
     def send_for_cfo_appoval(self):
@@ -75,7 +80,12 @@ class MaintenanceRequest(models.Model):
             else:
                 raise UserError(_('Only New Request Will Be Send To In Progress'))
 
-
-
-
-
+    def action_scrap_confirm(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Confirm Scrap',
+            'res_model': 'scrap.confirm.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'active_id': self.id},
+        }

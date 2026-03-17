@@ -39,9 +39,16 @@
                         </field>
                     </page>
                 </xpath>
-                <xpath expr="//page[@name='public']" position="attributes">
+                <!-- <xpath expr="//page[@name='public']" position="attributes">
                     <attribute name="invisible">user_id != uid</attribute>
                 </xpath>
+                <xpath expr="//page[@name='skills_resume']" position="attributes">
+                    <attribute name="invisible">user_id != uid</attribute>
+                </xpath> -->
+                <xpath expr="//notebook" position="attributes">
+                    <attribute name="invisible">user_id != uid</attribute>
+                </xpath>
+                
 
             </field>
         </record>

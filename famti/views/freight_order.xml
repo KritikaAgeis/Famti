@@ -31,14 +31,16 @@
                 </xpath>
 
                 <xpath expr="//field[@name='expected_date']" position="after">
-                    <field name="etd"/>
-                    <field name="net_weight"/>
+                    <field name="net_weight" readonly="state in 'done'"/>
                 </xpath>
-                <xpath expr="//field[@name='incoterm_id']" position="before">
-                    <field name="gross_weight"/>
+                <xpath expr="//field[@name='transport_type']" position="after">
+                    <field name="etd" readonly="state in 'done'"/>
                 </xpath>
-                <xpath expr="//field[@name='incoterm_id']" position="after">
-                    <field name="bl_number"/>
+                <xpath expr="//field[@name='agent_id']" position="after">
+                    <field name="gross_weight" readonly="state in 'done'"/>
+                </xpath>
+                <xpath expr="//field[@name='bill_of_loading']" position="after">
+                    <field name="bl_number" readonly="state in 'done'"/>
                 </xpath>
 
                 <xpath expr="//field[@name='order_ids']/list/field[@name='container_id']" position="before">

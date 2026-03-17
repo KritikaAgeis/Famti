@@ -1,0 +1,40 @@
+<odoo>
+
+    <record id="action_offer_letter_report" model="ir.actions.report">
+        <field name="name">Offer Letter</field>
+        <field name="model">hr.applicant</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">famti.offer_letter_report</field>
+        <field name="report_file">famti.offer_letter_report</field>
+        <field name="print_report_name">'Offer Letter - %s' % (object.partner_name)</field>
+    </record>
+
+    <template id="offer_letter_report">
+    <t t-call="web.external_layout">
+        <main>
+            <t t-foreach="docs" t-as="o">
+
+                <h2>Offer Letter</h2>
+
+                <p>Dear <t t-esc="o.partner_name"/>,</p>
+
+                <p>
+                    We are pleased to offer you the position in our organization.
+                    We look forward to working with you.
+                </p>
+
+                <p>
+                    Please confirm your acceptance of this offer.
+                </p>
+
+                <p>
+                    Regards,<br/>
+                    HR Team
+                </p>
+
+            </t>
+        </main>
+    </t>
+</template>
+
+</odoo>

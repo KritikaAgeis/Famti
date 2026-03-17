@@ -10,4 +10,4 @@ from . import costing_sheet,stock_location
 from . import accounting
 from . import freight_order
 from . import maintenance_request
-from . import employee
+from . import employee,recruitment

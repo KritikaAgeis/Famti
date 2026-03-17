@@ -21,6 +21,7 @@ access_sale_mo_valuation,access_sale_mo_valuation,model_sale_mo_valuation,base.g
 access_manufacturing_cost_wizard,access_manufacturing_cost_wizard,model_manufacturing_cost_wizard,base.group_system,1,1,1,1
 access_employee_document_user,employee.document.user,model_hr_employee_document,base.group_user,1,1,1,1
 access_employee_document_hr,employee.document.hr,model_hr_employee_document,hr.group_hr_user,1,1,1,1
+access_scrap_confirm_wizard,access_scrap_confirm_wizard,model_scrap_confirm_wizard,base.group_system,1,1,1,1
 
 
 
