@@ -25,6 +25,7 @@
         'data/ir_cron.xml',
         'data/product_data.xml',
         # 'data/inventory_data.xml',
+        'data/recruitment.xml',
         'data/payment_terms_data.xml',
         'data/workcenter_demo.xml',
         'data/sequence.xml',

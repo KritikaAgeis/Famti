@@ -1,0 +1,8 @@
+<odoo>
+    <record id="stage_hired" model="hr.recruitment.stage">
+        <field name="name">Selected</field>
+        <field name="sequence">20</field>
+        <field name="fold">True</field>
+        <field name="hired_stage">True</field> 
+    </record>
+</odoo>
