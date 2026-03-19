@@ -32,13 +32,13 @@ class FreightOrder(models.Model):
                                        "Water",tracking=True)
     order_date = fields.Date(string='Date', default=fields.Date.today(),
                              help="Date of order",tracking=True)
-    loading_port_id = fields.Many2one('freight.port', string="Loading Port",
+    loading_port_id = fields.Many2one('freight.port', string="Load Port",
                                       required=True,
-                                      help="Loading port of the freight order",tracking=True)
+                                      help="Load port of the freight order",tracking=True)
     discharging_port_id = fields.Many2one('freight.port',
-                                          string="Discharging Port",
+                                          string="Discharge Port",
                                           required=True,
-                                          help="Discharging port of freight"
+                                          help="Discharge port of freight"
                                                "order",tracking=True)
     state = fields.Selection([('draft', 'Draft'), ('submit', 'Submitted'),
                               ('confirm', 'Confirmed'),
@@ -73,7 +73,7 @@ class FreightOrder(models.Model):
                                     help='The total cost of sale')
     service_ids = fields.One2many('freight.order.service', 'freight_id',
                                   string="Service", help='Service of the order')
-    total_service_sale = fields.Float(string='Service Total Sale',
+    total_service_sale = fields.Float(string='Service Total Amount',
                                       compute="_compute_total_service_cost",
                                       help='The total service cost of order')
     agent_id = fields.Many2one('res.partner', string='Agent',
@@ -464,15 +464,15 @@ class FreightOrderLine(models.Model):
                 rec.weight = 0.00
                 rec.price = rec.pricing_id.volume
 
-    @api.onchange('pricing_id', 'billing_type', 'volume', 'weight')
-    def _onchange_total_price(self):
-        """Calculate sub total price"""
-        for rec in self:
-            if rec.billing_type and rec.pricing_id:
-                if rec.billing_type == 'weight':
-                    rec.total_price = rec.weight * rec.price
-                elif rec.billing_type == 'volume':
-                    rec.total_price = rec.volume * rec.price
+    # @api.onchange('pricing_id', 'billing_type', 'volume', 'weight')
+    # def _onchange_total_price(self):
+    #     """Calculate sub total price"""
+    #     for rec in self:
+    #         if rec.billing_type and rec.pricing_id:
+    #             if rec.billing_type == 'weight':
+    #                 rec.total_price = rec.weight * rec.price
+    #             elif rec.billing_type == 'volume':
+    #                 rec.total_price = rec.volume * rec.price
 
 
 class FreightOrderRoutesLine(models.Model):

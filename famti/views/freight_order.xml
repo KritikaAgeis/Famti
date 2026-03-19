@@ -18,9 +18,9 @@
             <field name="inherit_id" ref="freight_management_system.freight_order_view_form"/>
             <field name="arch" type="xml">
 
-                <xpath expr="//field[@name='service_ids']//field[@name='partner_id']" position="attributes">
+                <!-- <xpath expr="//field[@name='service_ids']//field[@name='partner_id']" position="attributes">
                     <attribute name="domain">[('supplier_rank','>',0)]</attribute>
-                </xpath>
+                </xpath> -->
                 <xpath expr="//sheet/div[@class='oe_title']" position="inside">
                     <div class="oe_avatar_container" style="position:absolute; right:16px; top:4px;">
                         <field name="logo"
@@ -30,23 +30,47 @@
                     </div>
                 </xpath>
 
-                <xpath expr="//field[@name='expected_date']" position="after">
-                    <field name="net_weight" readonly="state in 'done'"/>
-                </xpath>
                 <xpath expr="//field[@name='transport_type']" position="after">
-                    <field name="etd" readonly="state in 'done'"/>
+                    <field name="etd" />
+                    
                 </xpath>
                 <xpath expr="//field[@name='agent_id']" position="after">
                     <field name="gross_weight" readonly="state in 'done'"/>
                 </xpath>
-                <xpath expr="//field[@name='bill_of_loading']" position="after">
+
+                <xpath expr="//field[@name='incoterm_id']" position="after">
+                    <field name="purchase_id" readonly="state in 'done'" invisible="not purchase_id"/>
+                    <field name="sale_id" readonly="state in 'done'" invisible="not sale_id"/>
+                </xpath>
+                <xpath expr="//field[@name='loading_port_id']" position="after">
+                    <field name="final_destination_id"/>
+                    <field name="etd_discharge_port"/>
+                </xpath>
+                <xpath expr="//field[@name='discharging_port_id']" position="after">
+                    <field name="eta"/>
+                    <field name="eta_destination"/>
+                    <field name="net_weight" readonly="state in 'done'"/>
                     <field name="bl_number" readonly="state in 'done'"/>
                 </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Documents">
+                        <field name="document_ids">
+                            <list editable="bottom">
+                                <field name="document_type"/>
+                                <field name="file" filename="file_name"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
 
-                <xpath expr="//field[@name='order_ids']/list/field[@name='container_id']" position="before">
+                <xpath expr="//field[@name='order_ids']/list/field[@name='container_id']" position="after">
+                    <field name="container_number"/>
+                </xpath>
+
+                <!-- <xpath expr="//field[@name='order_ids']/list/field[@name='container_id']" position="before">
                     <field name="purchase_id" column_invisible="not parent.purchase_id"/>
                     <field name="sale_id" column_invisible="not parent.sale_id"/>
-                </xpath>
+                </xpath> -->
 
             </field>
         </record>
