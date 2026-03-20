@@ -10,8 +10,8 @@ class MaintenanceRequest(models.Model):
     show_responsible = fields.Boolean(compute="_compute_responsible_field", store=False)
     show_scrap_button = fields.Boolean(compute="_compute_stage_buttons", store=False)
 
-    contractor_name = fields.Char(string="Contractor Name", required="True")
-    contractor_phone = fields.Char(string="Phone No", required="True")
+    contractor_name = fields.Char(string="Contractor Name", required=True)
+    contractor_phone = fields.Char(string="Phone No", required=True)
 
     @api.depends('maintenance_team_id')
     def _compute_responsible_field(self):

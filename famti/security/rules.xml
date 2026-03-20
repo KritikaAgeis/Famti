@@ -31,7 +31,12 @@
             </record>
 
             <record id="group_supervisor_dep_users" model="res.groups">
-                <field name="name">Supervisor User</field>
+                <field name="name">Maintenance Supervisor</field>
+                <field name="category_id" ref="famti.module_category_famti_users"/>
+            </record>
+
+            <record id="group_hide_candidate_menu_for_HR" model="res.groups">
+                <field name="name">Access Of Candidate Menu For HR Department</field>
                 <field name="category_id" ref="famti.module_category_famti_users"/>
             </record>
 

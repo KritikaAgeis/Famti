@@ -44,5 +44,12 @@
             action="famti.action_tolling_receipts"
             sequence="5"/>
 
+
+
+        <record id="hr_recruitment.menu_hr_candidate" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('group_hide_candidate_menu_for_HR')])]"/>
+        </record>
+
+
     </data>
 </odoo>

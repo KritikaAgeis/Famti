@@ -1,5 +1,5 @@
-<odoo>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="1">
     <record id="maintenace_stage_data_to_approve" model="maintenance.stage">
         <field name="name">To Approve</field>
         <field name="sequence">2</field>
