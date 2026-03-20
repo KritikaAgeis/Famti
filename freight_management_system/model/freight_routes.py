@@ -26,6 +26,7 @@ class FreightRoutes(models.Model):
     """Creating the routes for the freight"""
     _name = 'freight.routes'
     _description = 'Freight Routes'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Name', required=True, help='Name of the route')
     active = fields.Boolean(string='Active', default=True,
