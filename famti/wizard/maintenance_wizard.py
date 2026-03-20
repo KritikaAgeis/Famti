@@ -25,7 +25,7 @@ class MaintenanceTrackWizard(models.TransientModel):
     team_id = fields.Many2one('maintenance.team', string="Team", required=True)
     user_id = fields.Many2one('res.users', string="Responsible")
 
-    contractor_name = fields.Char(string="Contractor Name", required=True)
+    contractor_name = fields.Char(string="Contractor Name")
     contractor_id = fields.Many2one('res.partner', string="Contractor")
     phone = fields.Char(string="Phone No", required=True)
     email = fields.Char(string="Email", required="True")

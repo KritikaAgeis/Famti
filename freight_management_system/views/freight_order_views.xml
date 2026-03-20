@@ -132,7 +132,7 @@
                                     <field name="total_price"/> -->
                                 </list>
                             </field>
-                            <group class="oe_subtotal_footer oe_right"
+                            <!-- <group class="oe_subtotal_footer oe_right"
                                    colspan="2">
                                 <div class="oe_inline o_td_label">
                                     <label for="total_volume"/>
@@ -147,7 +147,7 @@
                                 </div>
                                 <field name="total_order_price"
                                        nolabel="1"/>
-                            </group>
+                            </group> -->
                         </page>
                         <page string="Routes">
                             <field name="route_ids" readonly="state in 'done'">
@@ -161,13 +161,13 @@
                                     <!-- <field name="sale"/> -->
                                 </list>
                             </field>
-                            <group class="oe_subtotal_footer oe_right"
+                            <!-- <group class="oe_subtotal_footer oe_right"
                                    colspan="2">
                                 <div class="oe_inline o_td_label">
                                     <label for="total_route_sale"/>
                                 </div>
                                 <field name="total_route_sale" nolabel="1"/>
-                            </group>
+                            </group> -->
                         </page>
                         <page string="Services">
                             <field name="service_ids" readonly="state in 'done'">
@@ -181,10 +181,11 @@
                             </field>
                             <group class="oe_subtotal_footer oe_right"
                                    colspan="2">
+                                <field name="currency_id" invisible="1"/>
                                 <div class="oe_inline o_td_label">
-                                    <label for="total_service_sale"/>
+                                    <label for="total_service_amount"/>
                                 </div>
-                                <field name="total_service_sale"
+                                <field name="total_service_amount" widget="monetary" options="{'currency_field': 'currency_id'}"
                                        nolabel="1"/>
                             </group>
                         </page>

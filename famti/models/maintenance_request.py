@@ -33,11 +33,11 @@ class MaintenanceRequest(models.Model):
         for rec in self:
             if rec.maintenance_team_id and rec.maintenance_team_id.name == "External Maintenance":
                 rec.email = rec.contractor_id.email if rec.contractor_id and rec.contractor_id.email else False
-                rec.phone = rec.contractor_id.phone if rec.contractor_id and rec.contractor_id.phone else False
+                rec.contractor_phone = rec.contractor_id.phone if rec.contractor_id and rec.contractor_id.phone else False
                 rec.user_id = False
             else:
                 rec.email = rec.user_id.email if rec.user_id else False
-                rec.phone = rec.user_id.partner_id.phone if rec.user_id and rec.user_id.partner_id.phone else False
+                rec.contractor_phone = rec.user_id.partner_id.phone if rec.user_id and rec.user_id.partner_id.phone else False
     
     @api.model
     def create(self, vals):

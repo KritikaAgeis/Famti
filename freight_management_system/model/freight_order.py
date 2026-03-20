@@ -76,6 +76,14 @@ class FreightOrder(models.Model):
     total_service_sale = fields.Float(string='Service Total Amount',
                                       compute="_compute_total_service_cost",
                                       help='The total service cost of order')
+    currency_id = fields.Many2one(
+        'res.currency',
+        default=lambda self: self.env.company.currency_id
+    )
+    company_currency_id = fields.Many2one(related="company_id.currency_id", string="Company Currency")
+    total_service_amount = fields.Monetary(string='Service Total Amount',
+                                      compute="_compute_total_service_cost",currency_field="company_currency_id",
+                                      help='The total service cost of order',store=True)
     agent_id = fields.Many2one('res.partner', string='Agent',
                                required=True, help="Details of agent",tracking=True)
     expected_date = fields.Date(string='Expected Date', help='The expected date'
@@ -122,6 +130,7 @@ class FreightOrder(models.Model):
         """Computing the total cost of services"""
         for rec in self:
             rec.total_service_sale = sum(rec.service_ids.mapped('total_sale'))
+            rec.total_service_amount = sum(rec.service_ids.mapped('total_sale'))
 
     @api.model_create_multi
     def create(self, vals_list):

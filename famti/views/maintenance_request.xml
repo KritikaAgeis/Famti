@@ -29,7 +29,8 @@
                     <button name="action_open_track_wizard"
                         string="Track Maintenance"
                         type="object"
-                        class="btn-primary"/>
+                        class="btn-primary"
+                        invisible="show_scrap_button"/>
 
                     <button name="action_scrap_confirm"
                         string="Scrap"
@@ -118,7 +119,7 @@
 
                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="contractor_id" invisible="not show_responsible" readonly="show_supervisor_button"/>
-                    <field name="contractor_phone" invisible="not show_responsible" readonly="show_supervisor_button"/>
+                    <field name="contractor_phone" readonly="show_supervisor_button"/>
                     <field name="email" readonly="show_supervisor_button"/>
                 </xpath>
                 <xpath expr="//field[@name='stage_id']" position="replace">
