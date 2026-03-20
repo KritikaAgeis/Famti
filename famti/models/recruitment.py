@@ -4,6 +4,26 @@ import base64
 class HrApplicant(models.Model):
     _inherit = "hr.applicant"
 
+    show_submit_approval = fields.Boolean(compute="_compute_stage_buttons", store=False)
+    show_approve_button = fields.Boolean(compute="_compute_stage_buttons", store=False)
+    is_hr_executive = fields.Boolean(compute="_compute_is_hr_executive", store=False)
+
+    def _compute_is_hr_executive(self):
+        for rec in self:
+            user = self.env.user
+
+            if user.has_group('famti.group_for_hr_executive'):
+                rec.is_hr_executive = False
+            else:
+                rec.is_hr_executive = True
+
+    @api.depends('stage_id')
+    def _compute_stage_buttons(self):
+        for rec in self:
+            rec.show_submit_approval = rec.stage_id.name == 'Second Interview'
+            rec.show_approve_button = rec.stage_id.name == 'Document Verification'
+
+
     def write(self, vals):
         old_stage_map = {rec.id: rec.stage_id.id for rec in self}
         res = super().write(vals)
@@ -58,3 +78,19 @@ class HrApplicant(models.Model):
             subtype_xmlid='mail.mt_note',
             attachment_ids=[attachment.id],
         )
+
+    def submit_for_approval(self):
+        document_verification = self.env['hr.recruitment.stage'].search(
+            [('name', '=', 'Document Verification')], limit=1
+        )   
+        if document_verification:
+            self.stage_id = document_verification.id
+
+    def document_approved(self):
+        document_verified = self.env['hr.recruitment.stage'].search(
+            [('name', '=', 'Document Verified')], limit=1
+        )   
+        if document_verified:
+            self.stage_id = document_verified.id
+
+    

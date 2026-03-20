@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hr_applicant_form_inherit_submit" model="ir.ui.view">
+        <field name="name">hr.applicant.form.submit.button</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header" position="inside">
+                <button name="document_approved"
+                        type="object"
+                        string="Approve"
+                        class="btn-primary"
+                        groups="hr_recruitment.group_hr_recruitment_user"
+                        invisible="not show_approve_button or is_hr_executive"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
