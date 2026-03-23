@@ -1,0 +1,177 @@
+<odoo>
+
+    <record id="freight_service_air_freight" model="freight.service">
+        <field name="name">Air Freight</field>
+        <field name="category_id" ref="freight_transportation"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_ocean_freight" model="freight.service">
+        <field name="name">Ocean Freight</field>
+        <field name="category_id" ref="freight_transportation"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_trucking" model="freight.service">
+        <field name="name">Trucking / Ground Freight</field>
+        <field name="category_id" ref="freight_transportation"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_fsc" model="freight.service">
+        <field name="name">Fuel Surcharge (FSC)</field>
+        <field name="category_id" ref="freight_surcharges"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_security" model="freight.service">
+        <field name="name">Security Surcharge</field>
+        <field name="category_id" ref="freight_surcharges"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_pss" model="freight.service">
+        <field name="name">Peak Season Surcharge (PSS)</field>
+        <field name="category_id" ref="freight_surcharges"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_origin_thc" model="freight.service">
+        <field name="name">Origin THC</field>
+        <field name="category_id" ref="freight_terminal_handling"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_destination_thc" model="freight.service">
+        <field name="name">Destination THC</field>
+        <field name="category_id" ref="freight_terminal_handling"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_loading" model="freight.service">
+        <field name="name">Loading / Unloading Charges</field>
+        <field name="category_id" ref="freight_terminal_handling"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_customs_brokerage" model="freight.service">
+        <field name="name">Customs Brokerage</field>
+        <field name="category_id" ref="freight_customs_clearance"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_import_export" model="freight.service">
+        <field name="name">Import/Export Clearance</field>
+        <field name="category_id" ref="freight_customs_clearance"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_duties" model="freight.service">
+        <field name="name">Duties &amp; Taxes</field>
+        <field name="category_id" ref="freight_customs_clearance"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_awb" model="freight.service">
+        <field name="name">AWB Fee</field>
+        <field name="category_id" ref="freight_documentation"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_bl" model="freight.service">
+        <field name="name">Bill of Lading Fee</field>
+        <field name="category_id" ref="freight_documentation"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_processing" model="freight.service">
+        <field name="name">Processing / Documentation Charges</field>
+        <field name="category_id" ref="freight_documentation"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_local_pickup" model="freight.service">
+        <field name="name">Local Pickup</field>
+        <field name="category_id" ref="freight_pickup_origin"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_origin_transport" model="freight.service">
+        <field name="name">Origin Transport</field>
+        <field name="category_id" ref="freight_pickup_origin"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_delivery" model="freight.service">
+        <field name="name">Delivery</field>
+        <field name="category_id" ref="freight_delivery"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_drayage" model="freight.service">
+        <field name="name">Drayage</field>
+        <field name="category_id" ref="freight_delivery"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_port_fees" model="freight.service">
+        <field name="name">Port Fees</field>
+        <field name="category_id" ref="freight_port_airport"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_airport_handling" model="freight.service">
+        <field name="name">Airport Handling</field>
+        <field name="category_id" ref="freight_port_airport"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_storage" model="freight.service">
+        <field name="name">Storage Charges</field>
+        <field name="category_id" ref="freight_storage_penalties"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_demurrage" model="freight.service">
+        <field name="name">Demurrage / Detention</field>
+        <field name="category_id" ref="freight_storage_penalties"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_navcan" model="freight.service">
+        <field name="name">NAVCAN</field>
+        <field name="category_id" ref="freight_regulatory"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_ams" model="freight.service">
+        <field name="name">AMS / ISF Filing</field>
+        <field name="category_id" ref="freight_regulatory"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_do_fee" model="freight.service">
+        <field name="name">DO Fee</field>
+        <field name="category_id" ref="freight_do_charges"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_insurance" model="freight.service">
+        <field name="name">Cargo Insurance</field>
+        <field name="category_id" ref="freight_insurance"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_packing" model="freight.service">
+        <field name="name">Packing / Palletization</field>
+        <field name="category_id" ref="freight_misc"/>
+        <field name="sale_price">0</field>
+    </record>
+
+    <record id="freight_service_special" model="freight.service">
+        <field name="name">Special Handling</field>
+        <field name="category_id" ref="freight_misc"/>
+        <field name="sale_price">0</field>
+    </record>
+
+</odoo>

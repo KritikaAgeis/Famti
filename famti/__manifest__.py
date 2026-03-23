@@ -54,6 +54,7 @@
         'views/freight_order.xml',
         'views/maintenance_request.xml',
         'views/employee.xml',
+        'views/recruitment.xml',
     ],
     'demo': [
         # 'demo/account_demo.xml',

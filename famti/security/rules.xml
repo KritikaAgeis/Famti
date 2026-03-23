@@ -40,6 +40,11 @@
                 <field name="category_id" ref="famti.module_category_famti_users"/>
             </record>
 
+            <record id="group_for_hr_executive" model="res.groups">
+                <field name="name">Is HR Head</field>
+                <field name="category_id" ref="famti.module_category_famti_users"/>
+            </record>   
+
 
         <!-- Purchase Order: User sees only own records -->
         <record id="purchase_order_own_records_rule" model="ir.rule">

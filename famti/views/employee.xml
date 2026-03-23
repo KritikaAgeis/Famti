@@ -18,6 +18,31 @@
                         </field>
                     </page>
                 </xpath>
+                <xpath expr="//field[@name='work_email']" position="before">
+                    <label for="barcode"/>
+                    <div class="o_row">
+                        <field name="barcode" string="Employee Id"/>
+                        <button string="Generate" class="btn btn-link" type="object" name="generate_random_barcode" invisible="barcode"/>
+                        <button name="357" string="Print Badge" class="btn btn-link" type="action" invisible="not barcode"/>
+                    </div>
+                </xpath>
+                <xpath expr="//page[@name='public']//group[.//field[@name='work_location_id']]" position="after">
+                    <group string="Employment Details">
+                        <group>
+                            <field name="joining_date"/>
+                        </group>
+                        <group>
+                        </group>
+                        <group>
+                            <field name="training_start_date"/>
+                            <field name="probation_start_date"/>
+                        </group>
+                        <group>
+                            <field name="training_end_date"/>
+                            <field name="probation_end_date"/>
+                        </group>
+                    </group>
+                </xpath>
 
             </field>
         </record>

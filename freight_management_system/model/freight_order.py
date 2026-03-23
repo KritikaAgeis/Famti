@@ -518,6 +518,14 @@ class FreightOrderRoutesLine(models.Model):
     def _onchange_routes_id(self):
         """Calculate the price of route operation"""
         for rec in self:
+            
+            if rec.routes_id:
+                transport = self.env['freight.routes'].search(
+                    [('id', '=', rec.routes_id.id)], 
+                    limit=1
+                )
+                rec.transport_type = transport.transport_type if transport else False
+
             if rec.transport_type:
                 route = self.env['freight.routes'].search(
                     [('transport_type', '=', rec.transport_type)],
@@ -525,13 +533,7 @@ class FreightOrderRoutesLine(models.Model):
                 )
                 rec.routes_id = route.id
 
-                if route:
-                    if rec.transport_type == 'land':
-                        rec.sale = route.land_sale
-                    elif rec.transport_type == 'air':
-                        rec.sale = route.air_sale
-                    elif rec.transport_type == 'ocean':
-                        rec.sale = route.water_sale
+
             
 
 
@@ -555,6 +557,7 @@ class FreightOrderServiceLine(models.Model):
                                  help="Current company",
                                  default=lambda
                                      self: self.env.company.id)
+    category_id = fields.Many2one('freight.service.category', string="Service Category")
 
     @api.onchange('service_id', 'partner_id')
     def _onchange_partner_id(self):
