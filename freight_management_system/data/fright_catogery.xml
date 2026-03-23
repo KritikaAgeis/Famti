@@ -1,0 +1,55 @@
+<odoo>
+
+    <record id="freight_transportation" model="freight.service.category">
+        <field name="name">Transportation Costs</field>
+    </record>
+
+    <record id="freight_surcharges" model="freight.service.category">
+        <field name="name">Surcharges</field>
+    </record>
+
+    <record id="freight_terminal_handling" model="freight.service.category">
+        <field name="name">Terminal &amp; Handling Charges</field>
+    </record>
+
+    <record id="freight_customs_clearance" model="freight.service.category">
+        <field name="name">Customs &amp; Clearance</field>
+    </record>
+
+    <record id="freight_documentation" model="freight.service.category">
+        <field name="name">Documentation Charges</field>
+    </record>
+
+    <record id="freight_pickup_origin" model="freight.service.category">
+        <field name="name">Pickup / Origin Charges</field>
+    </record>
+
+    <record id="freight_delivery" model="freight.service.category">
+        <field name="name">Delivery Charges</field>
+    </record>
+
+    <record id="freight_port_airport" model="freight.service.category">
+        <field name="name">Port / Airport Charges</field>
+    </record>
+
+    <record id="freight_storage_penalties" model="freight.service.category">
+        <field name="name">Storage &amp; Penalties</field>
+    </record>
+
+    <record id="freight_regulatory" model="freight.service.category">
+        <field name="name">Regulatory Charges</field>
+    </record>
+
+    <record id="freight_do_charges" model="freight.service.category">
+        <field name="name">Delivery Order Charges</field>
+    </record>
+
+    <record id="freight_insurance" model="freight.service.category">
+        <field name="name">Insurance</field>
+    </record>
+
+    <record id="freight_misc" model="freight.service.category">
+        <field name="name">Miscellaneous</field>
+    </record>
+
+</odoo>

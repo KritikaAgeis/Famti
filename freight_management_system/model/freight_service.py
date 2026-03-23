@@ -17,6 +17,8 @@ class FreightService(models.Model):
                                  default=lambda
                                      self: self.env.company.id)
 
+    category_id = fields.Many2one('freight.service.category', string="Category")
+
 
 class FreightServiceLine(models.Model):
     _name = 'freight.service.line'
@@ -33,3 +35,9 @@ class FreightServiceLine(models.Model):
                                  help="Current company",
                                  default=lambda
                                      self: self.env.company.id)
+
+class FreightServiceCategory(models.Model):
+    _name = 'freight.service.category'
+    _description = 'Freight Service Category'
+
+    name = fields.Char(required=True)

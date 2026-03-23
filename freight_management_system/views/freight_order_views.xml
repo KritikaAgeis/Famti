@@ -173,7 +173,8 @@
                             <field name="service_ids" readonly="state in 'done'">
                                 <list string="Services" editable="bottom">
                                     <!-- <field name="partner_id" /> -->
-                                    <field name="service_id"/>
+                                    <field name="category_id"/>
+                                    <field name="service_id" domain="[('category_id', '=', category_id)]"/>
                                     <field name="qty" string="Details" optional="hide"/>
                                     <field name="sale" string="VOL" optional="hide"/>
                                     <field name="total_sale" string="Amount"/>

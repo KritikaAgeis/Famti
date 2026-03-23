@@ -8,6 +8,7 @@
             <list>
                 <field name="name"/>
                 <field name="sale_price"/>
+                <field name="category_id"/>
             </list>
         </field>
     </record>
@@ -21,6 +22,7 @@
                     <group>
                         <field name="name"/>
                         <field name="company_id" invisible="1"/>
+                        <field name="category_id"/>
                     </group>
                     <group>
                         <group>
@@ -53,6 +55,43 @@
             </p>
         </field>
     </record>
+
+
+    <record id="freight_service_category_view_tree" model="ir.ui.view">
+        <field name="name">freight.service.category.view.tree</field>
+        <field name="model">freight.service.category</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="freight_service_category_view_form" model="ir.ui.view">
+        <field name="name">freight.service.category.view.form</field>
+        <field name="model">freight.service.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="freight_service_category_action" model="ir.actions.act_window">
+        <field name="name">Service Categories</field>
+        <field name="res_model">freight.service.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first freight service category
+            </p>
+        </field>
+    </record>
+    
     <!--Menu for freight service-->
     <menuitem id="freight_container_menu_root" name="Container"
               parent="menu_configuration" sequence="2"
@@ -60,4 +99,11 @@
     <menuitem id="menu_freight_service" name="Services"
               parent="menu_configuration" sequence="2"
               action="freight_service_action"/>
+
+
+    <menuitem id="menu_freight_service_category"
+              name="Service Categories"
+              parent="menu_configuration"
+              action="freight_service_category_action"
+              sequence="3"/>
 </odoo>
