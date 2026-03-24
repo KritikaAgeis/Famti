@@ -28,7 +28,7 @@ class MaintenanceTrackWizard(models.TransientModel):
     contractor_name = fields.Char(string="Contractor Name")
     contractor_id = fields.Many2one('res.partner', string="Contractor")
     phone = fields.Char(string="Phone No", required=True)
-    email = fields.Char(string="Email", required="True")
+    email = fields.Char(string="Email", required=True)
 
     request_date = fields.Datetime(string="Request Date", default=fields.Datetime.now, required=True)
     schedule_date = fields.Datetime(string="Scheduled Date")

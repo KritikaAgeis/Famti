@@ -48,7 +48,8 @@ class Purchase(models.Model):
         ('tolling', 'Tolling'),
         ('fgf', 'FGF'),
     ], string='PO Type', tracking=True, default='normal')
-
+    due_date = fields.Date(string="Due Date")
+    advance_amount = fields.Float(string="Advance Amount")
 
 
     def _compute_freight_count(self):

@@ -100,6 +100,8 @@
                 </xpath>
 
                 <xpath expr="//field[@name='picking_type_id']" position="before">
+                    <field name="advance_amount"/>
+                    <field name="due_date"/>
                     <field name="po_type"/>
                     <field name="payment_term_id" required="1"/>
                     <field name="incoterm_id" string="Delivery terms" required="1"/>
