@@ -43,12 +43,12 @@
                     <field name="sale_id" readonly="state in 'done'" invisible="not sale_id"/>
                 </xpath>
                 <xpath expr="//field[@name='loading_port_id']" position="after">
-                    <field name="final_destination_id"/>
                     <field name="etd_discharge_port"/>
+                    <field name="final_destination_id"/>
                 </xpath>
                 <xpath expr="//field[@name='discharging_port_id']" position="after">
-                    <field name="eta"/>
                     <field name="eta_destination"/>
+                    <field name="eta"/>
                     <field name="net_weight" readonly="state in 'done'"/>
                     <field name="bl_number" readonly="state in 'done'"/>
                 </xpath>

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+    <record id="action_report_purchase_order_custom" model="ir.actions.report">
+        <field name="name">Purchase Order Custom Report</field>
+        <field name="model">purchase.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">famti.report_purchase_order_custom</field>
+        <field name="report_file">famti.report_purchase_order_custom</field>
+        <field name="print_report_name">'PO - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+    <template id="external_layout_standards">
+
+    <t t-set="o" t-value="o or doc"/>
+    <t t-set="company" t-value="o and o.company_id or res_company"/>
+
+    <div t-attf-class="header o_company_#{company.id}_layout">
+
+        <div class="row" style="width:100%; margin:0;">
+
+            <div class="col-6" style="padding:0; vertical-align:top;">
+
+                <img t-if="company.logo"
+                    t-att-src="image_data_uri(company.logo)"
+                    style="max-height:80px;"/>
+
+                <br/><br/>
+
+                <strong><span t-field="company.name"/></strong><br/>
+
+                <span t-field="company.partner_id"
+                    t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}'/>
+
+            </div>
+
+            <div class="col-6" style="padding:0;">
+
+                <td style="width:50%; vertical-align:top;">
+
+                    <div style="border:1px solid black; border-radius:8px; overflow:hidden;">
+
+                        <div style="background:black; color:white; text-align:center; padding:6px; font-weight:bold;">
+                            PURCHASE ORDER
+                        </div>
+
+                        <div style="padding:6px; font-size:11px; text-align:center;">
+                            This number must appear on all packing slips,
+                            shipping documents, packages and invoices.
+                        </div>
+
+                        <div style="text-align:center; font-size:16px; font-weight:bold; padding:6px;">
+                            <span t-field="o.name"/>
+                        </div>
+
+                        <table style="width:100%; border-top:1px solid black; border-collapse:collapse;">
+                            <tr>
+                                <td style="width:50%; border-right:1px solid black; padding:5px;">
+                                    <strong>Page</strong><br/>
+                                    <span class="page"/> / <span class="topage"/>
+                                </td>
+
+                                <td style="padding:5px;">
+                                    <strong>Date</strong><br/>
+                                    <span t-field="o.date_order" t-options='{"widget": "date"}'/>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                </td>
+            </div>
+
+        </div>
+
+        </div><br/><br/>
+
+        <div t-attf-class="article o_company_#{company.id}_layout">
+            <t t-out="0"/>
+        </div>
+        <div t-attf-class="footer o_company_#{company.id}_layout"
+     style="font-size:11px; margin-top:20px; width:100%;">
+
+    <div style="border-top:1px solid #999; margin-bottom:10px;"></div>
+
+    <div style="width:100%; overflow:hidden;">
+
+        <div style="width:45%; float:left; border:1px solid #999; border-radius:6px; padding:8px; font-size:10px; line-height:1.4;">
+            • Invoice each P.O. separately in duplicate showing the above P.O. number and shipping information.<br/>
+            • All duty and/or taxes must be shown separately on invoice where applicable.<br/>
+            • This order is subject to the terms and conditions stated.
+        </div>
+
+        <div style="width:25%; float:left; text-align:center; font-weight:bold; color:#666; margin-top:25px;">
+            Supplier's Copy
+        </div>
+
+        <div style="width:25%; float:right; text-align:right;">
+            <div style="border-top:1px solid #999; width:100%; margin-bottom:3px;"></div>
+            <span style="font-weight:bold;">Gaurav G</span>
+        </div>
+
+    </div>
+
+    <div style="clear:both;"></div>
+
+    <div style="width:100%; margin-top:8px; font-size:10px; color:#666;">
+
+        <div style="float:left;">
+            Get your FREE Purchase Order Software at https://www.spendmap.com
+        </div>
+
+        <div style="float:right;">
+            <span class="page"/> / <span class="topage"/>
+        </div>
+
+    </div>
+
+    <div style="clear:both;"></div>
+
+</div>
+
+    </template>
+
+    <template id="report_purchase_order_custom">
+    <t t-call="famti.external_layout_standards">
+        <main>
+            <t t-foreach="docs" t-as="o">
+
+                <table style="width:100%; margin-bottom:20px;">
+                    <tr>
+
+                        <!-- LEFT SIDE -->
+                        <td style="width:50%; vertical-align:top;">
+
+                            <!-- COMPANY (SENDER) -->
+                            <table style="width:100%; border:1px solid black; margin-bottom:10px;">
+                                <tr>
+                                    <td style="background:#eee; padding:5px;">
+                                        <strong>FROM (SENDER)</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px; font-size:12px;">
+
+                                        <strong><span t-field="o.company_id.name"/></strong><br/>
+
+                                        <span t-field="o.company_id.street"/><br/>
+                                        <span t-field="o.company_id.city"/>
+                                        <span t-field="o.company_id.state_id.name"/><br/>
+                                        <span t-field="o.company_id.country_id.name"/><br/>
+
+                                        <strong>Phone:</strong> <span t-field="o.company_id.phone"/><br/>
+                                        <strong>Email:</strong> <span t-field="o.company_id.email"/>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+                            
+                        </td>
+
+                        <!-- RIGHT SIDE PO BOX -->
+                        <td style="width:50%; vertical-align:top;">
+
+                            <!-- SUPPLIER (RECEIVER) -->
+                            <table style="width:100%; border:1px solid black;">
+                                <tr>
+                                    <td style="background:#eee; padding:5px;">
+                                        <strong>TO (SUPPLIER)</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px; font-size:12px;">
+
+                                        <strong><span t-field="o.partner_id.name"/></strong><br/>
+
+                                        <span t-field="o.partner_id.street"/><br/>
+                                        <span t-field="o.partner_id.city"/>
+                                        <span t-field="o.partner_id.state_id.name"/><br/>
+                                        <span t-field="o.partner_id.country_id.name"/><br/>
+
+                                        <strong>Phone:</strong> <span t-field="o.partner_id.phone"/><br/>
+                                        <strong>Email:</strong> <span t-field="o.partner_id.email"/>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                        </td>
+
+                    </tr>
+                </table>
+                
+                <table style="width:100%; border:1px solid black; border-collapse:collapse;">
+                    <thead style="background:#eee;">
+                        <tr>
+                            <th style="border:1px solid black;">TERMS</th>
+                            <th style="border:1px solid black;">F.O.B</th>
+                            <th style="border:1px solid black;">DELIVERY NOTE</th>
+                            <th style="border:1px solid black;">REQUEST-BY</th>
+                            <th style="border:1px solid black;">REQ. NO.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <table style="width:100%; border:1px solid black; border-collapse:collapse;">
+                    <thead style="background:#eee;">
+                        <tr>
+                            <th style="border:1px solid black;">DELIVERY</th>
+                            <th style="border:1px solid black;">COST CENTRE</th>
+                            <th style="border:1px solid black;">G/L ACCOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table><br/>
+
+                <table style="width:100%; border:1px solid black; border-collapse:collapse;">
+                    <thead style="background:#eee;">
+                        <tr>
+                            <th style="border:1px solid black;width:5%;">LN</th>
+                            <th style="border:1px solid black;width:10%;">QTY</th>
+                            <th style="border:1px solid black;width:60%;">DESCRIPTION</th>
+                            <th style="border:1px solid black;width:12.5%;">PRICE/UNIT</th>
+                            <th style="border:1px solid black;width:12.5%;">EXTENSION</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr t-foreach="o.order_line" t-as="line">
+                            <td style="border:1px solid black;">
+                                <span t-esc="line_index + 1"/>
+                            </td>
+
+                            <td style="border:1px solid black;">
+                                <span t-field="line.product_qty"/>
+                            </td>
+
+                            <td style="border:1px solid black;">
+                                <span t-field="line.name"/>
+                            </td>
+
+                            <td style="border:1px solid black;">
+                                <span t-field="line.price_unit"/>
+                            </td>
+
+                            <td style="border:1px solid black;">
+                                <span t-field="line.price_subtotal"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="border:1px solid black;"></td>
+                            <td style="border:1px solid black;"></td>
+
+                            <td style="border:1px solid black; padding:8px;">
+                                <strong>Notes:</strong><br/>
+                                <span t-field="o.notes"/>
+                            </td>
+
+                            <td style="border:1px solid black;"></td>
+                            <td style="border:1px solid black;"></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" style="border:none;"></td>
+
+                            <td style="border:1px solid black;">
+                                Subtotal
+                            </td>
+                            <td style="border:1px solid black; text-align:right;">
+                                <span t-field="o.amount_untaxed"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" style="border:none;"></td>
+
+                            <td style="border:1px solid black;">
+                                Tax
+                            </td>
+                            <td style="border:1px solid black; text-align:right;">
+                                <span t-field="o.amount_tax"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" style="border:none;"></td>
+
+                            <td style="border:1px solid black;">
+                                <strong>Total</strong>
+                            </td>
+                            <td style="border:1px solid black; text-align:right;">
+                                <strong><span t-field="o.amount_total"/></strong>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+                <div class="page-break"/>
+
+            </t>
+        </main>
+    </t>
+</template>
+
+
+    
+</odoo>

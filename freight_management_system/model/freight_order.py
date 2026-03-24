@@ -32,11 +32,11 @@ class FreightOrder(models.Model):
                                        "Water",tracking=True)
     order_date = fields.Date(string='Date', default=fields.Date.today(),
                              help="Date of order",tracking=True)
-    loading_port_id = fields.Many2one('freight.port', string="Load Port",
+    loading_port_id = fields.Many2one('freight.port', string="ETD(Load Port)",
                                       required=True,
                                       help="Load port of the freight order",tracking=True)
     discharging_port_id = fields.Many2one('freight.port',
-                                          string="Discharge Port",
+                                          string="ETA(Discharge Port)",
                                           required=True,
                                           help="Discharge port of freight"
                                                "order",tracking=True)
