@@ -177,7 +177,8 @@
                                     <field name="service_id" domain="[('category_id', '=', category_id)]"/>
                                     <field name="qty" string="Details" optional="hide"/>
                                     <field name="sale" string="VOL" optional="hide"/>
-                                    <field name="total_sale" string="Amount"/>
+                                    <field name="company_currency_id" invisible="1"/>
+                                    <field name="total_sale" string="Amount" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
                                 </list>
                             </field>
                             <group class="oe_subtotal_footer oe_right"

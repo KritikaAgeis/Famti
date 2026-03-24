@@ -38,7 +38,7 @@
 
             </div>
 
-            <div class="col-6" style="padding:0;">
+            <div class="col-6" style="padding:10px;">
 
                 <td style="width:50%; vertical-align:top;">
 
@@ -80,7 +80,7 @@
 
         </div><br/><br/>
 
-        <div t-attf-class="article o_company_#{company.id}_layout">
+        <div t-attf-class="article o_company_#{company.id}_layout" style="margin-top:20px;">
             <t t-out="0"/>
         </div>
         <div t-attf-class="footer o_company_#{company.id}_layout"
@@ -96,13 +96,13 @@
             • This order is subject to the terms and conditions stated.
         </div>
 
-        <div style="width:25%; float:left; text-align:center; font-weight:bold; color:#666; margin-top:25px;">
+        <!-- <div style="width:25%; float:left; text-align:center; font-weight:bold; color:#666; margin-top:25px;">
             Supplier's Copy
-        </div>
+        </div> -->
 
-        <div style="width:25%; float:right; text-align:right;">
+        <div style="width:50%; float:left; text-align:left;padding-top:30px;">
             <div style="border-top:1px solid #999; width:100%; margin-bottom:3px;"></div>
-            <span style="font-weight:bold;">Gaurav G</span>
+            <h6 style="font-weight:bold;padding-left:30px;"><span t-field="o.partner_id.name"/></h6>
         </div>
 
     </div>
@@ -131,18 +131,13 @@
     <t t-call="famti.external_layout_standards">
         <main>
             <t t-foreach="docs" t-as="o">
-
-                <table style="width:100%; margin-bottom:20px;">
-                    <tr>
-
-                        <!-- LEFT SIDE -->
-                        <td style="width:50%; vertical-align:top;">
-
-                            <!-- COMPANY (SENDER) -->
-                            <table style="width:100%; border:1px solid black; margin-bottom:10px;">
+                <div style="height:10px;"></div>
+                <div class="row" style="width:100%; margin-top:25px; margin-bottom:20px;">
+                    <div class="col-6">
+                        <table style="width:100%; border:1px solid black; margin-bottom:10px;">
                                 <tr>
                                     <td style="background:#eee; padding:5px;">
-                                        <strong>FROM (SENDER)</strong>
+                                        <strong>Supplier</strong>
                                     </td>
                                 </tr>
                                 <tr>
@@ -161,18 +156,12 @@
                                     </td>
                                 </tr>
                             </table>
-
-                            
-                        </td>
-
-                        <!-- RIGHT SIDE PO BOX -->
-                        <td style="width:50%; vertical-align:top;">
-
-                            <!-- SUPPLIER (RECEIVER) -->
-                            <table style="width:100%; border:1px solid black;">
+                    </div>
+                    <div class="col-6">
+                        <table style="width:100%; border:1px solid black;">
                                 <tr>
                                     <td style="background:#eee; padding:5px;">
-                                        <strong>TO (SUPPLIER)</strong>
+                                        <strong>Ship-to</strong>
                                     </td>
                                 </tr>
                                 <tr>
@@ -191,12 +180,10 @@
                                     </td>
                                 </tr>
                             </table>
+                    </div>
+                </div>
 
-
-                        </td>
-
-                    </tr>
-                </table>
+                
                 
                 <table style="width:100%; border:1px solid black; border-collapse:collapse;">
                     <thead style="background:#eee;">
@@ -211,9 +198,9 @@
                     <tbody>
                         <tr>
                             <td></td>
+                            <td><span t-field="o.company_id.country_id.name"/></td>
                             <td></td>
-                            <td></td>
-                            <td></td>
+                            <td><span t-field="o.partner_id.name"/></td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -229,8 +216,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td></td>
-                            <td></td>
+                            <td><span t-field="o.date_planned"/></td>
+                            <td><span t-field="o.company_id.name"/></td>
                             <td></td>
                         </tr>
                     </tbody>
