@@ -38,6 +38,7 @@
         'wizard/maintenance_wizard.xml',
         'reports/offer_letter_report.xml',
         'views/purchase.xml',
+        'views/hr_expense.xml',
         'views/res_partner.xml',
         'views/product.xml',
         'views/purchase_order_line.xml',

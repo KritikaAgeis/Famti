@@ -75,7 +75,7 @@ class FreightOrder(models.Model):
                                   string="Service", help='Service of the order')
     total_service_sale = fields.Float(string='Service Total Amount',
                                       compute="_compute_total_service_cost",
-                                      help='The total service cost of order')
+                                      help='The total service cost of order',store=True)
     currency_id = fields.Many2one(
         'res.currency',
         default=lambda self: self.env.company.currency_id
