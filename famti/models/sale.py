@@ -236,8 +236,7 @@ class SaleOrder(models.Model):
     def _onchange_partner_set_terms(self):
         if self.partner_id:
             self.note = f"""
-                <p><strong>Delivery:</strong></p>
-
+                <p><strong>DELIVERY:</strong></p>
                 <p>
                 1. SHIPMENT - ETD - <br/>
                 2. DELIVER TO ADDRESS MENTIONED ABOVE <br/>
@@ -249,9 +248,8 @@ class SaleOrder(models.Model):
                 </p>
 
                 <p><strong>CONTACT DETAILS:</strong></p>
-
                 <p>
-                CUSTOMER NAME: {self.partner_id.name or ''} <br/>
+                Customer Name: {self.partner_id.name or ''} <br/>
                 Email: {self.partner_id.email or ''} <br/>
                 Phone Number: {self.partner_id.phone or ''}
                 </p>

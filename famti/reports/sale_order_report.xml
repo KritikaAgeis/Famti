@@ -17,7 +17,7 @@
             <t t-foreach="docs" t-as="o">
 
                 <div style="text-align:center; font-size:20px; font-weight:bold; margin-bottom:10px;">
-                    Sales Order
+                    SALE ORDER
                 </div>
                 
                 <table style="width:100%; font-size:12px; border-collapse:collapse; margin-bottom:10px;">
@@ -39,31 +39,31 @@
                             <span t-field="o.partner_id.city"/>
                         </td>
 
-                        <td style="width:50%; vertical-align:top; ">
+                        <td style="width:50%; vertical-align:top;padding:5px;">
 
                             <table style="width:100%; font-size:12px;">
                                 <tr>
-                                    <td><strong>Sales Order Code</strong></td>
-                                    <td style="text-align:right;"><span t-field="o.name"/></td>
+                                    <td style="padding:5px;background:#eee;"><strong>Sales Order Code</strong></td>
+                                    <td style="text-align:right;padding:5px;"><span t-field="o.name"/></td>
                                 </tr>
 
                                 <tr>
-                                    <td><strong>Date</strong></td>
-                                    <td style="text-align:right;">
+                                    <td style="padding:5px;background:#eee;"><strong>Date</strong></td>
+                                    <td style="text-align:right;padding:5px;">
                                         <span t-field="o.date_order" t-options='{"widget": "date"}'/>
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <td><strong>BUYER'S PO NO. &amp; DATE </strong></td>
-                                    <td style="text-align:right;">
+                                    <td style="padding:5px;background:#eee;"><strong>BUYER'S PO NO. &amp; DATE </strong></td>
+                                    <td style="text-align:right;padding:5px;">
                                         <span t-field="o.buyer_po_number"/>
                                         <span>/</span>
                                         <span t-field="o.buyer_po_date"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><strong>OTHER REFERENCE(S)</strong></td>
+                                    <td style="padding:5px;background:#eee;"><strong>OTHER REFERENCE(S)</strong></td>
                                     <td></td>
                                 </tr>
                             </table>
@@ -83,8 +83,8 @@
                                 </div>
                                 <div class="col-6">
                                     <strong>Delivery Terms:</strong>
-                            [<span t-field="o.incoterm.code"/>]
-                            <span t-field="o.incoterm.name"/>
+                                    [<span t-field="o.incoterm.code"/>]
+                                    <span t-field="o.incoterm.name"/>
                                 </div>
                             </div>
                         </td>
@@ -98,7 +98,7 @@
                 <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:10px;">
 
                     <thead>
-                        <tr style="border-bottom:1px solid #000;">
+                        <tr style="border-bottom:1px solid #000;background:#eee;">
                             <th style="padding:6px;font-weight:bold;">DESCRIPTION OF GOODS</th>
                             <th style="padding:6px;font-weight:bold;">THICKNESS</th>
                             <th style="padding:6px;font-weight:bold;">WIDTH</th>
@@ -107,15 +107,17 @@
                             <th style="padding:6px;font-weight:bold;">TREATMENT IN</th>
                             <th style="padding:6px;font-weight:bold;">TREATMENT OUT</th>
                             <th style="padding:6px;font-weight:bold;">ROLL LENGTH (MTRS APPROX)</th>
-                            <th style="padding:6px;font-weight:bold;">QUANTITY (NO OF ROLLS)</th>
-                            <th style="padding:6px;font-weight:bold;">PRICE / ROLL (IN USD)</th>
+                            <th t-if="o.so_type != 'fgf'" style="padding:6px;font-weight:bold;">QUANTITY (LBS)</th>
+                            <th t-if="o.so_type != 'fgf'" style="padding:6px;font-weight:bold;">PRICE / POUND (IN USD)</th>
+                            <th t-if="o.so_type == 'fgf'" style="padding:6px;font-weight:bold;">QUANTITY (NO OF ROLLS)</th>
+                            <th t-if="o.so_type == 'fgf'" style="padding:6px;font-weight:bold;">PRICE / ROLL (IN USD)</th>
                             <th style="padding:6px;font-weight:bold;">AMOUNT (IN USD)</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <t t-foreach="o.order_line" t-as="line">
-                            <tr style="border-bottom:1px solid #ddd;">
+                            <tr style="border-bottom:1px solid #000;">
                                 <td style="padding:6px;">
                                     <span t-field="line.description"/>
                                 </td>
@@ -140,8 +142,11 @@
                                 <td style="padding:6px;">
                                     <span t-field="line.length_val"/>
                                 </td>
-                                <td style="padding:6px;">
+                                <td t-if="o.so_type != 'fgf'" style="padding:6px;">
                                     <span t-field="line.product_uom_qty"/>
+                                </td>
+                                <td t-if="o.so_type == 'fgf'" style="padding:6px;">
+                                    <span t-field="line.pieces"/>
                                 </td>
                                 <td style="padding:6px;">
                                     <span t-field="line.price_unit"/>
@@ -179,25 +184,13 @@
 
                 <div style="clear:both;"></div>
 
-                <div style="margin-top:20px; font-size:11px;">
-                    <strong>Delivery:</strong><br/>
-                    1. Shipment as per schedule<br/>
-                    2. Deliver to address mentioned above<br/>
-                    3. Subject to jurisdiction<br/>
-
-                    <br/>
-
-                    <strong>Contact Details:</strong><br/>
-                    <span t-field="o.partner_id.name"/><br/>
-                    <span t-field="o.partner_id.email"/>
+                <div style="margin-top:20px;">
+                    <span t-field="o.note"/>
                 </div>
 
-                <div style="width:100%; margin-top:40px; overflow:hidden;">
+                <div style="width:100%; margin-top:40px; overflow:hidden;page-break-inside: avoid;">
 
-                    <!-- LEFT SIDE -->
                     <div style="width:50%; float:left; text-align:center;">
-                        
-
 
                         <div style="text-align:center;">
                             <div style="border-top:1px solid #000; margin-top:65px;"></div>
@@ -206,7 +199,6 @@
                         
                     </div>
 
-                    <!-- RIGHT SIDE -->
                     <div style="width:45%; float:right;">
 
                         <div style="padding:10px; font-size:12px;">

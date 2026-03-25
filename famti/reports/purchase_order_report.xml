@@ -16,114 +16,114 @@
 
     <template id="external_layout_standards">
 
-    <t t-set="o" t-value="o or doc"/>
-    <t t-set="company" t-value="o and o.company_id or res_company"/>
+        <t t-set="o" t-value="o or doc"/>
+        <t t-set="company" t-value="o and o.company_id or res_company"/>
 
-    <div t-attf-class="header o_company_#{company.id}_layout">
+        <div t-attf-class="header o_company_#{company.id}_layout">
 
-        <div class="row" style="width:100%; margin:0;">
+            <div class="row" style="width:100%; margin:0;">
 
-            <div class="col-6" style="padding:0; vertical-align:top;">
+                <div class="col-6" style="padding:0; vertical-align:top;">
 
-                <img t-if="company.logo"
-                    t-att-src="image_data_uri(company.logo)"
-                    style="max-height:80px;"/>
+                    <img t-if="company.logo"
+                        t-att-src="image_data_uri(company.logo)"
+                        style="max-height:80px;"/>
 
-                <br/><br/>
+                    <br/><br/>
 
-                <strong><span t-field="company.name"/></strong><br/>
+                    <strong><span t-field="company.name"/></strong><br/>
 
-                <span t-field="company.partner_id"
-                    t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}'/>
+                    <span t-field="company.partner_id"
+                        t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}'/>
+
+                </div>
+
+                <div class="col-6" style="padding:10px;">
+
+                    <td style="width:50%; vertical-align:top;">
+
+                        <div style="border:1px solid black; border-radius:8px; overflow:hidden;">
+
+                            <div style="background:black; color:white; text-align:center; padding:6px; font-weight:bold;">
+                                PURCHASE ORDER
+                            </div>
+
+                            <div style="padding:6px; font-size:11px; text-align:center;">
+                                This number must appear on all packing slips,
+                                shipping documents, packages and invoices.
+                            </div>
+
+                            <div style="text-align:center; font-size:16px; font-weight:bold; padding:6px;">
+                                <span t-field="o.name"/>
+                            </div>
+
+                            <table style="width:100%; border-top:1px solid black; border-collapse:collapse;">
+                                <tr>
+                                    <td style="width:50%; border-right:1px solid black; padding:5px;">
+                                        <strong>Page</strong><br/>
+                                        <span class="page"/> / <span class="topage"/>
+                                    </td>
+
+                                    <td style="padding:5px;">
+                                        <strong>Date</strong><br/>
+                                        <span t-field="o.date_order" t-options='{"widget": "date"}'/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </td>
+                </div>
 
             </div>
 
-            <div class="col-6" style="padding:10px;">
+            </div><br/><br/>
 
-                <td style="width:50%; vertical-align:top;">
+            <div t-attf-class="article o_company_#{company.id}_layout" style="margin-top:20px;">
+                <t t-out="0"/>
+            </div>
+            <div t-attf-class="footer o_company_#{company.id}_layout"
+                style="font-size:11px; margin-top:20px; width:100%;">
 
-                    <div style="border:1px solid black; border-radius:8px; overflow:hidden;">
+                <div style="border-top:1px solid #999; margin-bottom:10px;"></div>
 
-                        <div style="background:black; color:white; text-align:center; padding:6px; font-weight:bold;">
-                            PURCHASE ORDER
-                        </div>
+                <div style="width:100%; overflow:hidden;">
 
-                        <div style="padding:6px; font-size:11px; text-align:center;">
-                            This number must appear on all packing slips,
-                            shipping documents, packages and invoices.
-                        </div>
-
-                        <div style="text-align:center; font-size:16px; font-weight:bold; padding:6px;">
-                            <span t-field="o.name"/>
-                        </div>
-
-                        <table style="width:100%; border-top:1px solid black; border-collapse:collapse;">
-                            <tr>
-                                <td style="width:50%; border-right:1px solid black; padding:5px;">
-                                    <strong>Page</strong><br/>
-                                    <span class="page"/> / <span class="topage"/>
-                                </td>
-
-                                <td style="padding:5px;">
-                                    <strong>Date</strong><br/>
-                                    <span t-field="o.date_order" t-options='{"widget": "date"}'/>
-                                </td>
-                            </tr>
-                        </table>
-
+                    <div style="width:45%; float:left; border:1px solid #999; border-radius:6px; padding:8px; font-size:10px; line-height:1.4;">
+                        • Invoice each P.O. separately in duplicate showing the above P.O. number and shipping information.<br/>
+                        • All duty and/or taxes must be shown separately on invoice where applicable.<br/>
+                        • This order is subject to the terms and conditions stated.
                     </div>
 
-                </td>
-            </div>
+                    <!-- <div style="width:25%; float:left; text-align:center; font-weight:bold; color:#666; margin-top:25px;">
+                        Supplier's Copy
+                    </div> -->
 
-        </div>
+                    <div style="width:50%; float:left; text-align:left;padding-top:30px;">
+                        <div style="border-top:1px solid #999; width:100%; margin-bottom:3px;"></div>
+                        <h6 style="font-weight:bold;padding-left:30px;"><span t-field="o.partner_id.name"/></h6>
+                    </div>
 
-        </div><br/><br/>
+                </div>
 
-        <div t-attf-class="article o_company_#{company.id}_layout" style="margin-top:20px;">
-            <t t-out="0"/>
-        </div>
-        <div t-attf-class="footer o_company_#{company.id}_layout"
-     style="font-size:11px; margin-top:20px; width:100%;">
+                <div style="clear:both;"></div>
 
-    <div style="border-top:1px solid #999; margin-bottom:10px;"></div>
+                <div style="width:100%; margin-top:8px; font-size:10px; color:#666;">
 
-    <div style="width:100%; overflow:hidden;">
+                    <div style="float:left;">
+                        Get your FREE Purchase Order Software at https://www.spendmap.com
+                    </div>
 
-        <div style="width:45%; float:left; border:1px solid #999; border-radius:6px; padding:8px; font-size:10px; line-height:1.4;">
-            • Invoice each P.O. separately in duplicate showing the above P.O. number and shipping information.<br/>
-            • All duty and/or taxes must be shown separately on invoice where applicable.<br/>
-            • This order is subject to the terms and conditions stated.
-        </div>
+                    <div style="float:right;">
+                        <span class="page"/> / <span class="topage"/>
+                    </div>
 
-        <!-- <div style="width:25%; float:left; text-align:center; font-weight:bold; color:#666; margin-top:25px;">
-            Supplier's Copy
-        </div> -->
+                </div>
 
-        <div style="width:50%; float:left; text-align:left;padding-top:30px;">
-            <div style="border-top:1px solid #999; width:100%; margin-bottom:3px;"></div>
-            <h6 style="font-weight:bold;padding-left:30px;"><span t-field="o.partner_id.name"/></h6>
-        </div>
+        <div style="clear:both;"></div>
 
     </div>
-
-    <div style="clear:both;"></div>
-
-    <div style="width:100%; margin-top:8px; font-size:10px; color:#666;">
-
-        <div style="float:left;">
-            Get your FREE Purchase Order Software at https://www.spendmap.com
-        </div>
-
-        <div style="float:right;">
-            <span class="page"/> / <span class="topage"/>
-        </div>
-
-    </div>
-
-    <div style="clear:both;"></div>
-
-</div>
 
     </template>
 
