@@ -12,6 +12,15 @@ class AccountMove(models.Model):
         related="invoice_line_ids.purchase_line_id.order_id.po_type",
         store=True
     )
+    ship_via = fields.Selection([
+        ('fedex', 'FedEx'),
+        ('ups', 'UPS'),
+        ('dhl', 'DHL'),
+        ('usps', 'USPS'),
+        ('canada_post', 'Canada Post'),
+        ('pickup', 'Customer Pickup'),
+        ('other', 'Other'),
+    ], string="Ship Via")
     
 
     def _get_bank_payment_html(self):

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_report_sale_order_custom" model="ir.actions.report">
+        <field name="name">Sale Order</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">famti.report_sale_order_custom</field>
+        <field name="report_file">famti.report_sale_order_custom</field>
+        <field name="print_report_name">'SO - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_sale_order_custom">
+    <t t-call="web.external_layout">
+        <main>
+            <t t-foreach="docs" t-as="o">
+
+                <div style="text-align:center; font-size:20px; font-weight:bold; margin-bottom:10px;">
+                    SALE ORDER
+                </div>
+                
+                <table style="width:100%; font-size:12px; border-collapse:collapse; margin-bottom:10px;">
+
+                    <tr>
+                        <td style="width:50%; vertical-align:top; padding:6px;">
+                            <strong>SUPPLIER:</strong><br/>
+                            <span t-field="o.company_id.name"/><br/>
+                            <span t-field="o.company_id.street"/><br/>
+                            <span t-field="o.company_id.city"/>,
+                            <span t-field="o.company_id.state_id.name"/><br/>
+                            <span t-field="o.company_id.country_id.name"/>
+
+                            <br/><br/>
+
+                            <strong>Customer Details</strong><br/>
+                            <span t-field="o.partner_id.name"/><br/>
+                            <span t-field="o.partner_id.street"/><br/>
+                            <span t-field="o.partner_id.city"/>
+                        </td>
+
+                        <td style="width:50%; vertical-align:top;padding:5px;">
+
+                            <table style="width:100%; font-size:12px;">
+                                <tr>
+                                    <td style="padding:5px;background:#eee;"><strong>Sales Order Code</strong></td>
+                                    <td style="text-align:right;padding:5px;"><span t-field="o.name"/></td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;background:#eee;"><strong>Date</strong></td>
+                                    <td style="text-align:right;padding:5px;">
+                                        <span t-field="o.date_order" t-options='{"widget": "date"}'/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;background:#eee;"><strong>BUYER'S PO NO. &amp; DATE </strong></td>
+                                    <td style="text-align:right;padding:5px;">
+                                        <span t-field="o.buyer_po_number"/>
+                                        <span>/</span>
+                                        <span t-field="o.buyer_po_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px;background:#eee;"><strong>OTHER REFERENCE(S)</strong></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+
+                            <br/>
+
+                            <strong>Shipping Address</strong><br/>
+                            <span t-field="o.partner_shipping_id.name"/><br/>
+                            <span t-field="o.partner_shipping_id.street"/><br/>
+                            <span t-field="o.partner_shipping_id.city"/>
+
+                            <br/><br/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Payment Terms:</strong>
+                                    <span t-field="o.payment_term_id.name"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Delivery Terms:</strong>
+                                    [<span t-field="o.incoterm.code"/>]
+                                    <span t-field="o.incoterm.name"/>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div style="width:100%;text-align:center;">
+                    <strong>
+                        PACKAGING MATERIAL ( <span t-esc="', '.join([l.product_id.name for l in o.order_line])"/> FILM )
+                    </strong>
+                </div>
+                <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:10px;">
+
+                    <thead>
+                        <tr style="border-bottom:1px solid #000;background:#eee;">
+                            <th style="padding:6px;font-weight:bold;">DESCRIPTION OF GOODS</th>
+                            <th style="padding:6px;font-weight:bold;">THICKNESS</th>
+                            <th style="padding:6px;font-weight:bold;">WIDTH</th>
+                            <th style="padding:6px;font-weight:bold;">ITEM CODE</th>
+                            <th style="padding:6px;font-weight:bold;">CORE ID (Inch)</th>
+                            <th style="padding:6px;font-weight:bold;">TREATMENT IN</th>
+                            <th style="padding:6px;font-weight:bold;">TREATMENT OUT</th>
+                            <th style="padding:6px;font-weight:bold;">ROLL LENGTH (MTRS APPROX)</th>
+                            <th t-if="o.so_type != 'fgf'" style="padding:6px;font-weight:bold;">QUANTITY (LBS)</th>
+                            <th t-if="o.so_type != 'fgf'" style="padding:6px;font-weight:bold;">PRICE / POUND (IN USD)</th>
+                            <th t-if="o.so_type == 'fgf'" style="padding:6px;font-weight:bold;">QUANTITY (NO OF ROLLS)</th>
+                            <th t-if="o.so_type == 'fgf'" style="padding:6px;font-weight:bold;">PRICE / ROLL (IN USD)</th>
+                            <th style="padding:6px;font-weight:bold;">AMOUNT (IN USD)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <t t-foreach="o.order_line" t-as="line">
+                            <tr style="border-bottom:1px solid #000;">
+                                <td style="padding:6px;">
+                                    <span t-field="line.description"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.thickness_val"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.width_val"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.name"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.core_id"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.treatment_in"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.treatment_out"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.length_val"/>
+                                </td>
+                                <td t-if="o.so_type != 'fgf'" style="padding:6px;">
+                                    <span t-field="line.product_uom_qty"/>
+                                </td>
+                                <td t-if="o.so_type == 'fgf'" style="padding:6px;">
+                                    <span t-field="line.pieces"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td style="padding:6px; text-align:right;">
+                                    <span t-field="line.price_subtotal"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <div style="width:100%; margin-top:10px; overflow:hidden;">
+
+                    <div style="width:55%; float:left; font-size:14px;">
+                        <strong>Amount in Words:</strong><br/>
+                        <span t-esc="o.currency_id.amount_to_text(o.amount_total)"/>
+                    </div>
+
+                    <div style="width:40%; float:right;">
+
+                        <div style="display:flex; justify-content:space-between;">
+                            <span>Total Qty:</span>
+                            <span t-esc="sum([l.product_uom_qty for l in o.order_line])"/>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; font-weight:bold; border-top:1px solid #000; padding-top:5px;">
+                            <span>Total Value:</span>
+                            <span t-field="o.amount_total"/>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div style="clear:both;"></div>
+
+                <div style="margin-top:20px;">
+                    <span t-field="o.note"/>
+                </div>
+
+                <div style="width:100%; margin-top:40px; overflow:hidden;page-break-inside: avoid;">
+
+                    <div style="width:50%; float:left; text-align:center;">
+
+                        <div style="text-align:center;">
+                            <div style="border-top:1px solid #000; margin-top:65px;"></div>
+                            <div>Sales &amp; Marketing</div>
+                        </div>
+                        
+                    </div>
+
+                    <div style="width:45%; float:right;">
+
+                        <div style="padding:10px; font-size:12px;">
+
+                            <div><strong>ACCEPTED:</strong></div>
+                            <div>CUSTOMER</div>
+                            <div>SIGNATURE &amp; DATE</div>
+
+                            <div style="text-align:center;">
+                                <div style="border-top:1px solid #000; margin-bottom:5px;"></div>
+                                AUTHORIZED SIGNATORY
+                            </div>
+
+                        </div>                    
+
+                    </div>
+
+                </div>
+
+                <div style="clear:both;"></div>
+
+            </t>
+        </main>
+    </t>
+</template>
+
+</odoo>

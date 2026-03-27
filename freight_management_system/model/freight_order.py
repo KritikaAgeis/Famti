@@ -32,11 +32,11 @@ class FreightOrder(models.Model):
                                        "Water",tracking=True)
     order_date = fields.Date(string='Date', default=fields.Date.today(),
                              help="Date of order",tracking=True)
-    loading_port_id = fields.Many2one('freight.port', string="Load Port",
+    loading_port_id = fields.Many2one('freight.port', string="ETD(Load Port)",
                                       required=True,
                                       help="Load port of the freight order",tracking=True)
     discharging_port_id = fields.Many2one('freight.port',
-                                          string="Discharge Port",
+                                          string="ETA(Discharge Port)",
                                           required=True,
                                           help="Discharge port of freight"
                                                "order",tracking=True)
@@ -75,7 +75,7 @@ class FreightOrder(models.Model):
                                   string="Service", help='Service of the order')
     total_service_sale = fields.Float(string='Service Total Amount',
                                       compute="_compute_total_service_cost",
-                                      help='The total service cost of order',store=True)
+                                      help='The total service cost of order')
     currency_id = fields.Many2one(
         'res.currency',
         default=lambda self: self.env.company.currency_id
@@ -551,7 +551,8 @@ class FreightOrderServiceLine(models.Model):
     qty = fields.Float(string='Quantity', help='How many Quantity required')
     cost = fields.Float(string='Cost', help='The cost price of the service')
     sale = fields.Float(string='Sale', help='Sale price of the service')
-    total_sale = fields.Float('Total Sale', help='The total sale price')
+    company_currency_id = fields.Many2one(related="company_id.currency_id", string="Company Currency")
+    total_sale = fields.Monetary('Total Sale', help='The total sale price',currency_field="company_currency_id",)
     company_id = fields.Many2one('res.company', string='Company',
                                  copy=False, readonly=True,
                                  help="Current company",
