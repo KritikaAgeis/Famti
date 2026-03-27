@@ -50,7 +50,8 @@ class Purchase(models.Model):
     ], string='PO Type', tracking=True, default='normal')
     due_date = fields.Date(string="Due Date")
     advance_amount = fields.Float(string="Advance Amount")
-    po_expense_ids = fields.Many2many('hr.expense',string='Expenses')
+    po_expense_ids = fields.Many2many('hr.expense','po_expense_rel','po_id',           
+        'expense_id',string='Expenses')
 
 
     def _compute_freight_count(self):

@@ -8,7 +8,8 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='accounting_date']" position="after">
-                        <field name="purchase_id"/>
+                        <field name="purchase_id" invisible="1"/>
+                        <field name="purchase_ids" widget="many2many_tags"/>
                 </xpath>
 
             </field>
