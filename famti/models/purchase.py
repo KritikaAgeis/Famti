@@ -225,8 +225,22 @@ class PurchaseOrderLine(models.Model):
             if self.product_id.film_description:
                 self.description = self.product_id.film_description
         
+    @api.model
+    def create(self, vals):
+        record = super().create(vals)
 
-    @api.onchange('product_id','order_id.po_type')
-    def _onchange_sample_price(self):
-        if self.order_id.po_type == 'sample':
-            self.price_unit = 0
+        if record.order_id.po_type == 'sample':
+            record.price_unit = 0
+
+        return record
+    
+    def write(self, vals):
+        for rec in self:
+            new_vals = vals.copy()
+
+            if rec.order_id.po_type == 'sample':
+                new_vals['price_unit'] = 0
+
+            super(PurchaseOrderLine, rec).write(new_vals)
+
+        return True

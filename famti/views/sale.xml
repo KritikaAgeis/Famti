@@ -112,7 +112,7 @@
             </xpath>
             
             <xpath expr="//field[@name='order_line']/list/field[@name='qty_invoiced']" position="after">
-                <field name="pieces"/>
+                <field name="pieces" column_invisible="parent.so_type != 'fgf'"/>
                 <field name="rolls_uom_id" column_invisible="parent.so_type != 'fgf'"/>
             </xpath>
             <xpath expr="(//field[@name='order_line']/list/field[@name='product_uom'])[1]" position="attributes">
