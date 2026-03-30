@@ -25,4 +25,5 @@ access_scrap_confirm_wizard,access_scrap_confirm_wizard,model_scrap_confirm_wiza
 access_freight_order_document,access_freight_order_document,model_freight_order_document,base.group_system,1,1,1,1
 access_maintenance_track_wizard,access_maintenance_track_wizard,model_maintenance_track_wizard,base.group_system,1,1,1,1
 access_maintenance_track,access_maintenance_track,model_maintenance_track,base.group_system,1,1,1,1
-
+access_hr_resignation_user,access_hr_resignation_user,model_hr_resignation,hr.group_hr_user,1,1,1,1
+access_hr_resignation_manager,access_hr_resignation_manager,model_hr_resignation,hr.group_hr_manager,1,1,1,1

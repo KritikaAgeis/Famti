@@ -60,6 +60,7 @@
         'views/maintenance_request.xml',
         'views/employee.xml',
         'views/recruitment.xml',
+        'views/hr_resignation.xml',
     ],
     'demo': [
         # 'demo/account_demo.xml',

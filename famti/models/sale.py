@@ -332,11 +332,25 @@ class SaleOrderLine(models.Model):
     rolls_uom_id = fields.Many2one('uom.uom', string="UoM",domain="[('name','=','rolls')]",
         default=lambda self: self.env['uom.uom'].search([('name','=','rolls')], limit=1))
 
-    @api.onchange('product_id', 'order_id.so_type')
-    def _onchange_product_price_sample(self):
-        if self.order_id.so_type == 'sample':
-            self.price_unit = 0
+    @api.model
+    def create(self, vals):
+        record = super().create(vals)
 
+        if record.order_id.so_type == 'sample':
+            record.write({'price_unit': 0})  
+
+        return record
+
+    def write(self, vals):
+        for rec in self:
+            new_vals = vals.copy()
+
+            if rec.order_id.so_type == 'sample':
+                new_vals['price_unit'] = 0
+
+            super(SaleOrderLine, rec).write(new_vals)
+
+        return True
 
 class SaleMoValuation(models.Model):
     _name = 'sale.mo.valuation'

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hr_resignation_list" model="ir.ui.view">
+        <field name="name">hr.resignation.list</field>
+        <field name="model">hr.resignation</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="employee_id"/>
+                <field name="resignation_date"/>
+                <field name="contract_id"/> 
+                <field name="department_id"/> 
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_resignation_form" model="ir.ui.view">
+        <field name="name">hr.resignation.form</field>
+        <field name="model">hr.resignation</field>
+        <field name="arch" type="xml">
+            <form string="Resignation">
+
+                <header>
+                    <button name="action_submit" type="object" string="Submit"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+
+                    <button name="action_approve" type="object" string="Approve"
+                            class="btn-success"
+                            invisible="state != 'waiting_for_approval'"/>
+
+                    <button name="action_reject" type="object" string="Reject"
+                            class="btn-danger"
+                            invisible="state != 'waiting_for_approval'"/>
+
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,waiting_for_approval,approved,rejected"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="state in ['waiting_for_approval','approved','rejected']" required="1"/>
+                            <field name="department_id" readonly="1"/>
+                            <field name="manager_id" readonly="1"/>
+                            <field name="contract_id" readonly="1"/>                              
+                            <field name="resignation_type" readonly="state in ['waiting_for_approval','approved','rejected']"/>                          
+                        </group>
+
+                        <group>
+                            <field name="joining_date" readonly="1"/>
+                            <field name="resignation_date" readonly="state in ['waiting_for_approval','approved','rejected']" required="1"/>
+                            <field name="notice_period" readonly="state in ['approved','rejected']"/>
+                            <field name="approved_last_date" readonly="state in ['approved','rejected']"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="reason of resignation">
+                            <field name="reason" readonly="state in ['approved','rejected']" required="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_resignation" model="ir.actions.act_window">
+        <field name="name">Resignation</field>
+        <field name="res_model">hr.resignation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem 
+        id="menu_hr_resignation"
+        name="Resignation"
+        parent="hr.menu_hr_root"
+        sequence="25"
+        action="action_hr_resignation"
+        groups="hr.group_hr_user,hr.group_hr_manager"
+    />
+
+</odoo>
