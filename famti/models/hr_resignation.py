@@ -36,7 +36,7 @@ class HrResignation(models.Model):
                 [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open')],
                 limit=1
             )
-            rec.contract_id = contract
+            rec.contract_id = contract.id if contract else False
 
         return rec
 
@@ -53,7 +53,7 @@ class HrResignation(models.Model):
                         [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open')],
                         limit=1
                     )
-                    rec.contract_id = contract
+                    rec.contract_id = contract.id if contract else False
                 else:
                     rec.department_id = False
                     rec.manager_id = False
@@ -74,7 +74,7 @@ class HrResignation(models.Model):
                     [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open')],
                     limit=1
                 )
-                rec.contract_id = contract
+                rec.contract_id = contract.id if contract else False
             else:
                 rec.department_id = False
                 rec.manager_id = False
