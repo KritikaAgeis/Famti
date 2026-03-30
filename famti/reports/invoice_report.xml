@@ -122,7 +122,7 @@
                             <div class="col-6">
                                 <table style="width:100%; border:1px solid black; margin-bottom:10px;">
                                         <tr>
-                                            <td style="background:#0842a0; color:white; padding:5px;">
+                                            <td style="background:#3b4e87; color:white; padding:5px;">
                                                 <strong>BILL TO:</strong>
                                             </td>
                                         </tr>
@@ -146,7 +146,7 @@
                             <div class="col-6">
                                 <table style="width:100%; border:1px solid black;">
                                         <tr>
-                                            <td style="background:#0842a0; color:white; padding:5px;">
+                                            <td style="background:#3b4e87; color:white; padding:5px;">
                                                 <strong>SHIP TO:</strong>
                                             </td>
                                         </tr>
@@ -171,7 +171,7 @@
 
                         
                         <table style="width:100%; margin-top:20px; text-align:center;">
-                            <thead style="background:#0842a0; color:white;">
+                            <thead style="background:#3b4e87; color:white;">
                                 <tr>
                                     <th style="padding:5px;">SALESPERSON</th>
                                     <th style="padding:5px;">PO NUMBER</th>
@@ -212,7 +212,7 @@
 
                         <table style="width:100%; margin-top:20px; text-align:center;">
                             <t t-set="has_pieces" t-value="any(line.pieces for line in o.invoice_line_ids)"/>
-                            <thead style="background:#0842a0; color:white;">
+                            <thead style="background:#3b4e87; color:white;">
                                 <tr>
                                     <th style="padding:5px;">ITEM NUMBER</th>
                                     <th style="padding:5px;">DESCRIPTION</th>
@@ -252,10 +252,10 @@
 
                         </table>
                         <div class="row" style="margin-top:20px;text-align:center;">
-                            <div class="col-12" style="background:gray;text-align:center;padding:5px;">
+                            <div class="col-12" style="background:#eee;text-align:center;padding:5px;">
                                 <t t-set="total_qty" t-value="sum(line.quantity for line in o.invoice_line_ids)"/>
                                 <t t-set="total_pieces" t-value="sum(line.pieces or 0 for line in o.invoice_line_ids)"/>
-                                <strong style="background:gray;text-align:center;">TOTAL QTY <span t-esc="total_qty"/></strong>
+                                <strong style="background:#eee;text-align:center;">TOTAL QTY <span t-esc="total_qty"/></strong>
                                 <t t-if="has_pieces">
                                     <strong>  Total no. of rolls:</strong>
                                     <span t-esc="total_pieces"/>

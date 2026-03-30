@@ -63,6 +63,12 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td style="padding:5px;background:#eee;"><strong>Sale Order Type</strong></td>
+                                    <td style="text-align:right;padding:5px;">
+                                        <span t-field="o.so_type"/>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td style="padding:5px;background:#eee;"><strong>OTHER REFERENCE(S)</strong></td>
                                     <td></td>
                                 </tr>
@@ -100,8 +106,8 @@
                     <thead>
                         <tr style="border-bottom:1px solid #000;background:#eee;">
                             <th style="padding:6px;font-weight:bold;">DESCRIPTION OF GOODS</th>
-                            <th style="padding:6px;font-weight:bold;">THICKNESS</th>
-                            <th style="padding:6px;font-weight:bold;">WIDTH</th>
+                            <th style="padding:6px;font-weight:bold;">THICKNESS (GAUGE)</th>
+                            <th style="padding:6px;font-weight:bold;">WIDTH (IN)</th>
                             <th style="padding:6px;font-weight:bold;">ITEM CODE</th>
                             <th style="padding:6px;font-weight:bold;">CORE ID (Inch)</th>
                             <th style="padding:6px;font-weight:bold;">TREATMENT IN</th>
@@ -166,11 +172,25 @@
                         <span t-esc="o.currency_id.amount_to_text(o.amount_total)"/>
                     </div>
 
-                    <div style="width:40%; float:right;">
+                    <div style="width:40%; float:right; text-align:right;">
 
-                        <div style="display:flex; justify-content:space-between;">
+                        <!-- <div style="display:flex; justify-content:space-between;">
                             <span>Total Qty:</span>
                             <span t-esc="sum([l.product_uom_qty for l in o.order_line])"/>
+                        </div> -->
+
+                        <!-- <div style="display:flex; justify-content:space-between; font-weight:bold; border-top:1px solid #000; padding-top:5px;">
+                            <span>Total Value:</span>
+                            <span t-field="o.amount_total"/>
+                        </div> -->
+                        <div style="display:flex; justify-content:space-between;">
+                            <span><strong>Subtotal:</strong></span>
+                            <span t-field="o.amount_untaxed"/>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between;">
+                            <span><strong>Tax:</strong></span>
+                            <span t-field="o.amount_tax"/>
                         </div>
 
                         <div style="display:flex; justify-content:space-between; font-weight:bold; border-top:1px solid #000; padding-top:5px;">

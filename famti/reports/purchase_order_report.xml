@@ -159,27 +159,27 @@
                     </div>
                     <div class="col-6">
                         <table style="width:100%; border:1px solid black;">
-                                <tr>
-                                    <td style="background:#eee; padding:5px;">
-                                        <strong>Ship-to</strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding:5px; font-size:12px;">
+                            <tr>
+                                <td style="background:#eee; padding:5px;">
+                                    <strong>Ship-to</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:5px; font-size:12px;">
 
-                                        <strong><span t-field="o.partner_id.name"/></strong><br/>
+                                    <strong><span t-field="o.partner_id.name"/></strong><br/>
 
-                                        <span t-field="o.partner_id.street"/><br/>
-                                        <span t-field="o.partner_id.city"/>
-                                        <span t-field="o.partner_id.state_id.name"/><br/>
-                                        <span t-field="o.partner_id.country_id.name"/><br/>
+                                    <span t-field="o.partner_id.street"/><br/>
+                                    <span t-field="o.partner_id.city"/>
+                                    <span t-field="o.partner_id.state_id.name"/><br/>
+                                    <span t-field="o.partner_id.country_id.name"/><br/>
 
-                                        <strong>Phone:</strong> <span t-field="o.partner_id.phone"/><br/>
-                                        <strong>Email:</strong> <span t-field="o.partner_id.email"/>
+                                    <strong>Phone:</strong> <span t-field="o.partner_id.phone"/><br/>
+                                    <strong>Email:</strong> <span t-field="o.partner_id.email"/>
 
-                                    </td>
-                                </tr>
-                            </table>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
 
@@ -193,15 +193,17 @@
                             <th style="border:1px solid black;">DELIVERY NOTE</th>
                             <th style="border:1px solid black;">REQUEST-BY</th>
                             <th style="border:1px solid black;">REQ. NO.</th>
+                            <th style="border:1px solid black;">PO Type</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td></td>
+                        <tr style="text-align:center;">
+                            <td><span t-field="o.currency_id.name"/></td>
                             <td><span t-field="o.company_id.country_id.name"/></td>
                             <td></td>
                             <td><span t-field="o.partner_id.name"/></td>
                             <td></td>
+                            <td><span t-field="o.po_type"/></td>
                         </tr>
                     </tbody>
                 </table>
@@ -215,7 +217,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr style="text-align:center;">
                             <td><span t-field="o.date_planned"/></td>
                             <td><span t-field="o.company_id.name"/></td>
                             <td></td>
@@ -236,7 +238,7 @@
 
                     <tbody>
 
-                        <tr t-foreach="o.order_line" t-as="line">
+                        <tr t-foreach="o.order_line" t-as="line" style="text-align:center;">
                             <td style="border:1px solid black;">
                                 <span t-esc="line_index + 1"/>
                             </td>
@@ -274,7 +276,7 @@
                         <tr>
                             <td colspan="3" style="border:none;"></td>
 
-                            <td style="border:1px solid black;">
+                            <td style="border:1px solid black;padding:3px;">
                                 Subtotal
                             </td>
                             <td style="border:1px solid black; text-align:right;">
@@ -285,7 +287,7 @@
                         <tr>
                             <td colspan="3" style="border:none;"></td>
 
-                            <td style="border:1px solid black;">
+                            <td style="border:1px solid black;padding:3px;">
                                 Tax
                             </td>
                             <td style="border:1px solid black; text-align:right;">
@@ -296,7 +298,7 @@
                         <tr>
                             <td colspan="3" style="border:none;"></td>
 
-                            <td style="border:1px solid black;">
+                            <td style="border:1px solid black;padding:3px;">
                                 <strong>Total</strong>
                             </td>
                             <td style="border:1px solid black; text-align:right;">
