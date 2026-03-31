@@ -5,9 +5,9 @@ class HrResignation(models.Model):
     _description = 'Employee Resignation'
 
     employee_id = fields.Many2one('hr.employee',string="Employee", required=True)
-    department_id = fields.Many2one('hr.department',string="Department",compute="_compute_employee_details", store=True)
-    contract_id = fields.Many2one('hr.contract',string="Contract",compute="_compute_employee_details", store=True)
-    joining_date = fields.Date(string="Joining Date",compute="_compute_employee_details", store=True)
+    department_id = fields.Many2one('hr.department',string="Department", store=True)
+    contract_id = fields.Many2one('hr.contract',string="Contract", store=True)
+    joining_date = fields.Date(string="Joining Date", store=True)
     resignation_date = fields.Date(string="Resignation Date")
     approved_last_date = fields.Date(string="Approved Last Working Day")
     notice_period = fields.Integer(string="Notice Period (Days)")
@@ -15,7 +15,7 @@ class HrResignation(models.Model):
         ('normal', 'Normal Resignation'),
         ('terminated', 'Terminated / Fired')
     ], string="Resignation Type", default='normal')
-    manager_id = fields.Many2one('hr.employee',string="Manager",compute="_compute_employee_details", store=True)
+    manager_id = fields.Many2one('hr.employee',string="Manager", store=True)
     reason = fields.Text(string="Reason")
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -62,8 +62,8 @@ class HrResignation(models.Model):
 
         return res
 
-    @api.depends('employee_id')
-    def _compute_employee_details(self):
+    @api.onchange('employee_id')
+    def onchange_employee_details(self):
         for rec in self:
             if rec.employee_id:
                 rec.department_id = rec.employee_id.department_id
