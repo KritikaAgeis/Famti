@@ -27,3 +27,6 @@ access_maintenance_track_wizard,access_maintenance_track_wizard,model_maintenanc
 access_maintenance_track,access_maintenance_track,model_maintenance_track,base.group_system,1,1,1,1
 access_hr_resignation_user,access_hr_resignation_user,model_hr_resignation,hr.group_hr_user,1,1,1,1
 access_hr_resignation_manager,access_hr_resignation_manager,model_hr_resignation,hr.group_hr_manager,1,1,1,1
+access_wsib_case_wizard,access_wsib_case_wizard,model_wsib_case_wizard,base.group_system,1,1,1,1
+access_wsib_case,access_wsib_case,model_wsib_case,base.group_system,1,1,1,1
+

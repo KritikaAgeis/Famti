@@ -44,6 +44,36 @@
                     </group>
                 </xpath>
 
+                <xpath expr="//header" position="inside">
+                    <button name="action_open_wsib_wizard"
+                            type="object"
+                            string="WSIB Case"
+                            class="btn-primary"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_wsib_cases"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-file">
+
+                        <field name="wsib_case_count" widget="statinfo"/>
+                    </button>
+                </xpath>
+
+                <xpath expr="//notebook" position="inside">
+                    <page string="WSIB Cases">
+                        <field name="wsib_case_ids">
+                            <list editable="bottom">
+                                <field name="incident_date"/>
+                                <field name="report_type"/>
+                                <field name="state" widget="badge"/>
+                                <button name="action_open_record" type="object" icon="fa-list"
+                                    class="btn-link"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+
             </field>
         </record>
 
@@ -73,6 +103,18 @@
                 <xpath expr="//notebook" position="attributes">
                     <attribute name="invisible">user_id != uid</attribute>
                 </xpath>
+
+                <xpath expr="//notebook" position="inside">
+                    <page string="WSIB Cases" invisible="user_id != uid">
+                        <field name="wsib_case_ids">
+                            <list editable="bottom">
+                                <field name="incident_date"/>
+                                <field name="report_type"/>
+                                <field name="state" widget="badge"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
                 
 
             </field>
@@ -84,6 +126,68 @@
             <field name="domain_force">[('user_id','=',user.id)]</field>
             <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         </record> -->
+
+        <record id="view_wsib_case_form" model="ir.ui.view">
+            <field name="name">wsib.case.form</field>
+            <field name="model">wsib.case</field>
+            <field name="arch" type="xml">
+                <form string="WSIB Case">
+
+                    <header>
+                        <field name="state" widget="statusbar"
+                            statusbar_visible="draft,submitted,under_review,approved,rejected,closed"/>
+
+                        <button name="action_start_review" type="object"
+                            string="Start Review"
+                            invisible="state != 'submitted'"/>
+
+                        <button name="action_approve" type="object"
+                                string="Approve"
+                                invisible="state != 'under_review'"/>
+
+                        <button name="action_reject" type="object"
+                                string="Reject"
+                                invisible="state != 'under_review'"/>
+
+                        <button name="action_close" type="object"
+                                string="Close"/>
+                    </header>
+
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="employee_id"/>
+                                <field name="department_id"/>
+                                <field name="job_id"/>
+                                <field name="report_type"/>
+                            </group>
+
+                            <group>
+                                <field name="manager_id"/>
+                                <field name="coach_id"/>
+                                <field name="incident_date"/>
+                                <field name="report_document" filename="report_filename"/>
+                            </group>
+                            <field name="description" placeholder="Explain the incident clearly (location, cause, and impact)..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_wsib_case_list" model="ir.ui.view">
+            <field name="name">wsib.case.list</field>
+            <field name="model">wsib.case</field>
+            <field name="arch" type="xml">
+                <list string="WSIB Cases">
+                    <field name="employee_id"/>
+                    <field name="incident_date"/>
+                    <field name="report_type"/>
+                    <field name="state" widget="badge"/>
+
+                </list>
+            </field>
+        </record>
 
         
     </data>
