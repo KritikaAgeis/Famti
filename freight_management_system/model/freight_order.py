@@ -50,19 +50,19 @@ class FreightOrder(models.Model):
                                                         'clearance',)
     clearance_count = fields.Integer(compute='_compute_count',
                                      string='Clearance Count',
-                                     help='The number of clearance')
+                                     help='The number of clearance', store=True)
     invoice_count = fields.Integer(compute='_compute_count',
                                    string='Invoice Count',
-                                   help='The number invoice created')
+                                   help='The number invoice created', store=True)
     total_order_price = fields.Float(string='Total',
                                      compute='_compute_total_order_price',
-                                     help='The total order price')
+                                     help='The total order price', store=True)
     total_volume = fields.Float(string='Total Volume',
                                 compute='_compute_total_order_price',
-                                help='The total used volume')
+                                help='The total used volume', store=True)
     total_weight = fields.Float(string='Total Weight',
                                 compute='_compute_total_order_price',
-                                help='The total weight used')
+                                help='The total weight used', store=True)
     order_ids = fields.One2many('freight.order.line', 'order_id',
                                 string='Freight Order Line',
                                 help='The freight order lines of the order')
@@ -70,12 +70,12 @@ class FreightOrder(models.Model):
                                 string='Route', help='The route of order')
     total_route_sale = fields.Float(string='Total Sale',
                                     compute="_compute_total_route_cost",
-                                    help='The total cost of sale')
+                                    help='The total cost of sale', store=True)
     service_ids = fields.One2many('freight.order.service', 'freight_id',
                                   string="Service", help='Service of the order')
     total_service_sale = fields.Float(string='Service Total Amount',
                                       compute="_compute_total_service_cost",
-                                      help='The total service cost of order')
+                                      help='The total service cost of order', store=True)
     currency_id = fields.Many2one(
         'res.currency',
         default=lambda self: self.env.company.currency_id
