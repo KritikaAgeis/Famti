@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
+    <record id="paperformat_sale_custom" model="report.paperformat">
+        <field name="name">Sale Custom</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">65</field>
+        <field name="margin_bottom">32</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">65</field>
+        <field name="dpi">90</field>
+        <field name="css_margins" eval="True" />
+    </record>
+
     <record id="action_report_sale_order_custom" model="ir.actions.report">
         <field name="name">Sale Order</field>
         <field name="model">sale.order</field>
@@ -9,39 +27,44 @@
         <field name="print_report_name">'SO - %s' % (object.name)</field>
         <field name="binding_model_id" ref="sale.model_sale_order"/>
         <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_sale_custom"/>
     </record>
 
-    <template id="report_sale_order_custom">
-    <t t-call="web.external_layout">
-        <main>
-            <t t-foreach="docs" t-as="o">
+    <template id="external_layout_standard_sale_order">
 
-                <div style="text-align:center; font-size:20px; font-weight:bold; margin-bottom:10px;">
-                    SALE ORDER
+        <t t-set="o" t-value="o or doc"/>
+        <t t-set="company" t-value="o and o.company_id or res_company"/>
+
+        <div t-attf-class="header o_company_#{company.id}_layout" >
+
+            <div class="row" style="width:100%; margin:0;">
+
+                <div class="col-6" style="padding:0; vertical-align:top;">
+
+                    <img t-if="company.logo"
+                        t-att-src="image_data_uri(company.logo)"
+                        style="max-height:80px;"/>
+
+                    <br/><br/>
+
+                    <strong><span t-field="company.name"/></strong><br/>
+
+                    <span t-field="company.partner_id"
+                        t-options='{"widget": "contact", "fields": ["address", "phone", "website"], "no_marker": true}'/>
+
                 </div>
-                
-                <table style="width:100%; font-size:12px; border-collapse:collapse; margin-bottom:10px;">
 
-                    <tr>
-                        <td style="width:50%; vertical-align:top; padding:6px;">
-                            <strong>SUPPLIER:</strong><br/>
-                            <span t-field="o.company_id.name"/><br/>
-                            <span t-field="o.company_id.street"/><br/>
-                            <span t-field="o.company_id.city"/>,
-                            <span t-field="o.company_id.state_id.name"/><br/>
-                            <span t-field="o.company_id.country_id.name"/>
+                <div class="col-6" style="padding:10px;">
 
-                            <br/><br/>
+                    <td style="width:50%; vertical-align:top;">
 
-                            <strong>Customer Details</strong><br/>
-                            <span t-field="o.partner_id.name"/><br/>
-                            <span t-field="o.partner_id.street"/><br/>
-                            <span t-field="o.partner_id.city"/>
-                        </td>
+                        <div style="border:1px solid black; border-radius:8px; overflow:hidden;">
 
-                        <td style="width:50%; vertical-align:top;padding:5px;">
+                            <div style="text-align:center;font-size:18px; padding:6px; font-weight:bold;">
+                                SALE ORDER
+                            </div>
 
-                            <table style="width:100%; font-size:12px;">
+                            <table style="width:100%; font-size:14px;">
                                 <tr>
                                     <td style="padding:5px;background:#eee;"><strong>Sales Order Code</strong></td>
                                     <td style="text-align:right;padding:5px;"><span t-field="o.name"/></td>
@@ -55,7 +78,7 @@
                                 </tr>
 
                                 <tr>
-                                    <td style="padding:5px;background:#eee;"><strong>BUYER'S PO NO. &amp; DATE </strong></td>
+                                    <td style="padding:5px;background:#eee;"><strong>Buyer's PO NO. &amp; Date </strong></td>
                                     <td style="text-align:right;padding:5px;">
                                         <span t-field="o.buyer_po_number"/>
                                         <span>/</span>
@@ -69,42 +92,120 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:5px;background:#eee;"><strong>OTHER REFERENCE(S)</strong></td>
+                                    <td style="padding:5px;background:#eee;"><strong>Other Refrence(s)</strong></td>
                                     <td></td>
                                 </tr>
                             </table>
 
-                            <br/>
+                        </div>
 
-                            <strong>Shipping Address</strong><br/>
-                            <span t-field="o.partner_shipping_id.name"/><br/>
+                    </td>
+                </div>
+
+            </div>
+
+            </div><br/><br/>
+
+            <div t-attf-class="article o_company_#{company.id}_layout" style="margin-top:20px;">
+                <t t-out="0"/>
+            </div>
+            <div t-attf-class="footer o_company_#{company.id}_layout"
+                style="font-size:11px; margin-top:20px; width:100%;">
+
+                <div style="border-top:1px solid #999; margin-bottom:10px;"></div>
+
+                <div style="margin-top:15px; font-size:10px; text-align:center; line-height:1.6;">
+                    <div>
+                        <strong>GST/HST Registration No:</strong> 729664474RT0001
+                    </div>
+
+                    <div>
+                        If you have any questions about this invoice, please contact
+                        <strong>accounts@famti.ca</strong>
+                    </div>
+
+                    <div style="margin-top:5px;">
+                        <strong>Thank You For Your Business!</strong>
+                    </div>
+                </div>
+
+                <div style="clear:both;"></div>
+
+                <div style="width:100%; margin-top:8px; font-size:10px; color:#666;">
+
+                    <div style="float:right;">
+                        <span class="page"/> / <span class="topage"/>
+                    </div>
+
+                </div>
+
+                <div style="clear:both;"></div>
+
+            </div>
+
+    </template>
+
+    <template id="report_sale_order_custom">
+    <t t-call="famti.external_layout_standard_sale_order">
+        <main>
+            <t t-foreach="docs" t-as="o">
+                <table style="width:100%; font-size:12px; border-collapse:collapse; margin-bottom:10px;">
+                    <tr>
+                        <th style="width:50%; background:#3b4e87; font-size:14px; color:white; padding:5px; text-align:left;">
+                            <strong>Customer Details</strong>
+                        </th>
+                        <th style="width:50%; background:#3b4e87; font-size:14px; color:white; padding:5px; text-align:left;">
+                            <strong>Shipping Address</strong>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="width:50%; vertical-align:top; padding:6px;">
+                            <strong><span t-field="o.partner_id.name"/></strong><br/>
+
+                            <span t-field="o.partner_id.street"/><br/>
+                            <span t-field="o.partner_id.city"/>
+                            <span t-field="o.partner_id.state_id.name"/><br/>
+                            <span t-field="o.partner_id.country_id.name"/><br/>
+
+                            <strong>Phone:</strong> <span t-field="o.partner_id.phone"/><br/>
+                            <strong> Email:</strong> <span t-field="o.partner_id.email"/>
+                        </td>
+                        <td style="width:50%; vertical-align:top; padding:6px;">
+                            <strong><span t-field="o.partner_id.name"/></strong><br/>
+
                             <span t-field="o.partner_shipping_id.street"/><br/>
                             <span t-field="o.partner_shipping_id.city"/>
+                            <span t-field="o.partner_shipping_id.state_id.name"/><br/>
+                            <span t-field="o.partner_shipping_id.country_id.name"/><br/>
 
-                            <br/><br/>
-                            <div class="row">
+                            <strong>Phone:</strong> <span t-field="o.partner_shipping_id.phone"/>
+                            <strong> Email:</strong> <span t-field="o.partner_shipping_id.email"/>
+
+                            
+                            <div class="row" style="padding:5px;">
                                 <div class="col-6">
                                     <strong>Payment Terms:</strong>
                                     <span t-field="o.payment_term_id.name"/>
                                 </div>
                                 <div class="col-6">
                                     <strong>Delivery Terms:</strong>
-                                    [<span t-field="o.incoterm.code"/>]
-                                    <span t-field="o.incoterm.name"/>
+                                    <span t-field="o.incoterm.code"/>
+                                    <!-- <span t-field="o.incoterm.name"/> -->
                                 </div>
                             </div>
                         </td>
                     </tr>
                 </table>
-                <div style="width:100%;text-align:center;">
+                
+                <!-- <div style="width:100%;text-align:center;">
                     <strong>
                         PACKAGING MATERIAL ( <span t-esc="', '.join([l.product_id.name for l in o.order_line])"/> FILM )
                     </strong>
-                </div>
-                <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:10px;">
+                </div> -->
+                <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:15px;">
 
                     <thead>
-                        <tr style="border-bottom:1px solid #000;background:#eee;">
+                        <tr style="border-bottom:1px solid #000;background:#3b4e87;color:white;">
                             <th style="padding:6px;font-weight:bold;">DESCRIPTION OF GOODS</th>
                             <th style="padding:6px;font-weight:bold;">THICKNESS (GAUGE)</th>
                             <th style="padding:6px;font-weight:bold;">WIDTH (IN)</th>
@@ -202,40 +303,41 @@
 
                 </div>
 
-                <div style="clear:both;"></div>
+                <!-- <div style="clear:both;"></div> -->
 
-                <div style="margin-top:20px;">
+                <div style="margin-top:10px; font-size:14px; page-break-inside: avoid;">
                     <span t-field="o.note"/>
-                </div>
+                
 
-                <div style="width:100%; margin-top:40px; overflow:hidden;page-break-inside: avoid;">
+                    <div style="width:100%; margin-top:10px; overflow:hidden;">
 
-                    <div style="width:50%; float:left; text-align:center;">
-
-                        <div style="text-align:center;">
-                            <div style="border-top:1px solid #000; margin-top:65px;"></div>
-                            <div>Sales &amp; Marketing</div>
-                        </div>
-                        
-                    </div>
-
-                    <div style="width:45%; float:right;">
-
-                        <div style="padding:10px; font-size:12px;">
-
-                            <div><strong>ACCEPTED:</strong></div>
-                            <div>CUSTOMER</div>
-                            <div>SIGNATURE &amp; DATE</div>
+                        <div style="width:50%; float:left; text-align:center;">
 
                             <div style="text-align:center;">
-                                <div style="border-top:1px solid #000; margin-bottom:5px;"></div>
-                                AUTHORIZED SIGNATORY
+                                <div style="border-top:1px solid #000; margin-top:65px;"></div>
+                                <div>Sales &amp; Marketing</div>
                             </div>
+                            
+                        </div>
 
-                        </div>                    
+                        <div style="width:45%; float:right;">
+
+                            <div style="padding:10px; font-size:12px;">
+
+                                <div><strong>ACCEPTED:</strong></div>
+                                <div>CUSTOMER</div>
+                                <div>SIGNATURE &amp; DATE</div>
+
+                                <div style="text-align:center;">
+                                    <div style="border-top:1px solid #000; margin-bottom:5px;"></div>
+                                    AUTHORIZED SIGNATORY
+                                </div>
+
+                            </div>                    
+
+                        </div>
 
                     </div>
-
                 </div>
 
                 <div style="clear:both;"></div>

@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
+    <record id="paperformat_Purchase_custom" model="report.paperformat">
+        <field name="name">Purchase Custom</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">65</field>
+        <field name="margin_bottom">32</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">65</field>
+        <field name="dpi">90</field>
+        <field name="css_margins" eval="True" />
+    </record>
 
     <record id="action_report_purchase_order_custom" model="ir.actions.report">
         <field name="name">Purchase Order Custom Report</field>
@@ -11,6 +27,7 @@
         <field name="print_report_name">'PO - %s' % (object.name)</field>
         <field name="binding_model_id" ref="purchase.model_purchase_order"/>
         <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_Purchase_custom"/>
     </record>
 
 
@@ -34,7 +51,7 @@
                     <strong><span t-field="company.name"/></strong><br/>
 
                     <span t-field="company.partner_id"
-                        t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}'/>
+                        t-options='{"widget": "contact", "fields": ["address","phone", "website"], "no_marker": true}'/>
 
                 </div>
 
@@ -131,12 +148,11 @@
     <t t-call="famti.external_layout_standards">
         <main>
             <t t-foreach="docs" t-as="o">
-                <div style="height:10px;"></div>
                 <div class="row" style="width:100%; margin-top:25px; margin-bottom:20px;">
                     <div class="col-6">
                         <table style="width:100%; border:1px solid black; margin-bottom:10px;">
                                 <tr>
-                                    <td style="background:#eee; padding:5px;">
+                                    <td style="background:#3b4e87; color:white; padding:5px;">
                                         <strong>Supplier</strong>
                                     </td>
                                 </tr>
@@ -160,7 +176,7 @@
                     <div class="col-6">
                         <table style="width:100%; border:1px solid black;">
                             <tr>
-                                <td style="background:#eee; padding:5px;">
+                                <td style="background:#3b4e87; color:white; padding:5px;">
                                     <strong>Ship-to</strong>
                                 </td>
                             </tr>
@@ -186,7 +202,7 @@
                 
                 
                 <table style="width:100%; border:1px solid black; border-collapse:collapse;">
-                    <thead style="background:#eee;">
+                    <thead style="background:#3b4e87; color:white;">
                         <tr>
                             <th style="border:1px solid black;">TERMS</th>
                             <th style="border:1px solid black;">F.O.B</th>
@@ -209,7 +225,7 @@
                 </table>
                 <br/>
                 <table style="width:100%; border:1px solid black; border-collapse:collapse;">
-                    <thead style="background:#eee;">
+                    <thead style="background:#3b4e87; color:white;">
                         <tr>
                             <th style="border:1px solid black;">DELIVERY</th>
                             <th style="border:1px solid black;">COST CENTRE</th>
@@ -226,7 +242,7 @@
                 </table><br/>
 
                 <table style="width:100%; border:1px solid black; border-collapse:collapse;">
-                    <thead style="background:#eee;">
+                    <thead style="background:#3b4e87; color:white;">
                         <tr>
                             <th style="border:1px solid black;width:5%;">LN</th>
                             <th style="border:1px solid black;width:10%;">QTY</th>
@@ -273,41 +289,45 @@
                             <td style="border:1px solid black;"></td>
                         </tr>
 
-                        <tr>
-                            <td colspan="3" style="border:none;"></td>
-
-                            <td style="border:1px solid black;padding:3px;">
-                                Subtotal
-                            </td>
-                            <td style="border:1px solid black; text-align:right;">
-                                <span t-field="o.amount_untaxed"/>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="3" style="border:none;"></td>
-
-                            <td style="border:1px solid black;padding:3px;">
-                                Tax
-                            </td>
-                            <td style="border:1px solid black; text-align:right;">
-                                <span t-field="o.amount_tax"/>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="3" style="border:none;"></td>
-
-                            <td style="border:1px solid black;padding:3px;">
-                                <strong>Total</strong>
-                            </td>
-                            <td style="border:1px solid black; text-align:right;">
-                                <strong><span t-field="o.amount_total"/></strong>
-                            </td>
-                        </tr>
-
                     </tbody>
                 </table>
+
+                <div style="width:100%; margin-top:10px; overflow:hidden;">
+
+                    <div style="width:55%; float:left; font-size:14px;">
+                        <strong>Amount in Words:</strong><br/>
+                        <span t-esc="o.currency_id.amount_to_text(o.amount_total)"/>
+                    </div>
+
+                    <div style="width:40%; float:right; text-align:right;">
+
+                        <!-- <div style="display:flex; justify-content:space-between;">
+                            <span>Total Qty:</span>
+                            <span t-esc="sum([l.product_uom_qty for l in o.order_line])"/>
+                        </div> -->
+
+                        <!-- <div style="display:flex; justify-content:space-between; font-weight:bold; border-top:1px solid #000; padding-top:5px;">
+                            <span>Total Value:</span>
+                            <span t-field="o.amount_total"/>
+                        </div> -->
+                        <div style="display:flex; justify-content:space-between;">
+                            <span><strong>Subtotal:</strong></span>
+                            <span t-field="o.amount_untaxed"/>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between;">
+                            <span><strong>Tax:</strong></span>
+                            <span t-field="o.amount_tax"/>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; font-weight:bold; border-top:1px solid #000; padding-top:5px;">
+                            <span>Total Value:</span>
+                            <span t-field="o.amount_total"/>
+                        </div>
+
+                    </div>
+
+                </div>
 
 
                 <div class="page-break"/>
