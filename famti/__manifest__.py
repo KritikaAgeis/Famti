@@ -61,6 +61,8 @@
         'views/employee.xml',
         'views/recruitment.xml',
         'views/hr_resignation.xml',
+        'views/quickbook.xml',
+
     ],
     'demo': [
         # 'demo/account_demo.xml',
