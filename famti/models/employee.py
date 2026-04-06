@@ -19,7 +19,7 @@ class HrEmployee(models.Model):
     probation_end_date = fields.Date(string="Probation End Date")
 
     wsib_case_ids = fields.One2many('wsib.case', 'employee_id',
-        string="WSIB Cases"
+        string="WSIB Tracking"
     )
     wsib_case_count = fields.Integer(compute="_compute_wsib_case_count")
 
@@ -30,7 +30,7 @@ class HrEmployee(models.Model):
     def action_view_wsib_cases(self):
         return {
             'type': 'ir.actions.act_window',
-            'name': 'WSIB Cases',
+            'name': 'WSIB Tracking',
             'res_model': 'wsib.case',
             'view_mode': 'list,form',
             'domain': [('employee_id', '=', self.id)],
@@ -64,7 +64,7 @@ class HrEmployee(models.Model):
     def action_open_wsib_wizard(self):
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Create WSIB Case',
+            'name': 'Create WSIB Tracking',
             'res_model': 'wsib.case.wizard',
             'view_mode': 'form',
             'target': 'new', 

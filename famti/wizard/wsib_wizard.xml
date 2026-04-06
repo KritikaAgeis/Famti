@@ -3,7 +3,7 @@
         <field name="name">wsib.case.wizard.form</field>
         <field name="model">wsib.case.wizard</field>
         <field name="arch" type="xml">
-            <form string="Create WSIB Case">
+            <form string="Create WSIB Tracking">
                 <header>
                     <field name="state" widget="statusbar"
                         statusbar_visible="draft,submitted,under_review,approved,rejected,closed"/>

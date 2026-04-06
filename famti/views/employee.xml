@@ -47,7 +47,7 @@
                 <xpath expr="//header" position="inside">
                     <button name="action_open_wsib_wizard"
                             type="object"
-                            string="WSIB Case"
+                            string="WSIB Tracking"
                             class="btn-primary"/>
                 </xpath>
                 <xpath expr="//div[@name='button_box']" position="inside">
@@ -61,7 +61,7 @@
                 </xpath>
 
                 <xpath expr="//notebook" position="inside">
-                    <page string="WSIB Cases">
+                    <page string="WSIB Tracking">
                         <field name="wsib_case_ids">
                             <list editable="bottom">
                                 <field name="incident_date"/>
@@ -105,7 +105,7 @@
                 </xpath>
 
                 <xpath expr="//notebook" position="inside">
-                    <page string="WSIB Cases" invisible="user_id != uid">
+                    <page string="WSIB Tracking" invisible="user_id != uid">
                         <field name="wsib_case_ids">
                             <list editable="bottom">
                                 <field name="incident_date"/>
@@ -131,7 +131,7 @@
             <field name="name">wsib.case.form</field>
             <field name="model">wsib.case</field>
             <field name="arch" type="xml">
-                <form string="WSIB Case">
+                <form string="WSIB Tracking">
 
                     <header>
                         <field name="state" widget="statusbar"
@@ -179,7 +179,7 @@
             <field name="name">wsib.case.list</field>
             <field name="model">wsib.case</field>
             <field name="arch" type="xml">
-                <list string="WSIB Cases">
+                <list string="WSIB Tracking">
                     <field name="employee_id"/>
                     <field name="incident_date"/>
                     <field name="report_type"/>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_quickbook_config_list" model="ir.ui.view">
+        <field name="name">quickbook.config.list</field>
+        <field name="model">quickbook.config</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="client_id"/>
+                <field name="client_secret"/>
+                <field name="redirect_uri"/>
+                <field name="realm_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_quickbook_config_form" model="ir.ui.view">
+        <field name="name">quickbook.config.form</field>
+        <field name="model">quickbook.config</field>
+        <field name="arch" type="xml">
+            <form string="Quickbook Config">
+
+                <header>
+<!--                    <button name="action_submit" type="object" string="Submit"-->
+<!--                            class="btn-primary"-->
+<!--                            invisible="state != 'draft'"/>-->
+
+<!--                    <button name="action_approve" type="object" string="Approve"-->
+<!--                            class="btn-success"-->
+<!--                            invisible="state != 'waiting_for_approval'"/>-->
+
+                    <button name="action_connect" type="object" string="Connect"
+                            class="btn-success"
+                            />
+
+                    <field name="status" widget="statusbar"
+                        statusbar_visible="draft,connected,disconnected"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="client_id"/>
+                            <field name="client_secret"/>
+                            <field name="redirect_uri"/>
+
+                        </group>
+
+                        <group>
+                            <field name="realm_id"/>
+                            <field name="access_token"/>
+                            <field name="refresh_token"/>
+                        </group>
+                    </group>
+
+
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_quickbook_config" model="ir.actions.act_window">
+        <field name="name">QuickBook Configuration</field>
+        <field name="res_model">quickbook.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+
+    <menuitem
+        id="menu_root_quickbook"
+        name="QuickBook"
+        sequence="2"
+        action="action_quickbook_config"
+        groups="base.group_system"
+    />
+
+    <menuitem
+        id="menu_quickbook"
+        name="QuickBook Config"
+        sequence="3"
+        action="action_quickbook_config"
+        parent="menu_root_quickbook"
+        groups="base.group_system"
+    />
+
+</odoo>
