@@ -8,20 +8,16 @@ import urllib.parse
 AUTH_URL = "https://appcenter.intuit.com/connect/oauth2"
 TOKEN_URL = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
 
-
 class QuickbookController(http.Controller):
-
     @http.route('/quickbook/connect', type='http', auth='user')
     def quickbook_connect(self, **kwargs):
-
         config_id = kwargs.get('config_id')
         config = request.env['quickbook.config'].sudo().browse(int(config_id))
 
         if not config.exists():
             return "QuickBooks Configuration Missing!"
 
-        redirect_uri = urllib.parse.quote(config.redirect_uri)
-
+        redirect_uri = config.redirect_uri
         auth_url = (
             f"{AUTH_URL}?"
             f"client_id={config.client_id}&"
@@ -30,6 +26,7 @@ class QuickbookController(http.Controller):
             f"scope=com.intuit.quickbooks.accounting&"
             f"state={config.id}"
         )
+
         print("Redirecting to:", auth_url)
 
         return redirect(auth_url)
@@ -37,11 +34,10 @@ class QuickbookController(http.Controller):
 
     @http.route('/quickbook/callback', type='http', auth='user')
     def quickbook_callback(self, **kwargs):
-
         code = kwargs.get('code')
         realm_id = kwargs.get('realmId')
         state = kwargs.get('state')
-
+        base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url')
         if not code:
             return "Error: No code received"
 
@@ -63,16 +59,27 @@ class QuickbookController(http.Controller):
                 "redirect_uri": config.redirect_uri
             }
         )
-
         data = response.json()
+        try:
+            if data :
+                config.write({
+                    'access_token': data.get('access_token'),
+                    'refresh_token': data.get('refresh_token'),
+                    'realm_id': realm_id,
+                    'status': 'connected'
+                })
+                return redirect(
+                    f"{base_url}"
+                )
+        except Exception as e:
+            print(e)
+            config.write({
+                'access_token': data.get('access_token'),
+                'refresh_token': data.get('refresh_token'),
+                'realm_id': realm_id,
+                'status': 'connected'
+            })
 
-        config.write({
-            'access_token': data.get('access_token'),
-            'refresh_token': data.get('refresh_token'),
-            'realm_id': realm_id,
-            'status': 'connected'
-        })
 
-        return """
-            <h3>QuickBooks Connected Successfully </h3>
-            <p>You can close this window.</p>"""
+
+

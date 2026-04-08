@@ -21,7 +21,12 @@ class AccountMove(models.Model):
         ('pickup', 'Customer Pickup'),
         ('other', 'Other'),
     ], string="Ship Via")
-    
+
+    quickbook_id = fields.Char(string="QuickBook Id",index=True)
+
+    _sql_constraints = [
+        ('quickbook_id_unique', 'unique(quickbook_id)', 'QuickBooks ID must be unique!')
+    ]
 
     def _get_bank_payment_html(self):
         bank_journal = self.env['account.journal'].search([
