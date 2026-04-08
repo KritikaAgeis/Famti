@@ -78,7 +78,6 @@
         parent="hr.menu_hr_root"
         sequence="25"
         action="action_hr_resignation"
-        groups="hr.group_hr_user,hr.group_hr_manager"
     />
 
 </odoo>

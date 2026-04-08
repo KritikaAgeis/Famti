@@ -12,13 +12,14 @@ class QuickbookConfig(models.Model):
 
     access_token = fields.Text(string="Access Token",)
     refresh_token = fields.Text()
-    status = fields.Selection([('draft','Draft'),('connected', 'Connected'),('disconnected', 'Disconnected')])
+    status = fields.Selection([('draft','Draft'),('connected', 'Connected'),('disconnected', 'Disconnected')],default='draft')
 
 
     def action_connect(self):
         return {
             'type': 'ir.actions.act_url',
-            'url': '/quickbook/connect',
+            # 'url': '/quickbook/connect',
+            'url': f'/quickbook/connect?config_id={self.id}',
             'target': 'self',
         }
 
@@ -27,6 +28,7 @@ class QuickbookConfig(models.Model):
         config = self.search([], limit=1)
 
         url = f"https://sandbox-quickbooks.api.intuit.com/v3/company/{config.realm_id}/query"
+        print("URL:", url)
 
         query = "select * from Invoice"
 

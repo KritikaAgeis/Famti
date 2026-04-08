@@ -1,0 +1,53 @@
+<odoo>
+    <record id="view_wsib_case_wizard_form" model="ir.ui.view">
+        <field name="name">wsib.case.wizard.form</field>
+        <field name="model">wsib.case.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create WSIB Tracking">
+                <header>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,submitted,under_review,approved,rejected,closed"/>
+
+                    <button name="action_start_review" type="object"
+                            string="Start Review"
+                            invisible="state != 'submitted'"/>
+
+                    <button name="action_approve" type="object"
+                            string="Approve"
+                            invisible="state != 'under_review'"/>
+
+                    <button name="action_reject" type="object"
+                            string="Reject"
+                            invisible="state != 'under_review'"/>
+
+                    <button name="action_close" type="object"
+                            string="Close"
+                            invisible="state != 'approved'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="department_id"/>
+                            <field name="job_id"/>
+                            <field name="report_type"/>
+                        </group>
+
+                        <group>
+                            <field name="manager_id"/>
+                            <field name="coach_id"/>
+                            <field name="incident_date"/>
+                            <field name="report_document" filename="report_filename"/>
+                        </group>
+                        <field name="description" placeholder="Explain the incident clearly (location, cause, and impact)..."/>
+                    </group> 
+                </sheet>                               
+
+                <footer>
+                    <button string="Create Case" type="object" name="action_create_case" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -19,6 +19,7 @@
         <field name="model">quickbook.config</field>
         <field name="arch" type="xml">
             <form string="Quickbook Config">
+                
 
                 <header>
 <!--                    <button name="action_submit" type="object" string="Submit"-->
@@ -36,24 +37,49 @@
                     <field name="status" widget="statusbar"
                         statusbar_visible="draft,connected,disconnected"/>
                 </header>
-
+                
                 <sheet>
-                    <group>
-                        <group>
-                            <field name="name"/>
-                            <field name="client_id"/>
-                            <field name="client_secret"/>
-                            <field name="redirect_uri"/>
 
-                        </group>
+                    <widget name="web_ribbon"
+                            title="Connected"
+                            bg_color="bg-success"
+                            invisible="status != 'connected'"/>
 
-                        <group>
-                            <field name="realm_id"/>
-                            <field name="access_token"/>
-                            <field name="refresh_token"/>
-                        </group>
-                    </group>
+                    <widget name="web_ribbon"
+                            title="Disconnected"
+                            bg_color="bg-danger"
+                            invisible="status != 'disconnected'"/>
 
+                    <widget name="web_ribbon"
+                            title="Draft"
+                            bg_color="bg-warning"
+                            invisible="status != 'draft'"/>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="QuickBooks Configuration"/>
+                        </h1>
+                    </div>
+
+                    <notebook>
+                        <page string="API Configuration">
+
+                            <group>
+                                <group string="Credentials">
+                                    <field name="client_id"/>
+                                    <field name="client_secret" password="True"/>
+                                    <field name="redirect_uri"/>
+                                    <field name="realm_id" />
+                                </group>
+
+                                <group string="Tokens">
+                                    <field name="access_token" />
+                                    <field name="refresh_token" />
+                                </group>
+                            </group>
+
+                        </page>
+                    </notebook>
 
                 </sheet>
 
