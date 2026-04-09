@@ -38,6 +38,7 @@
         'wizard/sales_mo_cost_wizard.xml',
         'wizard/maintenance_wizard.xml',
         'wizard/wsib_wizard.xml',
+        'wizard/remarks_wizard.xml',
         'reports/offer_letter_report.xml',
         'reports/purchase_order_report.xml',
         'reports/sale_order_report.xml',

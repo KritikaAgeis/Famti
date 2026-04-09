@@ -17,4 +17,34 @@
 
         </field>
     </record>
+
+    <record id="view_hr_job_form_inherit_custom" model="ir.ui.view">
+        <field name="name">hr.job.form.inherit.custom</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_submit" type="object" string="Submit"
+                        invisible="state != 'draft'" class="btn-primary"/>
+
+                <button name="action_approve" type="object" string="Approve"
+                        invisible="state != 'submitted'" class="btn-primary"
+                        groups="famti.group_for_hr_executive"/>
+
+                <button name="action_reject" type="object" string="Reject"
+                        invisible="state != 'submitted'" class="btn-secondary"
+                        groups="famti.group_for_hr_executive"/>
+
+                <field name="state" widget="statusbar"
+                    statusbar_visible="draft,submitted,approved,rejected"/>
+            </xpath>
+            <xpath expr="//div[@name='recruitment_target']" position="after">
+                <field name="budget"/>
+                <field name="expected_date_to_fill"/>
+                <field name="priority" widget="priority"/>
+                <field name="remarks" invisible="state != 'rejected'"/>
+            </xpath>
+            
+        </field>
+    </record>
 </odoo>

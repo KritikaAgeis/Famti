@@ -93,4 +93,56 @@ class HrApplicant(models.Model):
         if document_verified:
             self.stage_id = document_verified.id
 
+class HrJob(models.Model):
+    _inherit = 'hr.job'
+
+    manpower_request_id = fields.Many2one('hr.manpower.request')
+    budget = fields.Float(string="Budget")
+
+    expected_date_to_fill = fields.Date(string="Expected Date to Fill")
+    priority = fields.Selection([
+        ('low', 'Low'),
+        ('medium', 'Medium'),
+        ('high', 'High'),
+        ('urgent', 'Urgent')
+    ], default='medium')
+
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('submitted', 'Submitted'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected')
+    ], default='draft', tracking=True)
+
+    remarks = fields.Text(string=" Rejection Remarks", tracking=True)
+
+    def action_submit(self):
+        self.state = 'submitted'
+
+    def action_approve(self):
+        self.state = 'approved'
+
+    def action_reject(self):
+        self.ensure_one()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Reject Reason',
+            'res_model': 'hr.job.reject.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_job_id': self.id
+            }
+        }
+
+    @api.model
+    def create(self, vals):
+        job = super().create(vals)
+
+        if vals.get('manpower_request_id'):
+            mpr = self.env['hr.manpower.request'].browse(vals['manpower_request_id'])
+            mpr.job_ids = [(4, job.id)]
+
+        return job
     

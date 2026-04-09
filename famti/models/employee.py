@@ -1,5 +1,7 @@
 from odoo import models, fields, api
 from datetime import timedelta
+from odoo.exceptions import ValidationError
+
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
@@ -23,6 +25,14 @@ class HrEmployee(models.Model):
     )
     wsib_case_count = fields.Integer(compute="_compute_wsib_case_count")
 
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('training', 'Training Period'),
+        ('completed_training', 'Completed Training'),
+        ('probation', 'Probation'),
+        ('regular', 'Regular Employee'),
+    ], string="Employee State", default='draft', tracking=True)
+
     def _compute_wsib_case_count(self):
         for rec in self:
             rec.wsib_case_count = len(rec.wsib_case_ids)
@@ -36,11 +46,7 @@ class HrEmployee(models.Model):
             'domain': [('employee_id', '=', self.id)],
         }
 
-    @api.onchange('joining_date')
-    def _onchange_joining_date(self):
-        if self.joining_date:
-            self.probation_start_date = self.joining_date
-            self.probation_end_date = self.joining_date + timedelta(days=90)
+    
 
     @api.model
     def create(self, vals):
@@ -52,6 +58,8 @@ class HrEmployee(models.Model):
                     break
         return super().create(vals)
 
+
+    
     def generate_random_barcode(self):
         for employee in self:
             if not employee.barcode:
@@ -76,7 +84,30 @@ class HrEmployee(models.Model):
                 'default_coach_id': self.coach_id.id,
             }
         }
+    
+    def action_start_training(self):
+        self.state = 'training'
 
+    def action_training_completed(self):
+        for rec in self:
+            if not rec.training_end_date:
+                raise ValidationError("Training End Date is required in Completed Training state")
+        self.state = 'completed_training'
+        
+
+    def action_certified(self):
+        for rec in self:
+            if not rec.probation_start_date:
+                raise ValidationError("Probation Start Date is required to move the employee to Probation stage.")
+        self.state = 'probation'
+        
+    
+    def action_confirm_probation(self):
+        for rec in self:
+            if not rec.probation_end_date:
+                raise ValidationError("Probation End Date is required to confirm the employee as a Regular employee.")
+        self.state = 'regular'
+        
 
 class HrEmployeePublic(models.Model):
     _inherit = "hr.employee.public"

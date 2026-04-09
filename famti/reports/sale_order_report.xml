@@ -197,11 +197,11 @@
                     </tr>
                 </table>
                 
-                <!-- <div style="width:100%;text-align:center;">
+                <div style="width:100%;text-align:center;">
                     <strong>
                         PACKAGING MATERIAL ( <span t-esc="', '.join([l.product_id.name for l in o.order_line])"/> FILM )
                     </strong>
-                </div> -->
+                </div>
                 <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:15px;">
 
                     <thead>

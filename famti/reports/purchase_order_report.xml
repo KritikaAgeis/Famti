@@ -22,8 +22,8 @@
         <field name="name">Purchase Order Custom Report</field>
         <field name="model">purchase.order</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">famti.report_purchase_order_custom</field>
-        <field name="report_file">famti.report_purchase_order_custom</field>
+        <field name="report_name">famti.report_purchase_order_custom_report</field>
+        <field name="report_file">famti.report_purchase_order_custom_report</field>
         <field name="print_report_name">'PO - %s' % (object.name)</field>
         <field name="binding_model_id" ref="purchase.model_purchase_order"/>
         <field name="binding_type">report</field>
@@ -40,7 +40,7 @@
 
             <div class="row" style="width:100%; margin:0;">
 
-                <div class="col-6" style="padding:0; vertical-align:top;">
+                <div class="col-6" style="padding:10; vertical-align:top;">
 
                     <img t-if="company.logo"
                         t-att-src="image_data_uri(company.logo)"
@@ -55,7 +55,7 @@
 
                 </div>
 
-                <div class="col-6" style="padding:10px;">
+                <!-- <div class="col-6" style="padding:10px;">
 
                     <td style="width:50%; vertical-align:top;">
 
@@ -91,6 +91,44 @@
                         </div>
 
                     </td>
+                </div> -->
+                <div class="col-6" style="padding:10px;">
+
+                    <td style="width:50%; vertical-align:top;">
+
+                        <div style="border:1px solid black; border-radius:8px; overflow:hidden;">
+
+                            <div style="text-align:center;font-size:18px; padding:6px; font-weight:bold;">
+                                PURCHASE ORDER
+                            </div>
+
+                            <table style="width:100%; font-size:14px;">
+                                <tr>
+                                    <td style="padding:5px;background:#eee;"><strong>Purchase Order No.</strong></td>
+                                    <td style="text-align:right;padding:5px;"><span t-field="o.name"/></td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;background:#eee;"><strong>Date</strong></td>
+                                    <td style="text-align:right;padding:5px;">
+                                        <span t-field="o.date_order" t-options='{"widget": "date"}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px;background:#eee;"><strong>Purchase Order Type</strong></td>
+                                    <td style="text-align:right;padding:5px;">
+                                        <span t-field="o.po_type"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px;background:#eee;"><strong>Other Refrence(s)</strong></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </td>
                 </div>
 
             </div>
@@ -119,7 +157,7 @@
 
                     <div style="width:50%; float:left; text-align:left;padding-top:30px;">
                         <div style="border-top:1px solid #999; width:100%; margin-bottom:3px;"></div>
-                        <h6 style="font-weight:bold;padding-left:30px;"><span t-field="o.partner_id.name"/></h6>
+                        <h6 style="font-weight:bold;padding-left:30px;"><span t-field="o.company_id.name"/></h6>
                     </div>
 
                 </div>
@@ -327,6 +365,184 @@
 
                     </div>
 
+                </div>
+
+
+                <div class="page-break"/>
+
+            </t>
+        </main>
+    </t>
+</template>
+
+
+<template id="report_purchase_order_custom_report">
+    <t t-call="famti.external_layout_standards">
+        <main>
+            <t t-foreach="docs" t-as="o">
+
+                <table style="width:100%; border:1px solid black; margin-bottom:10px;">
+                    <tr>
+                        <td style="width:50%;background:#3b4e87; color:white; padding:5px;">
+                            <strong>Supplier</strong>
+                        </td>
+                        <td style="width:50%;background:#3b4e87; color:white; padding:5px;">
+                            <strong>Ship-to</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:50%;padding:5px; font-size:14px;">
+
+                            <strong><span t-field="o.partner_id.name"/></strong><br/>
+
+                            <span t-field="o.partner_id.street"/><br/>
+                            <span t-field="o.partner_id.city"/>
+                            <span t-field="o.partner_id.state_id.name"/><br/>
+                            <span t-field="o.partner_id.country_id.name"/><br/>
+
+                            <strong>Phone:</strong> <span t-field="o.partner_id.phone"/><br/>
+                            <strong>Email:</strong> <span t-field="o.partner_id.email"/>                            
+
+                        </td>
+
+                        <td style="width:50%;padding:5px; font-size:14px;">
+
+                            <strong><span t-field="o.company_id.name"/></strong><br/>
+
+                            <span t-field="o.company_id.street"/><br/>
+                            <span t-field="o.company_id.city"/>
+                            <span t-field="o.company_id.state_id.name"/><br/>
+                            <span t-field="o.company_id.country_id.name"/><br/>
+
+                            <strong>Phone:</strong> <span t-field="o.company_id.phone"/><br/>
+                            <strong>Email:</strong> <span t-field="o.company_id.email"/>
+
+                            <div class="row" style="padding:5px;">
+                                <div class="col-6">
+                                    <strong>Payment Terms:</strong>
+                                    <span t-field="o.payment_term_id.name"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Delivery Terms:</strong>
+                                    <span t-field="o.incoterm_id.code"/>
+                                    <!-- <span t-field="o.incoterm.name"/> -->
+                                </div>
+                            </div>
+
+                        </td>
+
+                    </tr>
+                </table>
+
+                <div style="width:100%;text-align:center;">
+                    <strong>
+                        PACKAGING MATERIAL ( <span t-esc="', '.join([l.product_id.name for l in o.order_line])"/> FILM )
+                    </strong>
+                </div>
+
+                <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:15px;">
+
+                    <thead>
+                        <tr style="border-bottom:1px solid #000;background:#3b4e87;color:white;">
+                            <th style="padding:6px;font-weight:bold;">DESCRIPTION OF GOODS</th>
+                            <th style="padding:6px;font-weight:bold;">THICKNESS (GAUGE)</th>
+                            <th style="padding:6px;font-weight:bold;">WIDTH (IN)</th>
+                            <th style="padding:6px;font-weight:bold;">ITEM CODE</th>
+                            <th style="padding:6px;font-weight:bold;">CORE ID (Inch)</th>
+                            <th style="padding:6px;font-weight:bold;">TREATMENT IN</th>
+                            <th style="padding:6px;font-weight:bold;">TREATMENT OUT</th>
+                            <th style="padding:6px;font-weight:bold;">ROLL LENGTH (MTRS APPROX)</th>
+                            <th t-if="o.po_type != 'fgf'" style="padding:6px;font-weight:bold;">QUANTITY (LBS)</th>
+                            <th t-if="o.po_type != 'fgf'" style="padding:6px;font-weight:bold;">PRICE / POUND (IN USD)</th>
+                            <th t-if="o.po_type == 'fgf'" style="padding:6px;font-weight:bold;">QUANTITY (NO OF ROLLS)</th>
+                            <th t-if="o.po_type == 'fgf'" style="padding:6px;font-weight:bold;">PRICE / ROLL (IN USD)</th>
+                            <th style="padding:6px;font-weight:bold;">AMOUNT (IN USD)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <t t-foreach="o.order_line" t-as="line">
+                            <tr style="border-bottom:1px solid #000;">
+                                <td style="padding:6px;">
+                                    <span t-field="line.description"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.thickness_val"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.width_val"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.name"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.core_id"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.treatment_in"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.treatment_out"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.length_val"/>
+                                </td>
+                                <td t-if="o.po_type != 'fgf'" style="padding:6px;">
+                                    <span t-field="line.product_uom_qty"/>
+                                </td>
+                                <td t-if="o.po_type == 'fgf'" style="padding:6px;">
+                                    <span t-field="line.pieces"/>
+                                </td>
+                                <td style="padding:6px;">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td style="padding:6px; text-align:right;">
+                                    <span t-field="line.price_subtotal"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                           
+                
+                <div style="width:100%; margin-top:15px; overflow:hidden;">
+
+                    <div style="width:55%; float:left; font-size:14px;">
+                        <strong>Amount in Words:</strong><br/>
+                        <span t-esc="o.currency_id.amount_to_text(o.amount_total)"/>
+                    </div>
+
+                    <div style="width:40%; float:right; text-align:right;">
+
+                        <!-- <div style="display:flex; justify-content:space-between;">
+                            <span>Total Qty:</span>
+                            <span t-esc="sum([l.product_uom_qty for l in o.order_line])"/>
+                        </div> -->
+
+                        <!-- <div style="display:flex; justify-content:space-between; font-weight:bold; border-top:1px solid #000; padding-top:5px;">
+                            <span>Total Value:</span>
+                            <span t-field="o.amount_total"/>
+                        </div> -->
+                        <div style="display:flex; justify-content:space-between;">
+                            <span><strong>Subtotal:</strong></span>
+                            <span t-field="o.amount_untaxed"/>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between;">
+                            <span><strong>Tax:</strong></span>
+                            <span t-field="o.amount_tax"/>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; font-weight:bold; border-top:1px solid #000; padding-top:5px;">
+                            <span>Total Value:</span>
+                            <span t-field="o.amount_total"/>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div>
+                    <strong>Remarks:</strong>
                 </div>
 
 

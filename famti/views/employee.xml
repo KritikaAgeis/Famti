@@ -29,12 +29,12 @@
                 <xpath expr="//page[@name='public']//group[.//field[@name='work_location_id']]" position="after">
                     <group string="Employment Details">
                         <group>
-                            <field name="joining_date"/>
+                            <field name="joining_date" required="1"/>
                         </group>
                         <group>
                         </group>
                         <group>
-                            <field name="training_start_date"/>
+                            <field name="training_start_date" required="1"/>
                             <field name="probation_start_date"/>
                         </group>
                         <group>
@@ -49,6 +49,21 @@
                             type="object"
                             string="WSIB Tracking"
                             class="btn-primary"/>
+                    
+                    <button name="action_start_training" type="object" string="Start Training" class="btn-secondary"
+                        invisible="state != 'draft'"/>
+
+                    <button name="action_training_completed" type="object" string="Training Completed" class="btn-secondary"
+                        invisible="state != 'training'"/>
+
+                    <button name="action_certified" type="object" string="Certified" class="btn-secondary"
+                        invisible="state != 'completed_training'"/>
+                    
+                    <button name="action_confirm_probation" type="object" string="Regular Employee" class="btn-secondary"
+                        invisible="state != 'probation'"/>
+
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,training,completed_training,probation,regular"/>
                 </xpath>
                 <xpath expr="//div[@name='button_box']" position="inside">
                     <button name="action_view_wsib_cases"
