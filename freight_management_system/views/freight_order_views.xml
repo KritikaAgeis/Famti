@@ -230,7 +230,8 @@
     <!--Defined menus-->
     <menuitem id="freight_order_menu_root" name="Freight Management"
               web_icon="freight_management_system,static/description/icon.png"
-              sequence="4"/>
+              sequence="4" action="freight_order_action"/>
+
     <menuitem id="freight_order_menu_shipping" name="Shipping"
               parent="freight_order_menu_root" sequence="2"
               action="freight_order_action"/>
