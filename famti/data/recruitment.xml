@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding='UTF-8'?>
 <odoo>
     <data noupdate="1">
+            <record id="document_shortlist" model="hr.recruitment.stage">
+                <field name="name">Shortlist</field>
+                <field name="sequence">17</field>
+                <field name="fold">False</field>
+                <field name="hired_stage">False</field>
+            </record>
             <record id="document_verification" model="hr.recruitment.stage">
                 <field name="name">Document Verification</field>
                 <field name="sequence">18</field>
@@ -13,23 +19,15 @@
                 <field name="fold">False</field>
                 <field name="hired_stage">False</field>
             </record>
+            <record id="stage_interview" model="hr.recruitment.stage">
+                <field name="name">Interview</field>
+                <field name="sequence">20</field>
+                <field name="fold">False</field>
+                <field name="hired_stage">False</field>
+            </record>
             <record id="stage_hired" model="hr.recruitment.stage">
                 <field name="name">Selected</field>
-                <field name="sequence">20</field>
-                <field name="fold">True</field>
-                <field name="hired_stage">True</field>
-            </record>
-
-            <record id="stage_rejected" model="hr.recruitment.stage">
-                <field name="name">Trainee</field>
                 <field name="sequence">21</field>
-                <field name="fold">True</field>
-                <field name="hired_stage">True</field>
-            </record>
-
-            <record id="stage_Internship" model="hr.recruitment.stage">
-                <field name="name">Internship</field>
-                <field name="sequence">22</field>
                 <field name="fold">True</field>
                 <field name="hired_stage">True</field>
             </record>

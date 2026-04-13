@@ -26,12 +26,14 @@
                             invisible="state != 'draft'"/>
 
                     <button name="action_approve" type="object" string="Approve"
-                            class="btn-success"
-                            invisible="state != 'waiting_for_approval'"/>
+                            class="btn-primary"
+                            invisible="state != 'waiting_for_approval'"
+                            groups="famti.group_for_hr_executive"/>
 
                     <button name="action_reject" type="object" string="Reject"
-                            class="btn-danger"
-                            invisible="state != 'waiting_for_approval'"/>
+                            class="btn-secondary"
+                            invisible="state != 'waiting_for_approval'"
+                            groups="famti.group_for_hr_executive"/>
 
                     <field name="state" widget="statusbar"
                         statusbar_visible="draft,waiting_for_approval,approved,rejected"/>
@@ -52,6 +54,7 @@
                             <field name="resignation_date" readonly="state in ['waiting_for_approval','approved','rejected']" required="1"/>
                             <field name="notice_period" readonly="state in ['approved','rejected']"/>
                             <field name="approved_last_date" readonly="state in ['approved','rejected']"/>
+                            <field name="remarks" invisible="state != 'rejected'"/>
                         </group>
                     </group>
 
@@ -61,15 +64,57 @@
                         </page>
                     </notebook>
                 </sheet>
-
+                <chatter/>
             </form>
+        </field>
+    </record>
+
+    <record id="view_hr_resignation_kanban" model="ir.ui.view">
+        <field name="name">hr.resignation.kanban</field>
+        <field name="model">hr.resignation</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="employee_id"/>
+                <field name="resignation_date"/>
+                <field name="department_id"/>
+                <field name="state"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_card">
+
+                            <div class="o_kanban_details">
+                                <strong>
+                                    <field name="employee_id"/>
+                                </strong>
+
+                                <div>
+                                    <span>Department: </span>
+                                    <field name="department_id"/>
+                                </div>
+
+                                <div>
+                                    <span>Resignation Date: </span>
+                                    <field name="resignation_date"/>
+                                </div>
+
+                                <div>
+                                    <span>Status: </span>
+                                    <field name="state"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
     <record id="action_hr_resignation" model="ir.actions.act_window">
         <field name="name">Resignation</field>
         <field name="res_model">hr.resignation</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
     </record>
 
     <menuitem 

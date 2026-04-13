@@ -32,4 +32,6 @@ access_wsib_case_wizard,access_wsib_case_wizard,model_wsib_case_wizard,base.grou
 access_wsib_case,access_wsib_case,model_wsib_case,base.group_system,1,1,1,1
 access_hr_resignation_admin,access_hr_resignation_admin,model_hr_resignation,base.group_system,1,1,1,1
 access_quickbooks_admin,access_quickbooks_config_admin,model_quickbook_config,base.group_system,1,1,1,1
+access_hr_job_reject_wizard,access_hr_job_reject_wizard,model_hr_job_reject_wizard,base.group_system,1,1,1,1
+access_hr_resignation_reject_wizard,access_hr_resignation_reject_wizard,model_hr_resignation_reject_wizard,base.group_system,1,1,1,1
 

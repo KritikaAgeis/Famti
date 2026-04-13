@@ -251,7 +251,7 @@
                             </tbody>
 
                         </table>
-                        <div class="row" style="margin-top:20px;text-align:center;">
+                        <!-- <div class="row" style="margin-top:20px;text-align:center;">
                             <div class="col-12" style="background:#eee;text-align:center;padding:5px;">
                                 <t t-set="total_qty" t-value="sum(line.quantity for line in o.invoice_line_ids)"/>
                                 <t t-set="total_pieces" t-value="sum(line.pieces or 0 for line in o.invoice_line_ids)"/>
@@ -261,7 +261,7 @@
                                     <span t-esc="total_pieces"/>
                                 </t>
                             </div>                            
-                        </div>
+                        </div> -->
                         <div class="row" style="margin-top:20px;">
                             <div class="col-6" style="text-align:left;">
                                 <span t-field="o.narration"/>
