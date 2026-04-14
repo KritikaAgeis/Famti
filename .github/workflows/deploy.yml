@@ -17,6 +17,20 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            set -e
             cd /opt/odoo18/custom
-            git pull origin main
-            sudo systemctl restart odoo18
+
+            echo "Checking for updates..."
+            git fetch origin main
+
+            if ! git diff --quiet HEAD origin/main; then
+              echo "Changes found. Pulling latest code..."
+              git pull origin main
+
+              echo "Restarting Odoo..."
+              systemctl restart odoo18
+
+              echo "Deployment successful ✅"
+            else
+              echo "No changes. Skipping restart ✅"
+            fi
