@@ -1,5 +1,5 @@
 <odoo>
-
+    <data noupdate="1">
     <record id="seq_package_custom" model="ir.sequence">
         <field name="name">Package Custom</field>
         <field name="code">stock.quant.package.custom</field>
@@ -15,5 +15,5 @@
         <field name="number_next">1</field>
         <field name="number_increment">1</field>
     </record>
-
+    </data>
 </odoo>

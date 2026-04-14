@@ -1,6 +1,8 @@
 <odoo>
+    <data noupdate="1">
     <record id="journal_credit_card" model="account.journal">
         <field name="name">Credit Card</field>
         <field name="type">credit</field>
     </record>
+    </data>
 </odoo>
