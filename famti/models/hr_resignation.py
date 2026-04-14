@@ -37,7 +37,8 @@ class HrResignation(models.Model):
     @api.model
     def create(self, vals):
         record = super().create(vals)
-        record.message_post(body="Resignation record created.")
+
+        # record.message_post(body="Resignation record created.")
         return record
 
     def write(self, vals):
@@ -46,26 +47,27 @@ class HrResignation(models.Model):
             rec.message_post(body="Resignation record updated.")
         return res
 
-    @api.onchange('employee_id')
-    def _onchange_employee(self):
-        for rec in self:
-            emp = rec.employee_id
-
-            if emp:
-                rec.department_id = emp.department_id
-                rec.manager_id = emp.parent_id
-                rec.joining_date = emp.joining_date
-
-                contract = self.env['hr.contract'].search(
-                    [('employee_id', '=', emp.id), ('state', '=', 'open')],
-                    limit=1
-                )
-                rec.contract_id = contract
-            else:
-                rec.department_id = False
-                rec.manager_id = False
-                rec.contract_id = False
-                rec.joining_date = False
+    # @api.onchange('employee_id')
+    # def _onchange_employee(self):
+    #     for rec in self:
+    #         emp = rec.employee_id
+    #
+    #         if emp:
+    #             rec.department_id = emp.department_id.id if emp.department_id else False
+    #             rec.manager_id = emp.parent_id.id if emp.parent_id else False
+    #             rec.joining_date = emp.joining_date
+    #
+    #             contract = self.env['hr.contract'].search(
+    #                 [('employee_id', '=', emp.id), ('state', '=', 'open')],
+    #                 limit=1
+    #             )
+    #             rec.contract_id = contract.id if contract else False
+    #
+    #         else:
+    #             rec.department_id = False
+    #             rec.manager_id = False
+    #             rec.contract_id = False
+    #             rec.joining_date = False
 
     def action_submit(self):
         self.state = 'waiting_for_approval'

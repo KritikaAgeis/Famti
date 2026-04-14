@@ -1,0 +1,41 @@
+name: Deploy Odoo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd /opt/odoo18/custom
+
+            echo "Checking for updates..."
+            git fetch origin main
+
+            if ! git diff --quiet HEAD origin/main; then
+              echo "Changes found. Resetting local changes..."
+
+              git reset --hard
+              git clean -fd
+
+              echo "Pulling latest code..."
+              git pull origin main
+
+              echo "Restarting Odoo..."
+              systemctl restart odoo18
+
+              echo "Deployment successful ✅"
+            else
+              echo "No changes. Skipping restart ✅"
+            fi
