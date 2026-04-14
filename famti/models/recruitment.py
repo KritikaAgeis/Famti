@@ -96,7 +96,6 @@ class HrApplicant(models.Model):
 class HrJob(models.Model):
     _inherit = 'hr.job'
 
-    manpower_request_id = fields.Many2one('hr.manpower.request')
     budget = fields.Float(string="Budget")
 
     expected_date_to_fill = fields.Date(string="Expected Date to Fill")
@@ -136,13 +135,5 @@ class HrJob(models.Model):
             }
         }
 
-    @api.model
-    def create(self, vals):
-        job = super().create(vals)
-
-        if vals.get('manpower_request_id'):
-            mpr = self.env['hr.manpower.request'].browse(vals['manpower_request_id'])
-            mpr.job_ids = [(4, job.id)]
-
-        return job
+    
     
