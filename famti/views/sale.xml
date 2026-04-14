@@ -96,6 +96,7 @@
                 <field name="so_type" readonly="state in ['cancel', 'sale']"/>
                 <field name="buyer_po_number"/>
                 <field name="buyer_po_date"/>
+                <field name="expected_date"/>
             </xpath>
 
             <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
