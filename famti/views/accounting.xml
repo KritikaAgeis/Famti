@@ -16,6 +16,8 @@
             <xpath expr="//field[@name='delivery_date']" position="before">
                 <field name="invoice_incoterm_id" string="Delivery terms" readonly="state in ['cancel', 'posted']"/>
                 <field name="ship_via"/>
+                <field name="quickbook_id" readonly="1"/>
+
             </xpath>
             
 

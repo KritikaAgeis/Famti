@@ -42,9 +42,13 @@
                 <xpath expr="//field[@name='name']" position="attributes">
                     <attribute name="readonly">show_supervisor_button</attribute>
                 </xpath>
-                <xpath expr="//field[@name='employee_id']" position="replace">
-                    <field name="employee_id" readonly="1" options="{'no_open': True}"/>
-                </xpath>
+<!--                <xpath expr="//field[@name='employee_id']" position="replace">-->
+<!--                    <field name="employee_id" readonly="1" options="{'no_open': True}"/>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='employee_id']" position="attributes">-->
+<!--                <attribute name="readonly">1</attribute>-->
+<!--                <attribute name="options">{'no_open': True}</attribute>-->
+<!--            </xpath>-->
                 <xpath expr="//field[@name='email_cc']" position="attributes">
                     <attribute name="readonly">show_supervisor_button</attribute>
                 </xpath>

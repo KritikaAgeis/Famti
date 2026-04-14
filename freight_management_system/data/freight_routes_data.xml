@@ -7,6 +7,7 @@
             <field name="land_sale">0.00</field>
             <field name="air_sale">0.00</field>
             <field name="water_sale">0.00</field>
+            <field name="transport_type">land</field>
         </record>
     </data>
 </odoo>
