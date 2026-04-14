@@ -52,6 +52,7 @@
                                 <field name="credit_limit" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="not use_partner_credit_limit"/>
                             </div>
                             <field name="credit_grace_days"/>
+                            <field name="lc_document" widget="binary" invisible="is_supplier == 1"/>
                         </group>
 
                     </page>
@@ -87,7 +88,7 @@
             </field>
         </record>
 
-         <record id="view_res_partner_form_credit_controls" model="ir.ui.view">
+         <!-- <record id="view_res_partner_form_credit_controls" model="ir.ui.view">
         <field name="name">res.partner.form.credit.controls</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
@@ -103,7 +104,7 @@
                 </group>
             </xpath>
         </field>
-    </record>
+    </record> -->
 
 
     <record id="view_res_partner_bank_form_inherit_famti" model="ir.ui.view">
