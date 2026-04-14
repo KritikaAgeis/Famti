@@ -87,7 +87,7 @@ class FreightOrder(models.Model):
     agent_id = fields.Many2one('res.partner', string='Agent',
                                required=True, help="Details of agent",tracking=True)
     expected_date = fields.Date(string='Expected Date', help='The expected date'
-                                                             'of the order',tracking=True, required=True)
+                                                             'of the order',tracking=True, required=False)
     track_ids = fields.One2many('freight.track', 'freight_id',
                                 string='Tracking', help='For tracking the'
                                                         'freight orders')
