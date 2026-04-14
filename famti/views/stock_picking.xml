@@ -55,8 +55,8 @@
             <field name="arch" type="xml">
                 
                 <xpath expr="//field[@name='origin']" position="after">
-                    <field name="so_type"/>
-                    <field name="po_type"/>
+                    <field name="so_type" invisible="not so_type"/>
+                    <field name="po_type" invisible="not po_type"/>
                 </xpath>
 
                 <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='product_uom']" position="replace">
