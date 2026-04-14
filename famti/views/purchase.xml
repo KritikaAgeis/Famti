@@ -42,15 +42,15 @@
                     <attribute name="invisible">True</attribute>
                 </xpath>
 
-                <xpath expr="//button[@name='button_confirm']" position="before">
-                  <button string="CFO Approval"
-                          name="action_send_for_cfo_approval"
-                          type="object"
-                          invisible="state in ['to approve','purchase']"
-                          groups="famti.group_purchase_dep_users,purchase.group_purchase_manager"
-                          class="btn-primary"/>
+<!--                <xpath expr="//button[@name='button_confirm']" position="before">-->
+<!--                  <button string="CFO Approval"-->
+<!--                          name="action_send_for_cfo_approval"-->
+<!--                          type="object"-->
+<!--                          invisible="state in ['to approve','purchase']"-->
+<!--                          groups="famti.group_purchase_dep_users,purchase.group_purchase_manager"-->
+<!--                          class="btn-primary"/>-->
 
-                </xpath>
+<!--                </xpath>-->
 
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <span class="o_form_label o_td_label o_address_type">

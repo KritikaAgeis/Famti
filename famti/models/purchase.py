@@ -115,18 +115,18 @@ class Purchase(models.Model):
                 )
         return super().action_rfq_send()
 
-    def action_send_for_cfo_approval(self):
-        for order in self:
-            if not order.order_line:
-                raise UserError(
-                    "Purchase Order must have at least one order line.")
-            
-            if order.partner_id.state == 'certificate_expired':
-                raise UserError(
-                    f"Cannot send for CFO approval. Vendor '{order.partner_id.name}' certificate has expired. Please renew it."
-                )
-                
-        self.state='to approve'
+    # def action_send_for_cfo_approval(self):
+    #     for order in self:
+    #         if not order.order_line:
+    #             raise UserError(
+    #                 "Purchase Order must have at least one order line.")
+    #
+    #         if order.partner_id.state == 'certificate_expired':
+    #             raise UserError(
+    #                 f"Cannot send for CFO approval. Vendor '{order.partner_id.name}' certificate has expired. Please renew it."
+    #             )
+    #
+    #     self.state='to approve'
 
     def action_reject_coa(self):
         self.state = 'cancel'
