@@ -71,6 +71,8 @@ class SaleOrder(models.Model):
 
     buyer_po_number = fields.Char( string="Buyer PO Number")
     buyer_po_date = fields.Date(string="Buyer PO Date")
+    expected_date = fields.Date(string='Expected Date', help='The expected date'
+                                                             'of the order', required=False)
 
     def _compute_freight_count(self):
         for order in self:
@@ -171,11 +173,8 @@ class SaleOrder(models.Model):
     def _create_freight_cost(self):
         freight = self.env['freight.order']
         freightorderline = self.env['freight.order.line']
-        print("=======vfreight======")
         loading_port_id = self.env['freight.port'].search([])[0]
         discharging_port_id = self.env['freight.port'].search([])[0]
-        print("=======loading_port_id======",loading_port_id)
-        print("=======discharging_port_id======",discharging_port_id)
         for order in self.filtered(lambda so: so.state in ('sale', 'done')):
             line_vals = []
             for line in order.order_line:
@@ -194,6 +193,7 @@ class SaleOrder(models.Model):
                 'discharging_port_id':discharging_port_id.id,
                 'agent_id':self.env.user.partner_id.id,
                 'sale_id': order.id,
+                'expected_date':order.expected_date,
                 'incoterm_id':order.incoterm.id,
                 'order_ids': line_vals}])
                 
