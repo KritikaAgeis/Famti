@@ -29,7 +29,8 @@
                     <button name="approve_performance" type="object"
                             string="Done"
                             class="btn-primary"
-                            invisible="state == 'done'"/>
+                            invisible="state != 'in_review'"
+                            groups="famti.group_for_hr_executive"/>
 
 
                 </header>
