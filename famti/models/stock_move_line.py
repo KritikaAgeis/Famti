@@ -121,7 +121,7 @@ class StockMove(models.Model):
         string="SO Type",
         store=True
     )
-    pieces = fields.Float(string="Pieces")
+    pieces = fields.Float(string="Pieces",compute="_compute_units_display")
     rolls_uom_id = fields.Many2one('uom.uom', string="Units",domain="[('name','=','rolls')]",
         default=lambda self: self.env['uom.uom'].search([('name','=','rolls')], limit=1))
    

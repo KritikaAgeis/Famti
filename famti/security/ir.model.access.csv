@@ -42,6 +42,8 @@ access_mrp_production_serial_line,access_mrp_production_serial_line,model_mrp_pr
 access_mrp_production_scrap_line,access_mrp_production_scrap_line,model_mrp_production_scrap_line,group_manufacture_users,1,1,1,1
 access_mrp_consumables,access_mrp_consumables,model_mrp_consumables,group_manufacture_users,1,1,1,1
 access_mrp_batch_produce_line,access_mrp_batch_produce_line,model_mrp_batch_produce_line,group_manufacture_users,1,1,1,1
+access_mail_mail_user,mail.mail.user,mail.model_mail_mail,base.group_user,1,1,1,1
+access_mail_mail_hr_exec,mail.mail.hr.exec,mail.model_mail_mail,famti.group_for_hr_executive,1,1,1,1
 
 
 
