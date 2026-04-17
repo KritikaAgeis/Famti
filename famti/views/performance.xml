@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_employee_performance_list" model="ir.ui.view">
+        <field name="name">employee.performance.list</field>
+        <field name="model">employee.performance</field>
+        <field name="arch" type="xml">
+            <list>
+                 <field name="employee_id"/>
+                                    <field name="manager_id"/>
+                                    <field name="date_from"/>
+                                    <field name="date_to"/>
+                                    <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_employee_performance_form" model="ir.ui.view">
+        <field name="name">employee.performance.form</field>
+        <field name="model">employee.performance</field>
+        <field name="arch" type="xml">
+            <form string="Performance Evaluation">
+                <header>
+                    <field name="state"  widget="statusbar"/>
+                    <button name="send_for_review_performance" type="object"
+                            string="Submit For Review"
+                            class="btn-primary"
+                            invisible="state in ['in_review','done']"/>
+
+                    <button name="approve_performance" type="object"
+                            string="Done"
+                            class="btn-primary"
+                            invisible="state == 'done'"/>
+
+
+                </header>
+                            <sheet>
+                                <group>
+
+                                    <group>
+                                        <field name="employee_id"/>
+                                    <field name="manager_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="date_from"/>
+                                    <field name="date_to"/>
+                                    </group>
+                                </group>
+
+
+                                <notebook>
+                                    <page string="Evaluation">
+                                        <field name="line_ids">
+                                            <list editable="bottom">
+                                                <field name="criteria_id"/>
+                                                <field name="rating"/>
+                                                <field name="remarks"/>
+                                            </list>
+                                        </field>
+                                    </page>
+                                </notebook>
+
+                                <group>
+                                    <field name="total_score"/>
+                                </group>
+                            </sheet>
+                        </form>
+
+        </field>
+    </record>
+
+    <record id="action_employee_performance" model="ir.actions.act_window">
+        <field name="name">Performance Evaluation</field>
+        <field name="res_model">employee.performance</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+
+
+    <record id="view_performance_criteria_list" model="ir.ui.view">
+    <field name="name">performance.criteria.list</field>
+    <field name="model">performance.criteria</field>
+    <field name="arch" type="xml">
+        <list>
+            <field name="name"/>
+            <field name="weight"/>
+        </list>
+    </field>
+</record>
+
+    <record id="view_performance_criteria_form" model="ir.ui.view">
+    <field name="name">performance.criteria.form</field>
+    <field name="model">performance.criteria</field>
+    <field name="arch" type="xml">
+        <form string="Performance Criteria">
+            <sheet>
+                <group>
+                    <field name="name"/>
+                    <field name="weight"/>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+    <record id="action_performance_criteria" model="ir.actions.act_window">
+    <field name="name">Performance Criteria</field>
+    <field name="res_model">performance.criteria</field>
+    <field name="view_mode">list,form</field>
+</record>
+
+
+    <menuitem id="menu_performance_criteria"
+          name="Criteria"
+          parent="hr.menu_config_employee"
+          action="action_performance_criteria"/>
+
+    <menuitem
+        id="menu_employee_performance"
+        name="Performance"
+        sequence="26"
+        action="action_employee_performance"
+        parent="hr.menu_hr_root"
+    />
+
+</odoo>

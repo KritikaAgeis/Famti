@@ -1,6 +1,7 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import timedelta
+from datetime import datetime
 
 
 class ResPartner(models.Model):
@@ -40,6 +41,8 @@ class ResPartner(models.Model):
                     raise UserError("Please Upload The ISO Certificate.")
                 if not rec.vendor_document_expiry:
                     raise UserError("Please Mention The Certificate Expiry Date.")
+                if rec.vendor_document_expiry < datetime.now().date():
+                    raise UserError("Expiry Date Must Be Future Date.")
                 rec.state = 'verified_vendor'
 
     def action_iso_certificate_renew(self):

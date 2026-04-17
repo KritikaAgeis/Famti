@@ -13,3 +13,4 @@ from . import maintenance_request
 from . import employee,recruitment
 from . import hr_expense,hr_resignation
 from . import quickbook
+from . import performance

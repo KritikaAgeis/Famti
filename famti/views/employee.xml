@@ -153,8 +153,8 @@
                             statusbar_visible="draft,submitted,under_review,approved,rejected,closed"/>
 
                         <button name="action_start_review" type="object"
-                            string="Start Review"
-                            invisible="state != 'submitted'"/>
+                                string="Start Review"
+                                invisible="state != 'submitted'"/>
 
                         <button name="action_approve" type="object"
                                 string="Approve"
