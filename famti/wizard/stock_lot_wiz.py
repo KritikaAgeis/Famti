@@ -14,7 +14,7 @@ class StockLotWizard(models.TransientModel):
     location_id = fields.Many2one('stock.location',string='Source Location',required=True)
     dest_location_id = fields.Many2one('stock.location',string='Destination Location',required=True)
 
-    partner_id = fields.Many2one('res.partner',string='Reciever Name',required=True)
+    partner_id = fields.Many2one('res.partner',string='Receiver Name',required=True)
 
 
     note = fields.Text(string='Notes')

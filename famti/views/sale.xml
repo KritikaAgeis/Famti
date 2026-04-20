@@ -94,9 +94,9 @@
             </xpath>
             <xpath expr="//field[@name='date_order']" position="before">
                 <field name="so_type" readonly="state in ['cancel', 'sale']"/>
-                <field name="buyer_po_number"/>
-                <field name="buyer_po_date"/>
-                <field name="expected_date"/>
+                <field name="buyer_po_number" readonly="state in ['cancel', 'sale']"/>
+                <field name="buyer_po_date" readonly="state in ['cancel', 'sale']"/>
+                <field name="expected_date" readonly="state in ['cancel', 'sale']"/>
             </xpath>
 
             <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
@@ -151,15 +151,18 @@
 
 
 
-            <xpath expr="//div[@name='so_button_below_order_lines']" position="inside">
+            <!-- <xpath expr="//div[@name='so_button_below_order_lines']" position="inside">
                     <button name="action_view_manufacturing_cost"
                         type="object"
                         string="Manufacturing Cost"
                     />
+            </xpath> -->
+            <xpath expr="//page[@name='optional_products']" position="attributes">
+                <attribute name="invisible">0</attribute>
             </xpath>
 
             <xpath expr="//field[@name='payment_term_id']" position="after">
-                <field name="incoterm" string="Delivery terms" required="1" readonly="state in ['cancel', 'sale']"/>
+                <field name="incoterm" string="Delivery Terms" required="1" readonly="state in ['cancel', 'sale']"/>
             </xpath>
 
             <!-- <xpath expr="//div[@name='button_box']" position="inside">

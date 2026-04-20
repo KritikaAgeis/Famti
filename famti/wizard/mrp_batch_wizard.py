@@ -29,7 +29,7 @@ class MrpBatchProduceLine(models.TransientModel):
     grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
     scrap_reason_tag_ids = fields.Many2many( comodel_name='stock.scrap.reason.tag',
         string='Scrap Reason')
-    mo_product_code = fields.Char(string='Mo Product Code')
+    mo_product_code = fields.Char(string='MO Product Code')
     po_product_code = fields.Char(string='Product Code')
 
 
