@@ -78,6 +78,7 @@ class HrResignation(models.Model):
         self.message_post(body="Resignation Approved")
 
     def action_reject(self):
+        self.ensure_one()
         self.state = 'rejected'
         self.message_post(body="Resignation Rejected")
 
