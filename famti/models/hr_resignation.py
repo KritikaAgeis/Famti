@@ -93,3 +93,61 @@ class HrResignation(models.Model):
             }
         }
 
+
+class EmployeeResignation(models.Model):
+    _name = 'employee.resignation'
+    _description = 'Employee Resignation'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+
+    employee_id = fields.Many2one('hr.employee', string="Employee", required=True, tracking=True)
+
+    department_id = fields.Many2one('hr.department', string="Department")
+    contract_id = fields.Many2one('hr.contract', string="Contract")
+    joining_date = fields.Date(string="Joining Date")
+
+    resignation_date = fields.Date(string="Resignation Date", required=True, tracking=True)
+    approved_last_date = fields.Date(string="Approved Last Working Day", required=True, tracking=True)
+    notice_period = fields.Integer(string="Notice Period (Days)", required=True, tracking=True)
+
+    resignation_type = fields.Selection([
+        ('normal', 'Normal Resignation'),
+        ('terminated', 'Terminated / Fired')
+    ], default='normal', required=True, tracking=True)
+
+    manager_id = fields.Many2one('hr.employee', string="Manager")
+
+    reason = fields.Text(string="Reason", required=True, tracking=True)
+
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('waiting_for_approval', 'Waiting for Approval'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected')
+    ], default='draft')
+
+    remarks = fields.Text(string="Rejection Remarks", tracking=True)
+
+
+    def action_submit(self):
+        self.state = 'waiting_for_approval'
+        self.message_post(body="Sent for approval")
+
+    def action_approve(self):
+        self.state = 'approved'
+        self.message_post(body="Resignation Approved")
+
+    def action_reject(self):
+        self.ensure_one()
+        self.state = 'rejected'
+        self.message_post(body="Resignation Rejected")
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Reject Resignation',
+            'res_model': 'hr.resignation.reject.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_resignation_id': self.id
+            }
+        }
