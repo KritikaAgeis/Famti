@@ -32,7 +32,8 @@
                             data-hotkey="w" invisible="state != 'draft'"/>
                     <button name="action_confirm" string="Confirm"
                             type="object" class="oe_highlight"
-                            data-hotkey="w" invisible="state != 'submit'"/>
+                            data-hotkey="w" invisible="state != 'submit'" 
+                            groups="famti.group_cheif_financial_officer"/>
                     <!-- <button name="action_create_invoice" string="Invoice"
                             type="object" class="oe_highlight"
                             data-hotkey="w" invisible="state != 'confirm'"/>-->

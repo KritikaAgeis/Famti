@@ -537,7 +537,7 @@ class MrpProductionSerialLine(models.Model):
     total_scrap = fields.Float(string=" Scrap")
 
     grade_type = fields.Selection([('a', 'A Grade'),('b', 'B Grade'),],string="Grade")
-    mo_product_code = fields.Char(string="Mo Product Code")
+    mo_product_code = fields.Char(string="MO Product Code")
     po_product_code = fields.Char(string="Product Code")
     density = fields.Float(string="Roll Density")
 
