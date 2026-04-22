@@ -6,6 +6,7 @@
                     'base',
                     'web',
                     'stock',
+                    'stock_account',
                     'contacts',
                     'hr',
                     'hr_attendance',
