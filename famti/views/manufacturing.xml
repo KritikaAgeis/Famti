@@ -56,6 +56,8 @@
                             <field name="mo_product_code"/>
                             <field name="po_product_code"/>
                             <field name="location_id"/>
+                            <field name="treatment_in"/>
+                            <field name="treatment_out"/>
                             <field name="thickness" required="1"/>
                             <field name="thickness_uom" />
                             <field name="width" required="1"/>
@@ -78,6 +80,8 @@
                             <field name="serial_number"/>
                             <field name="source_location_id"/>
                             <field name="location_id"/>
+                            <field name="treatment_in"/>
+                            <field name="treatment_out"/>
                             <field name="thickness" optional="hide"/>
                             <field name="thickness_uom" optional="hide"/>
                             <field name="width" optional="hide"/>
@@ -87,7 +91,7 @@
                             <field name="length_uom" optional="hide"/>
                             <field name="quantity"/>
                             <field name="uom_id"/>
-                            <field name="scrap_reason_tag_ids" widget="many2many_tags" optional="hide"/>  
+                            <field name="scrap_reason_tag_ids" widget="many2many_tags" />  
                         </list>
                     </field>
                 </page>
@@ -239,6 +243,36 @@
                 <field name="cost_price"/>
             </xpath>
         </field>
+    </record>
+
+    <record id="action_mrp_production_slitting" model="ir.actions.act_window">
+        <field name="name">Slitting</field>
+        <field name="res_model">mrp.production</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_slitting', '=', True)]</field>
+        <field name="context">{'default_is_slitting': True}</field>
+    </record>
+
+    <record id="action_mrp_production_metalizing" model="ir.actions.act_window">
+        <field name="name">Metalizing</field>
+        <field name="res_model">mrp.production</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_slitting', '=', False)]</field>
+        <field name="context">{'default_is_slitting': False}</field>
+    </record>
+
+    <record id="menu_mrp_production_slitting" model="ir.ui.menu">
+        <field name="name">Slitting</field>
+        <field name="parent_id" ref="mrp.menu_mrp_root"/>
+        <field name="action" ref="action_mrp_production_slitting"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_mrp_production_metalizing" model="ir.ui.menu">
+        <field name="name">Metalizing</field>
+        <field name="parent_id" ref="mrp.menu_mrp_root"/>
+        <field name="action" ref="action_mrp_production_metalizing"/>
+        <field name="sequence">11</field>
     </record>
 
 

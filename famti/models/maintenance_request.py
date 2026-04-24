@@ -20,6 +20,7 @@ class MaintenanceRequest(models.Model):
         string="Track Maintenance", tracking=True
     )
     email = fields.Char(string="Email", required=True)
+    request_date = fields.Datetime(string="Request Date", default=fields.Datetime.now)
 
     @api.depends('maintenance_team_id')
     def _compute_responsible_field(self):
@@ -228,3 +229,10 @@ class MaintenanceTrack(models.Model):
             'res_id': self.id,
             'target': 'current',  
         }
+
+class MaintenanceEquipment(models.Model):
+    _inherit = 'maintenance.equipment'
+
+    scrap_date = fields.Datetime(string="Shutdown Date")
+    assign_date = fields.Datetime(string="Assign Date")
+    cost = fields.Float(string="Maintenance Cost")
