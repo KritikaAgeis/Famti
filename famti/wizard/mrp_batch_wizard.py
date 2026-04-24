@@ -215,6 +215,10 @@ class MrpBatchProduce(models.TransientModel):
                 'location_id': self.production_id.location_dest_id.id,
                 'treatment_in': product.treatment_in_selection,
                 'treatment_out': product.treatment_out_selection,
+                'thickness': product.thickness_val,
+                'thickness_uom': product.thickness_uom,
+                'width': product.width_val,
+                'width_uom': product.width_uom,
             }))
         self.line_ids = line_vals
 

@@ -23,12 +23,22 @@
                         <field name="supplier_name"/>
                         <field name="material_type"/>
                         <field name="type_reference"/>
+                        <label for="thickness_val"/>
+                        <div class="o_row">
+                            <field name="thickness_val"/>
+                            <field name="thickness_uom"/>
+                        </div>
                     </group>
 
                     <group>
                         <field name="treatment_in_selection"/>
                         <field name="treatment_out_selection"/>
                         <field name="density"/>
+                        <label for="width_val"/>
+                        <div class="o_row">
+                            <field name="width_val"/>
+                            <field name="width_uom"/>
+                        </div>
                     </group>
                     <label for="film_description"/>
                     <div>

@@ -37,6 +37,13 @@ class ProductTemplate(models.Model):
     product_reference_code = fields.Char(string="Product Code")
     mo_service_cost = fields.Boolean(string="Is Manufacturing Cost")
     density = fields.Float(string="Roll Density", help="This helps to categorise specific product.")
+    thickness_val = fields.Float(string="Thickness",help="This helps to categorise specific product.")
+    thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron'),('mm','MM'),('mil','Mil')],default='micron',string=" ")
+
+
+    width_val = fields.Float(string="Width",help="This helps to categorise specific product.")
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch'),('mm','MM'),('mil','Mil')],default='mm',string=" ")
+    
 
 
 
@@ -80,6 +87,13 @@ class ProductProduct(models.Model):
         string="Low Stock Alert Sent",
         default=False
     )
+    thickness_val = fields.Float(string="Thickness",help="This helps to categorise specific product.",related='product_tmpl_id.thickness_val')
+    thickness_uom = fields.Selection(selection=[('guage','Guage'),('micron','Micron'),('mm','MM'),('mil','Mil')],default='micron',string=" ",related='product_tmpl_id.thickness_uom')
+
+
+    width_val = fields.Float(string="Width",help="This helps to categorise specific product.",related='product_tmpl_id.width_val')
+    width_uom = fields.Selection(selection=[('mm','MM'),('inch','Inch'),('mm','MM'),('mil','Mil')],default='mm',string=" ",related='product_tmpl_id.width_uom')
+    
 
     @api.model
     def check_low_stock_products(self):
