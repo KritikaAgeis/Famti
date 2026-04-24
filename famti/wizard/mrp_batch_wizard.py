@@ -31,6 +31,27 @@ class MrpBatchProduceLine(models.TransientModel):
         string='Scrap Reason')
     mo_product_code = fields.Char(string='MO Product Code')
     po_product_code = fields.Char(string='Product Code')
+    treatment_in = fields.Selection([
+            ('corona', 'Corona'),
+            ('met_corona', 'Met on Corona'),
+            ('met_chemical', 'Met on Chemical'),
+            ('met_plain', 'Met on Plain'),
+            ('plain', 'Plain'),
+            ('pvdc', 'PVDC COATED'),
+            ('soft_touch', 'SOFT TOUCH'),
+            ('alox', 'Top coat Alox'),
+        ], string="Treatment IN")
+
+    treatment_out = fields.Selection([
+            ('acrylic', 'ACRYLIC'),
+            ('corona', 'Corona'),
+            ('met_plain', 'Met on Plain'),
+            ('met_corona', 'Met on Corona'),
+            ('met_corona_out', 'Metallized on Corona Outside'),
+            ('met_chemical', 'Metallized on Chemical'),
+            ('plain', 'Plain'),
+            ('pvdc_out', 'PVDC COATED'),
+        ], string="Treatment OUT")
 
 
     @api.onchange('scrap')
@@ -140,6 +161,8 @@ class MrpBatchProduce(models.TransientModel):
                 'total_scrap': line.scrap,
                 'grade_type': line.grade_type,
                 'density': density,
+                'treatment_in': line.treatment_in,
+                'treatment_out': line.treatment_out,
             })
 
             if line.scrap and line.scrap > 0:
@@ -158,6 +181,8 @@ class MrpBatchProduce(models.TransientModel):
                     'core_id': line.core_id,
                     'length': line.length,
                     'length_uom': line.length_uom,
+                    'treatment_in': line.treatment_in,
+                    'treatment_out': line.treatment_out,
                 })
 
         if serial_line_vals:
@@ -179,6 +204,7 @@ class MrpBatchProduce(models.TransientModel):
         self.line_ids = [(5, 0, 0)] 
         qty_per_lot = self.sn_recived_quantity / self.lot_qty
         line_vals = []
+        product = self.production_id.product_id
         for serial in serial_numbers:
             line_vals.append((0, 0, {
                 'serial_number': serial,
@@ -187,6 +213,12 @@ class MrpBatchProduce(models.TransientModel):
                 'quantity': qty_per_lot,
                 'uom_id': self.production_id.product_uom_id.id,
                 'location_id': self.production_id.location_dest_id.id,
+                'treatment_in': product.treatment_in_selection,
+                'treatment_out': product.treatment_out_selection,
+                'thickness': product.thickness_val,
+                'thickness_uom': product.thickness_uom,
+                'width': product.width_val,
+                'width_uom': product.width_uom,
             }))
         self.line_ids = line_vals
 

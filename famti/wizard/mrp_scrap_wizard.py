@@ -98,3 +98,24 @@ class MrpProductionScrapWizardLine(models.TransientModel):
     film_category = fields.Char(string="Film Category",  help="This helps to categorise specific product.")
     film = fields.Char(string="Film", help="Product Film.")
     film_type = fields.Char(string="Film Type", help="Film Type")
+    treatment_in = fields.Selection([
+            ('corona', 'Corona'),
+            ('met_corona', 'Met on Corona'),
+            ('met_chemical', 'Met on Chemical'),
+            ('met_plain', 'Met on Plain'),
+            ('plain', 'Plain'),
+            ('pvdc', 'PVDC COATED'),
+            ('soft_touch', 'SOFT TOUCH'),
+            ('alox', 'Top coat Alox'),
+        ], string="Treatment IN")
+
+    treatment_out = fields.Selection([
+            ('acrylic', 'ACRYLIC'),
+            ('corona', 'Corona'),
+            ('met_plain', 'Met on Plain'),
+            ('met_corona', 'Met on Corona'),
+            ('met_corona_out', 'Metallized on Corona Outside'),
+            ('met_chemical', 'Metallized on Chemical'),
+            ('plain', 'Plain'),
+            ('pvdc_out', 'PVDC COATED'),
+        ], string="Treatment OUT")

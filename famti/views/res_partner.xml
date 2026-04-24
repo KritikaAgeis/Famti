@@ -67,6 +67,7 @@
             <field name="name">Customers</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">kanban,list,form</field>
+            <!-- <field name="domain">[('customer_rank', '>', 0)]</field> -->
             <field name="domain">[('is_supplier','=',False)]</field>
             <field name="context">
                 {
@@ -80,6 +81,7 @@
             <field name="name">Vendors</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">kanban,list,form</field>
+            <!-- <field name="domain">[('supplier_rank', '>', 0)]</field> -->
             <field name="domain">[('is_supplier','=',True)]</field>
             <field name="context">
                 {
@@ -121,6 +123,24 @@
         </field>
     </record>
 
+    <record id="contacts.menu_contacts" model="ir.ui.menu">
+        <field name="name">All Contacts</field>
+    </record>
+
+    <record id="menu_contacts_customers" model="ir.ui.menu">
+        <field name="name">Customers</field>
+        <field name="parent_id" ref="contacts.menu_contacts"/>
+        <field name="action" ref="action_customers"/>
+        <field name="sequence">1</field>
+    </record>
+
+    <record id="menu_contacts_vendors" model="ir.ui.menu">
+        <field name="name">Vendors</field>
+        <field name="parent_id" ref="contacts.menu_contacts"/>
+        <field name="action" ref="action_vendors"/>
+        <field name="sequence">1</field>
+    </record>
+   
 
     </data>
 </odoo>

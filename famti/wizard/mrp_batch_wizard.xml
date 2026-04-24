@@ -46,6 +46,8 @@
                             <field name="mo_product_code"/>
                             <field name="po_product_code"/>
                             <field name="location_id"/>
+                            <field name="treatment_in"/>
+                            <field name="treatment_out"/>
                             <field name="thickness"/>
                             <field name="thickness_uom"/>
                             <field name="width"/>
