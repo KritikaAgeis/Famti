@@ -102,7 +102,7 @@
         name="QuickBook"
         sequence="2"
         action="action_quickbook_config"
-        groups="base.group_system"
+        groups="group_quickbook_users"
     />
 
     <menuitem
