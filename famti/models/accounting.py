@@ -1,5 +1,5 @@
 from odoo import models, api, fields
-
+import requests
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -27,6 +27,17 @@ class AccountMove(models.Model):
     _sql_constraints = [
         ('quickbook_id_unique', 'unique(quickbook_id)', 'QuickBooks ID must be unique!')
     ]
+
+    def action_send_to_qb(self):
+        config = self.env['quickbook.config'].search([('status','=','connected')], limit=1)
+
+        if not config:
+            raise Exception("QuickBooks not connected!")
+        for invoice in self:
+            # if invoice.move_type != 'out_invoice':
+            #     continue
+            qb_invoice = config.create_or_update_qb_invoice(invoice)
+            invoice.quickbook_id = qb_invoice.get('Id')
 
     def _get_bank_payment_html(self):
         bank_journal = self.env['account.journal'].search([
@@ -73,3 +84,11 @@ class AccountMoveLine(models.Model):
     pieces_po = fields.Float(string="Pieces", related="purchase_line_id.pieces", store=True)
     rolls_uom_id = fields.Many2one('uom.uom', string="UoM",domain="[('name','=','rolls')]",
         default=lambda self: self.env['uom.uom'].search([('name','=','rolls')], limit=1))
+
+
+
+    class AccountTaxPython(models.Model):
+        _inherit = "account.tax"
+
+        qb_tax_code = fields.Char(string="QuickBooks Tax Code")
+

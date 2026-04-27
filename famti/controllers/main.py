@@ -1,9 +1,9 @@
 from odoo import http
 from odoo.http import request
 import requests
-import urllib.parse
 from werkzeug.utils import redirect
 import urllib.parse
+from odoo import http
 
 AUTH_URL = "https://appcenter.intuit.com/connect/oauth2"
 TOKEN_URL = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
@@ -27,9 +27,9 @@ class QuickbookController(http.Controller):
             f"state={config.id}"
         )
 
-        print("Redirecting to:", auth_url)
-
-        return redirect(auth_url)
+        res= redirect(auth_url)
+        #print("res33 to:", res)
+        return res
 
 
     @http.route('/quickbook/callback', type='http', auth='user')
@@ -72,7 +72,7 @@ class QuickbookController(http.Controller):
                     f"{base_url}"
                 )
         except Exception as e:
-            print(e)
+            #print(e)
             config.write({
                 'access_token': data.get('access_token'),
                 'refresh_token': data.get('refresh_token'),
