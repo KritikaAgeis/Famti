@@ -29,8 +29,12 @@
                             class="btn-success"
                             />
 
-                    <button name="fetch_invoices" type="object" string="Fetch Invoices"
+                    <button name="fetch_invoices" invisible="1" type="object" string="Fetch Invoices"
                             class="btn-primary"/>
+<!--                    <button name="action_send_to_qb"-->
+<!--                        string="Send to QuickBooks"-->
+<!--                        type="object"-->
+<!--                        class="btn-primary"/>-->
 
                     <field name="status" widget="statusbar"
                         statusbar_visible="draft,connected,disconnected"/>
@@ -98,7 +102,7 @@
         name="QuickBook"
         sequence="2"
         action="action_quickbook_config"
-        groups="base.group_system"
+        groups="group_quickbook_users"
     />
 
     <menuitem

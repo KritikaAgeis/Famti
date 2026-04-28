@@ -19,7 +19,7 @@ class HrResignation(models.Model):
     resignation_type = fields.Selection([
         ('normal', 'Normal Resignation'),
         ('terminated', 'Terminated / Fired')
-    ], default='normal', required=True, tracking=True)
+    ],string="Resignation Type", default='normal', required=True, tracking=True)
 
     manager_id = fields.Many2one('hr.employee', string="Manager")
 
@@ -37,7 +37,6 @@ class HrResignation(models.Model):
     @api.model
     def create(self, vals):
         record = super().create(vals)
-
         # record.message_post(body="Resignation record created.")
         return record
 
