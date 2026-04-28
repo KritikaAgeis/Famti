@@ -88,6 +88,9 @@
                         </field>
                     </page>
                 </xpath>
+                <xpath expr="//notebook/page[3]" position="attributes">
+                <attribute name="string">Personal Information</attribute>
+            </xpath>
 
             </field>
         </record>
