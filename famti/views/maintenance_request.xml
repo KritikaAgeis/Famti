@@ -136,6 +136,9 @@
                     <div>
                         <field name="expected_duration" widget="float_time" readonly="show_supervisor_button" required="1" class="oe_inline"/> <span class="ml8">hours</span>
                     </div>
+                    <field name="downtime_start" />
+                    <field name="downtime_end" />
+                    <field name="downtime_duration" />
                 </xpath>
                 <xpath expr="//field[@name='schedule_date']" position="after">
                     <field name="end_datetime" readonly="show_supervisor_button"/>
@@ -158,6 +161,14 @@
                             </list>
                         </field>
                     </page>
+                </xpath>
+
+                <xpath expr="//field[@name='maintenance_type']" position="after">
+                    <field name="completion_remarks"/>
+                </xpath>
+                <xpath expr="//field[@name='priority']" position="after">
+                    <field name="repair_file" filename="repair_filename"/>
+                    <field name="repair_filename" invisible="1"/>
                 </xpath>
 
             </field>
@@ -192,6 +203,9 @@
                                 <field name="expected_duration" widget="float_time" class="oe_inline"/>
                                 <span class="ml8">hours</span>
                             </div>
+                            <field name="downtime_start" />
+                            <field name="downtime_end" />
+                            <field name="downtime_duration" />
                             <field name="request_date"/>
                             <field name="schedule_date"/>                            
                         </group>
@@ -217,6 +231,37 @@
                     </notebook>
 
                 </form>
+            </field>
+        </record>
+
+        <record id="view_maintenance_equipment_form_inherit_next_service" model="ir.ui.view">
+            <field name="name">maintenance.equipment.form.inherit.next.service</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='effective_date']" position="after">
+                    <field name="next_service_date"/>
+                </xpath>
+
+                <xpath expr="//sheet/notebook" position="inside">
+                <page string="Maintenance History">
+
+                    <field name="maintenance_request_ids">
+                        <list>
+                            <field name="name"/>
+                            <field name="maintenance_type"/>
+                            <field name="request_date"/>
+                            <field name="stage_id"/>
+                            <field name="user_id"/>
+                            <button name="action_view_requests" type="object" icon="fa-list"
+                                class="btn-link"/>
+                        </list>
+                    </field>
+
+                </page>
+            </xpath>
+
             </field>
         </record>
     </data>

@@ -57,7 +57,8 @@
                         <field name="document_ids">
                             <list editable="bottom">
                                 <field name="document_type"/>
-                                <field name="file" filename="file_name"/>
+                                <field name="file" filename="file_name" widget="binary"/>
+                                <field name="file_name" invisible="1" optional="hide"/>
                             </list>
                         </field>
                     </page>
