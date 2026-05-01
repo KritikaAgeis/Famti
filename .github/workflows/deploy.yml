@@ -26,7 +26,7 @@ jobs:
               PORT=8018
             else
               BRANCH=uat
-              SERVICE=odoo18-uat
+              SERVICE=odoo18
               PORT=8018
             fi
 
