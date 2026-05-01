@@ -3,39 +3,56 @@ name: Deploy Odoo
 on:
   push:
     branches:
-      - main
+      - dev
+      - uat
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to EC2
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_EC2_HOST || secrets.UAT_EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ github.ref == 'refs/heads/dev' && secrets.SSH_PRIVATE_KEY || secrets.UAT_SSH_PRIVATE_KEY }}
           script: |
             set -e
+
+            if [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+              BRANCH=dev
+              SERVICE=odoo18
+              PORT=8018
+            else
+              BRANCH=uat
+              SERVICE=odoo18-uat
+              PORT=8018
+            fi
+
+            echo "-----------------------------------"
+            echo "Deploying branch: $BRANCH"
+            echo "Service: $SERVICE"
+            echo "-----------------------------------"
+
             cd /opt/odoo18/custom
 
-            echo "Checking for updates..."
-            git fetch origin main
+            echo "Stopping service..."
+            sudo systemctl stop $SERVICE || true
 
-            if ! git diff --quiet HEAD origin/main; then
-              echo "Changes found. Resetting local changes..."
+            echo "Freeing port $PORT (if stuck)..."
+            sudo fuser -k ${PORT}/tcp || true
 
-              git reset --hard
-              git clean -fd
+            echo "Pulling latest code..."
+            git fetch origin $BRANCH
+            git reset --hard origin/$BRANCH
+            git clean -fd
+            git pull origin $BRANCH
 
-              echo "Pulling latest code..."
-              git pull origin main
+            echo "Starting service..."
+            sudo systemctl start $SERVICE
 
-              echo "Restarting Odoo..."
-              systemctl restart odoo18
+            echo "Checking service status..."
+            sudo systemctl status $SERVICE --no-pager
 
-              echo "Deployment successful ✅"
-            else
-              echo "No changes. Skipping restart ✅"
-            fi
+            echo "Deployment successful ✅"
