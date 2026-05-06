@@ -70,7 +70,8 @@
         'views/recruitment.xml',
         'views/hr_resignation.xml',
         'views/quickbook.xml',
-        'views/performance.xml'
+        'views/performance.xml',
+        'views/cost_sheet.xml'
 
     ],
     'demo': [
