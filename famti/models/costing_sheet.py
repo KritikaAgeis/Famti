@@ -9,6 +9,7 @@ from odoo.tools.safe_eval import safe_eval
 #     name = fields.Char(string="Costing Reference", required=True, copy=False, default="New")
 #     customer_id = fields.Many2one('res.partner', string="Customer")
 
+
 #Template with codes
 class CostSheetTemplate(models.Model):
     _name = 'cost.sheet.template'
