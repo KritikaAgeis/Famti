@@ -1,0 +1,61 @@
+# -*- coding: utf-8 -*-
+
+{
+    'name': 'Odoo18 Dynamic Accounting Reports',
+    'version': '18.0.1.3.4',
+    'category': 'Accounting',
+    'summary': "Odoo 18 Accounting Financial Reports,Dynamic Accounting Reports, Dynamic Financial Reports,Dynamic Report Odoo18, Odoo18,Financial Reports, Odoo18 Accounting,Accounting, Odoo Apps",
+    'description': "This module creates dynamic Accounting General Ledger, Trial"
+                   "Balance, Balance Sheet, Profit and Loss, Cash Book, Partner"
+                   "Ledger, Aged Payable, Aged Receivable, Bank book and Tax"
+                   "Reports in Odoo 18 community edition, Reporting, Odoo18 Accounting, odoo18 reporting, odoo18, odoo18 accounts reports",
+    'author': 'Ageis Technologies Inc',
+    'company': 'Ageis Technologies Inc',
+    'maintainer': 'Ageis Technologies Inc',
+    'website': "https://www.ageistech.com",
+    'depends': ['base_accounting_kit'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/accounting_report_views.xml',
+        'report/trial_balance.xml',
+        'report/general_ledger_templates.xml',
+        'report/financial_report_template.xml',
+        'report/partner_ledger_templates.xml',
+        'report/financial_reports_views.xml',
+        'report/balance_sheet_report_templates.xml',
+        'report/bank_book_templates.xml',
+        'report/aged_payable_templates.xml',
+        'report/aged_receivable_templates.xml',
+        'report/tax_report_templates.xml',
+    ],
+    'assets': {
+        'web.assets_backend': [
+            'dynamic_accounts_report/static/src/xml/general_ledger_view.xml',
+            'dynamic_accounts_report/static/src/xml/trial_balance_view.xml',
+            'dynamic_accounts_report/static/src/xml/cash_flow_templates.xml',
+            'dynamic_accounts_report/static/src/xml/bank_flow_templates.xml',
+            'dynamic_accounts_report/static/src/xml/profit_and_loss_templates.xml',
+            'dynamic_accounts_report/static/src/xml/balance_sheet_template.xml',
+            'dynamic_accounts_report/static/src/xml/partner_ledger_view.xml',
+            'dynamic_accounts_report/static/src/xml/aged_payable_report_views.xml',
+            'dynamic_accounts_report/static/src/xml/aged_receivable_report_views.xml',
+            'dynamic_accounts_report/static/src/xml/tax_report_views.xml',
+            'dynamic_accounts_report/static/src/css/accounts_report.css',
+            'dynamic_accounts_report/static/src/js/general_ledger.js',
+            'dynamic_accounts_report/static/src/js/trial_balance.js',
+            'dynamic_accounts_report/static/src/js/cash_flow.js',
+            'dynamic_accounts_report/static/src/js/bank_flow.js',
+            'dynamic_accounts_report/static/src/js/profit_and_loss.js',
+            'dynamic_accounts_report/static/src/js/balance_sheet.js',
+            'dynamic_accounts_report/static/src/js/partner_ledger.js',
+            'dynamic_accounts_report/static/src/js/aged_payable_report.js',
+            'dynamic_accounts_report/static/src/js/aged_receivable_report.js',
+            'dynamic_accounts_report/static/src/js/tax_report.js',
+
+        ],
+    },
+    'images': ['static/description/banner.png'],
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}
