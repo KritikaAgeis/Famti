@@ -57,6 +57,22 @@ class MaintenanceTrackWizard(models.TransientModel):
 
 
     notes = fields.Text(string="Notes")
+    downtime_start = fields.Datetime("Downtime Start")
+    downtime_end = fields.Datetime("Downtime End")
+    downtime_duration = fields.Float(
+        "Downtime (Hours)",
+        compute="_compute_downtime",
+        store=True
+    )
+
+    @api.depends('downtime_start', 'downtime_end')
+    def _compute_downtime(self):
+        for rec in self:
+            if rec.downtime_start and rec.downtime_end:
+                diff = rec.downtime_end - rec.downtime_start
+                rec.downtime_duration = diff.total_seconds() / 3600
+            else:
+                rec.downtime_duration = 0
 
     @api.depends('team_id')
     def _compute_responsible_field(self):
@@ -104,6 +120,7 @@ class MaintenanceTrackWizard(models.TransientModel):
             'state': self.state,
             'show_responsible': self.show_responsible,
             'notes': self.notes,
+            'downtime_start': self.downtime_start,
         })
         self.maintenance_id.stage_id = self.env['maintenance.stage'].search([('name', '=', 'New Request')], limit=1).id
         self.activity_schedule_external()

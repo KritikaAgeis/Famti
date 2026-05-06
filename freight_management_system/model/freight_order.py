@@ -40,7 +40,7 @@ class FreightOrder(models.Model):
                                           required=True,
                                           help="Discharge port of freight"
                                                "order",tracking=True)
-    state = fields.Selection([('draft', 'Draft'), ('submit', 'Submitted'),
+    state = fields.Selection([('draft', 'Draft'), ('submit', 'In Transit'),
                               ('confirm', 'Confirmed'),
                               ('invoice', 'Invoiced'), ('done', 'Done'),
                               ('cancel', 'Cancel')],
@@ -582,6 +582,12 @@ class FreightOrderServiceLine(models.Model):
         """Calculate the subtotal of route operation"""
         for rec in self:
             rec.total_sale = rec.qty * rec.sale
+
+    @api.constrains('total_sale')
+    def _check_total_sale(self):
+        for rec in self:
+            if rec.total_sale < 0:
+                raise ValidationError("Total Sale cannot be negative.")
 
 
 class Tracking(models.Model):

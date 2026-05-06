@@ -21,6 +21,36 @@ class MaintenanceRequest(models.Model):
     )
     email = fields.Char(string="Email", required=True)
     request_date = fields.Datetime(string="Request Date", default=fields.Datetime.now)
+    downtime_start = fields.Datetime("Downtime Start")
+    downtime_end = fields.Datetime("Downtime End")
+    downtime_duration = fields.Float(
+        "Downtime (Hours)",
+        compute="_compute_downtime",
+        store=True
+    )
+    completion_remarks = fields.Text(string="Closure Remarks")
+    repair_file = fields.Binary(string="Upload File")
+    repair_filename = fields.Char(string="File Name")
+
+    def action_view_requests(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Maintenance Request',
+            'res_model': 'maintenance.request',
+            'view_mode': 'form',
+            'res_id': self.id,
+            'target': 'current',
+        }
+    
+    @api.depends('downtime_start', 'downtime_end')
+    def _compute_downtime(self):
+        for rec in self:
+            if rec.downtime_start and rec.downtime_end:
+                diff = rec.downtime_end - rec.downtime_start
+                rec.downtime_duration = diff.total_seconds() / 3600
+            else:
+                rec.downtime_duration = 0
 
     @api.depends('maintenance_team_id')
     def _compute_responsible_field(self):
@@ -208,6 +238,22 @@ class MaintenanceTrack(models.Model):
 
 
     notes = fields.Text(string="Notes", tracking=True)
+    downtime_start = fields.Datetime("Downtime Start")
+    downtime_end = fields.Datetime("Downtime End")
+    downtime_duration = fields.Float(
+        "Downtime (Hours)",
+        compute="_compute_downtime",
+        store=True
+    )
+
+    @api.depends('downtime_start', 'downtime_end')
+    def _compute_downtime(self):
+        for rec in self:
+            if rec.downtime_start and rec.downtime_end:
+                diff = rec.downtime_end - rec.downtime_start
+                rec.downtime_duration = diff.total_seconds() / 3600
+            else:
+                rec.downtime_duration = 0
     
 
     @api.depends('team_id')
@@ -236,3 +282,9 @@ class MaintenanceEquipment(models.Model):
     scrap_date = fields.Datetime(string="Shutdown Date")
     assign_date = fields.Datetime(string="Assign Date")
     cost = fields.Float(string="Maintenance Cost")
+    next_service_date = fields.Datetime(string="Next Service Date")
+    maintenance_request_ids = fields.One2many(
+        'maintenance.request',
+        'equipment_id',
+        string="Maintenance Requests"
+    )

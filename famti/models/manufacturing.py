@@ -76,6 +76,24 @@ class MrpProduction(models.Model):
                     raise ValidationError(
                         f"Raw Material '{move.product_id.display_name}' must have a quantity greater than 0."
                     )
+        for record in self:
+            for move in record.move_raw_ids:
+                product = move.product_id
+
+                available_qty = product.with_context(
+                    location=move.location_id.id
+                ).qty_available
+
+                if available_qty < move.product_uom_qty:
+                    raise ValidationError(_(
+                        "Not enough stock for product: %s\n"
+                        "Required: %s\nAvailable: %s"
+                    ) % (
+                        product.display_name,
+                        move.product_uom_qty,
+                        available_qty
+                    ))
+                
         return super().action_confirm()
 
 

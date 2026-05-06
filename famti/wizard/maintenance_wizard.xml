@@ -43,6 +43,9 @@
                         </div>
                         <field name="schedule_date"/>
                         <field name="request_date"/>
+                        <field name="downtime_start" />
+                        <field name="downtime_end" />
+                        <field name="downtime_duration" />
                         
                     </group>
 
