@@ -31,6 +31,12 @@ class FreightOrder(models.Model):
     etd_discharge_port = fields.Datetime(string="ETD (Discharge Port)")
     eta_destination = fields.Datetime(string="ETA (Destination / Toronto)")
 
+    carrier_id = fields.Many2one('res.partner', string="Carrier Name")
+    driver_name = fields.Char(string="Driver Name")
+    vehicle_number = fields.Char(string="Truck / Trailer No.")
+    driver_phone = fields.Char(string="Driver Phone Number")
+    driver_email = fields.Char(string="Driver Email")
+
     
 
 

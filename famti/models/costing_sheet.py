@@ -1,7 +1,6 @@
 from odoo import models, fields, api
 from odoo.tools.safe_eval import safe_eval
 
-
 # class CostingSheet(models.Model):
 #     _name = 'costing.sheet'
 #     _description = 'Costing Sheet'
