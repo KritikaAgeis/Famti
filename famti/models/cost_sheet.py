@@ -5,15 +5,18 @@ class CostSheet(models.Model):
     _description = 'Cost Sheet'
 
     name = fields.Char(string="Cost Sheet No", required=True, copy=False, default="New")
-    sale_order_id = fields.Many2one('sale.order', string="Sales Order")
-    partner_id = fields.Many2one('res.partner', string="Customer")
+    sale_order_id = fields.Many2one('sale.order', string="Sales Order",required=True)
+    partner_id = fields.Many2one('res.partner', string="Customer",related='sale_order_id.partner_id',store=True,readonly=True)
     product_id = fields.Many2one('product.product', string="Product")
     qty = fields.Float(string="Quantity (KG)")
-    cost_template_ids = fields.One2many('cost.sheet.template', 'cost_sheet_id', string="Cost Templates")
-    # cs_template_ids = fields.One2many('cost.sheet.template', 'cs_id', string="Cost Template")
     template_ids = fields.Many2many(
         'cost.sheet.template',
         string="Templates"
+    )
+
+    slitted_template_ids = fields.Many2many(
+        'cs.slitted.template',
+        string="Cost Sheet Template(Slitted)"
     )
 
     raw_material_cost = fields.Float(string="Raw Material Cost / KG")
@@ -36,17 +39,45 @@ class CostSheet(models.Model):
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('submitted', 'Submitted to CFO'),
+        ('to_approve', 'Submitted to CFO'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
     ], default='draft', tracking=True)
 
     @api.model
     def create(self, vals):
-        rec = super().create(vals)
+        if vals.get('name', 'New') == 'New':
+            vals['name'] = self.env['ir.sequence'].next_by_code(
+                'cost.sheet.sequence'
+            ) or 'New'
+
+        return super().create(vals)
+
+    def action_cfo_approval(self):
+        if self.state == 'draft':
+            self.write({'state': 'to_approve'})
+
+    def action_approve(self):
+        if self.state == 'to_approve':
+            self.write({'state': 'approved'})
+
+    def action_reject(self):
+        self.write({'state': 'rejected'})
+
+    def action_reset_to_draft(self):
+        if self.state not in ['draft','to_approve']:
+            self.write({'state': 'draft'})
+
+
+    def action_calculate_metaliser(self):
         templates = self.env['cost.sheet.template'].search([])
-        rec.template_ids = [(6, 0, templates.ids)]
-        return rec
+        self.template_ids = [(6, 0, templates.ids)]
+        return True
+
+    def action_calculate_slitter(self):
+        templates = self.env['cs.slitted.template'].search([])
+        self.slitted_template_ids = [(6, 0, templates.ids)]
+        return True
 
     @api.depends('qty', 'wastage_percent', 'raw_material_cost',
                  'metallization_cost', 'slitting_cost',

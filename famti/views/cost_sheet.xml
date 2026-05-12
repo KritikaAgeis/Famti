@@ -6,20 +6,51 @@
 
             <form string="Cost Sheet">
                 <header>
-<!--                    <button name="action_submit" string="Send to CFO" type="object"-->
-<!--                            states="draft" class="btn-primary"/>-->
+                    <button name="action_cfo_approval"
+                    type="object"
+                    string="Submit for CFO Approval"
+                    class="btn-primary"
+                    groups="famti.group_sales_dep_users"
+                    invisible="state != 'draft'"
+                />
 
-<!--                    <button name="action_approve" string="Approve" type="object"-->
-<!--                            states="submitted" class="btn-success"/>-->
+                    <button name="action_approve"
+                    type="object"
+                    string="Approve"
+                    class="btn-primary"
+                    groups="famti.group_cheif_financial_officer"
+                    invisible="state != 'to_approve'"
+                />
 
-<!--                    <button name="action_reject" string="Reject" type="object"-->
-<!--                            states="submitted" class="btn-danger"/>-->
+                    <button name="action_reject"
+                    type="object"
+                    string="Reject"
+                    class="btn-secondary"
+                    groups="famti.group_cheif_financial_officer"
+                    invisible="state != 'to_approve'"
+                />
+
+                    <button name="action_reset_to_draft"
+                    type="object"
+                    string="Reset To Draft"
+                    class="btn-secondary"
+                    groups="famti.group_cheif_financial_officer"
+                    invisible="state not in ['approved','rejected']"
+                />
+
+                    <button name="action_calculate_metaliser" string="Calculate Metaliser" type="object"
+                            class="btn-success"/>
+
+                    <button name="action_calculate_slitter" string="Calculate Slitter" type="object"
+                            class="btn-success"/>
+
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,submitted,approved,rejected"/>
+                           statusbar_visible="draft,to_approve,approved,rejected"/>
                 </header>
 
                 <sheet>
                     <group>
+                            <field name="name" readonly="1"/>
                         <group>
                             <field name="sale_order_id"/>
                             <field name="partner_id"/>
@@ -35,11 +66,11 @@
 
                     <notebook>
 
-                        <page string="Cost Sheet 1">
+                        <page string="Cost Sheet Metaliser">
                             <field name="template_ids">
                                 <list editable="bottom">
                                     <field name="sequence" widget="handle"/>
-                                    <field name="name"/>
+                                    <field name="name" readonly="1"/>
                                     <field name="code" readonly="1"/>
                                     <field name="uom"/>
                                     <field name="default_value"/>
@@ -48,11 +79,11 @@
                             </field>
                         </page>
 
-                        <page string="Cost Sheet">
-                            <field name="cost_template_ids">
+                        <page string="Cost Sheet Slitter">
+                            <field name="slitted_template_ids">
                                 <list editable="bottom">
                                     <field name="sequence" widget="handle"/>
-                                    <field name="name"/>
+                                    <field name="name" readonly="1"/>
                                     <field name="code" readonly="1"/>
                                     <field name="uom"/>
                                     <field name="default_value"/>
