@@ -79,21 +79,29 @@
                         </h1>
                     </div>
                     <group>
-                        <group>
+                        <group string="Shipping Details">
                             <field name="shipper_id" readonly="state in 'done'"/>
                             <field name="consignee_id" readonly="state in 'done'"/>
                             <field name="order_date" readonly="state in 'done'"/>
-                            <field name="company_id" invisible="1" readonly="state in 'done'"/>
-                            <field name="loading_port_id"/>
                             <field name="agent_id" readonly="state in 'done'"/>
                             <field name="incoterm_id" readonly="state in 'done'"/>
+                            <field name="company_id" invisible="1" readonly="state in 'done'"/>
                         </group>
-                        <group>
+                        <group string="Transportation Details">
                             <field name="clearance" invisible="1" readonly="state in 'done'"/>
                             <field name="type" readonly="state in 'done'"/>
                             <field name="transport_type" readonly="state in 'done'"/>
-                            <field name="discharging_port_id"/>
                             <field name="expected_date" readonly="state in 'done'"/>
+                        </group>
+
+                    </group>
+                    <group col="2">
+                        <group string="Departure Details">
+                            <field name="loading_port_id" readonly="state == 'done'"/>
+                        </group>
+
+                        <group string="Arrival Details">
+                            <field name="discharging_port_id" readonly="state == 'done'"/>
                         </group>
                     </group>
 

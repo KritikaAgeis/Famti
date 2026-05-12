@@ -73,9 +73,10 @@ class MrpProduction(models.Model):
         for rec in self:
             for move in rec.move_raw_ids:
                 if move.product_uom_qty <= 0:
-                    raise ValidationError(
-                        f"Raw Material '{move.product_id.display_name}' must have a quantity greater than 0."
-                    )
+                    move.product_uom_qty = rec.product_qty
+                    # raise ValidationError(
+                    #     f"Raw Material '{move.product_id.display_name}' must have a quantity greater than 0."
+                    # )
         for record in self:
             for move in record.move_raw_ids:
                 product = move.product_id
@@ -308,29 +309,29 @@ class MrpProduction(models.Model):
                     print("calculated_weight---------",calculated_weight)
                     print("rec.recived---------",rec.quantity)
 
-                    if calculated_weight:
+                    # if calculated_weight:
 
-                        tolerance = calculated_weight * 0.03
-                        print("tolerance---------",tolerance)
-                        min_weight = calculated_weight - tolerance
-                        print("min_weight---------",min_weight)
-                        max_weight = calculated_weight + tolerance
-                        print("max_weight---------",max_weight)
+                    #     tolerance = calculated_weight * 0.03
+                    #     print("tolerance---------",tolerance)
+                    #     min_weight = calculated_weight - tolerance
+                    #     print("min_weight---------",min_weight)
+                    #     max_weight = calculated_weight + tolerance
+                    #     print("max_weight---------",max_weight)
 
-                        if rec.quantity < min_weight or rec.quantity > max_weight:
-                            raise ValidationError(
-                                _(
-                                    "Serial %s weight is outside allowed tolerance.\n"
-                                    "Expected Weight: %.2f kg\n"
-                                    "Allowed Range: %.2f - %.2f kg (±3%%)"
-                                )
-                                % (
-                                    rec.serial_number or '',
-                                    calculated_weight,
-                                    min_weight,
-                                    max_weight,
-                                )
-                            )
+                    #     if rec.quantity < min_weight or rec.quantity > max_weight:
+                    #         raise ValidationError(
+                    #             _(
+                    #                 "Serial %s weight is outside allowed tolerance.\n"
+                    #                 "Expected Weight: %.2f kg\n"
+                    #                 "Allowed Range: %.2f - %.2f kg (±3%%)"
+                    #             )
+                    #             % (
+                    #                 rec.serial_number or '',
+                    #                 calculated_weight,
+                    #                 min_weight,
+                    #                 max_weight,
+                    #             )
+                    #         )
 
             if mo.product_id.tracking == 'lot' and mo.serial_line_ids:
                 mo._create_lots_and_move_lines()
