@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from odoo.tools.safe_eval import safe_eval
+
 
 class CostSheet(models.Model):
     _name = 'cost.sheet'
@@ -9,14 +11,14 @@ class CostSheet(models.Model):
     partner_id = fields.Many2one('res.partner', string="Customer",related='sale_order_id.partner_id',store=True,readonly=True)
     product_id = fields.Many2one('product.product', string="Product")
     qty = fields.Float(string="Quantity (KG)")
-    template_ids = fields.Many2many(
-        'cost.sheet.template',
-        string="Templates"
+    line_ids = fields.One2many(
+        'cost.sheet.line',
+        'cost_sheet_id'
     )
 
-    slitted_template_ids = fields.Many2many(
-        'cs.slitted.template',
-        string="Cost Sheet Template(Slitted)"
+    slit_line_ids = fields.One2many(
+        'cost.sheet.line.slit',
+        'cost_sheet_id'
     )
 
     raw_material_cost = fields.Float(string="Raw Material Cost / KG")
@@ -68,16 +70,41 @@ class CostSheet(models.Model):
         if self.state not in ['draft','to_approve']:
             self.write({'state': 'draft'})
 
-
     def action_calculate_metaliser(self):
-        templates = self.env['cost.sheet.template'].search([])
-        self.template_ids = [(6, 0, templates.ids)]
-        return True
+        templates = self.env[
+            'cost.sheet.template'
+        ].search([])
+        lines = []
+        for temp in templates:
+            lines.append((0, 0, {
+                'name': temp.name,
+                'title': temp.title,
+                'code': temp.code,
+                'uom': temp.uom,
+                'default_value': temp.default_value,
+                'formula': temp.formula,
+                'sequence': temp.sequence,
+            }))
+        self.line_ids = [(5, 0, 0)] + lines
+
 
     def action_calculate_slitter(self):
-        templates = self.env['cs.slitted.template'].search([])
-        self.slitted_template_ids = [(6, 0, templates.ids)]
-        return True
+        templates = self.env[
+            'cs.slitted.template'
+        ].search([])
+        lines = []
+        for temp in templates:
+            lines.append((0, 0, {
+                'name': temp.name,
+                'title': temp.title,
+                'code': temp.code,
+                'uom': temp.uom,
+                'default_value': temp.default_value,
+                'formula': temp.formula,
+                'sequence': temp.sequence,
+            }))
+        self.slit_line_ids = [(5, 0, 0)] + lines
+
 
     @api.depends('qty', 'wastage_percent', 'raw_material_cost',
                  'metallization_cost', 'slitting_cost',
@@ -106,3 +133,79 @@ class CostSheet(models.Model):
         for rec in self:
             rec.profit_per_kg = rec.selling_price - rec.total_cost_per_kg
             rec.total_profit = rec.profit_per_kg * rec.qty
+
+class CostSheetLine(models.Model):
+    _name = 'cost.sheet.line'
+
+    cost_sheet_id = fields.Many2one(
+        'cost.sheet'
+    )
+    template_id = fields.Many2one(
+        'cost.sheet.template'
+    )
+    name = fields.Char()
+    title = fields.Char()
+    code = fields.Char()
+    uom = fields.Char()
+    default_value = fields.Float()
+    formula = fields.Char()
+    sequence = fields.Integer()
+
+
+    def read(self, fields=None, load='_classic_read'):
+        # Call normal read
+        res = super().read(fields, load)
+        self.compute_all()
+        return res
+
+    def compute_all(self):
+        records = self.search([])
+        context = {r.code: r.default_value for r in records if r.code}
+        # Step 2: compute all formulas in sequence order
+        for rec in records.sorted(key=lambda r: r.sequence):
+            if rec.formula:
+                try:
+                    value = safe_eval(rec.formula, context)
+                    rec.default_value = value
+                    context[rec.code] = value
+                except Exception:
+                    rec.default_value = 0
+
+
+
+class CostSheetLineSlit(models.Model):
+    _name = 'cost.sheet.line.slit'
+
+    cost_sheet_id = fields.Many2one(
+        'cost.sheet'
+    )
+    template_id = fields.Many2one(
+        'cs.slitted.template'
+    )
+    name = fields.Char()
+    title = fields.Char()
+    code = fields.Char()
+    uom = fields.Char()
+    default_value = fields.Float()
+    formula = fields.Char()
+    sequence = fields.Integer()
+
+
+    def read(self, fields=None, load='_classic_read'):
+        # Call normal read
+        res = super().read(fields, load)
+        self.compute_all()
+        return res
+
+    def compute_all(self):
+        records = self.search([])
+        context = {r.code: r.default_value for r in records if r.code}
+        # Step 2: compute all formulas in sequence order
+        for rec in records.sorted(key=lambda r: r.sequence):
+            if rec.formula:
+                try:
+                    value = safe_eval(rec.formula, context)
+                    rec.default_value = value
+                    context[rec.code] = value
+                except Exception:
+                    rec.default_value = 0

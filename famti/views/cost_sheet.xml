@@ -67,7 +67,7 @@
                     <notebook>
 
                         <page string="Cost Sheet Metaliser">
-                            <field name="template_ids">
+                            <field name="line_ids">
                                 <list editable="bottom">
                                     <field name="sequence" widget="handle"/>
                                     <field name="name" readonly="1"/>
@@ -80,7 +80,7 @@
                         </page>
 
                         <page string="Cost Sheet Slitter">
-                            <field name="slitted_template_ids">
+                            <field name="slit_line_ids">
                                 <list editable="bottom">
                                     <field name="sequence" widget="handle"/>
                                     <field name="name" readonly="1"/>

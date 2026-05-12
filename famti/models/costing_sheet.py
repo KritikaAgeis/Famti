@@ -14,15 +14,13 @@ class CostSheetTemplate(models.Model):
     formula = fields.Char(string="Formula")
     sequence = fields.Integer(string="Sequence")
     is_computed = fields.Boolean(default=False)
-    # cs_id = fields.Many2one('costing.sheet')
-    cost_sheet_id = fields.Many2one('cost.sheet',string="Cost Sheet")
+    cost_sheet_id = fields.Many2one('cost.sheet',string="Cost Sheet",ondelete='cascade')
 
     _sql_constraints = [
         ('code_unique', 'unique(code)', 'Code must be unique!')
     ]
 
     def read(self, fields=None, load='_classic_read'):
-        # Call normal read
         res = super().read(fields, load)
         self.compute_all()
         return res
@@ -30,7 +28,6 @@ class CostSheetTemplate(models.Model):
     def compute_all(self):
         records = self.search([])
         context = {r.code: r.default_value for r in records if r.code}
-        # Step 2: compute all formulas in sequence order
         for rec in records.sorted(key=lambda r: r.sequence):
             if rec.formula:
                 try:
