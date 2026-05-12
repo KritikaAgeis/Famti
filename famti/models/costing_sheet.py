@@ -1,4 +1,4 @@
-git from odoo import models, fields, api
+from odoo import models, fields, api
 from odoo.tools.safe_eval import safe_eval
 
 #Metaliser Template with codes--------------------
