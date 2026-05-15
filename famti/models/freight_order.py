@@ -32,10 +32,20 @@ class FreightOrder(models.Model):
     eta_destination = fields.Datetime(string="ETA (Destination / Toronto)")
 
     carrier_id = fields.Many2one('res.partner', string="Carrier Name")
-    driver_name = fields.Char(string="Driver Name")
+    driver_name_id = fields.Many2one('res.partner', string="Driver Name")
     vehicle_number = fields.Char(string="Truck / Trailer No.")
     driver_phone = fields.Char(string="Driver Phone Number")
     driver_email = fields.Char(string="Driver Email")
+
+    @api.onchange('driver_name_id')
+    def _onchange_driver_name_id(self):
+        for rec in self:
+            if rec.driver_name_id:
+                rec.driver_phone = rec.driver_name_id.phone or rec.driver_name_id.mobile or ''
+                rec.driver_email = rec.driver_name_id.email or ''
+            else:
+                rec.driver_phone = ''
+                rec.driver_email = ''
 
 
     def action_done(self):

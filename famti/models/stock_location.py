@@ -31,6 +31,13 @@ class StockPicking(models.Model):
         store=True
     )
 
+    parent_location_id = fields.Many2one(
+        'stock.location',
+        default=lambda self: self.env['stock.location'].search([
+            ('complete_name', '=', 'FM/Stock')
+        ], limit=1)
+    )
+    
     def button_validate(self):
 
         for picking in self:

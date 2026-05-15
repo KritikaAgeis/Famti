@@ -50,6 +50,12 @@ class StockLot(models.Model):
         'mrp.production',
         string="Produced From MO"
     )
+    parent_location_id = fields.Many2one(
+        'stock.location',
+        default=lambda self: self.env['stock.location'].search([
+            ('complete_name', '=', 'FM/Stock')
+        ], limit=1)
+    )
     
     # @api.depends('product_id')
     # def _compute_product_code(self):

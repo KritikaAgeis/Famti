@@ -50,6 +50,20 @@ class MaintenanceRequest(models.Model):
     web_start_time = fields.Datetime(string="Web Start Time")
     mc_stop_time = fields.Datetime(string="Machine Stop Time")
 
+    @api.onchange('start_datetime', 'end_datetime')
+    def _onchange_duration_calculation(self):
+        for rec in self:
+            rec.duration = 0.0
+
+            if rec.start_datetime and rec.end_datetime:
+
+                if rec.end_datetime < rec.start_datetime:
+                    raise ValidationError("End Date must be greater than Start Date")
+
+                # Difference in hours
+                diff = rec.end_datetime - rec.start_datetime
+                rec.duration = diff.total_seconds() / 3600
+
     def action_view_requests(self):
         self.ensure_one()
         return {
